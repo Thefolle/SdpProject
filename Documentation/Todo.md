@@ -9,10 +9,11 @@ Work done:
 5. Integrare i punti 1, 2 e 3;
 8. Capire come usare i raycast per non far investire l'auto in movimento;
 9. Capire come far muovere le auto in maniera semplice: coordinate locali;
+7. Progettare l'algoritmo di movimento di un veicolo all'interno di una strada: come non investire le altre auto, come traslare e ruotare;
 
 Work in progress:
 
 Future work:
 
 6. Collocare le parti della città in maniera sensata;
-7. Progettare l'algoritmo di movimento di un veicolo all'interno di una strada: come il veicolo deve seguire la propria corsia e come cambiarla, come non investire le altre auto, come traslare e ruotare;
+7. Progettare l'algoritmo di movimento di un veicolo all'interno di una strada: come il veicolo deve seguire la propria corsia e come cambiarla;
