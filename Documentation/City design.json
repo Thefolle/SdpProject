@@ -33,7 +33,7 @@
                                 }
                             }
                         },
-                        "minItems": 2,
+                        "minItems": 1,
                         "maxItems": 2
                     },
                     "startingIntersectionId": {
@@ -57,26 +57,19 @@
                     "isRoundabout": {
                         "type": "boolean"
                     },
-                    "semaphores": {
+                    "streets": {
                         "type": "array",
                         "items": {
                             "type": "object",
                             "properties": {
-                                "state": {
-                                    "enum": [
-                                        "RED",
-                                        "YELLOW",
-                                        "GREEN",
-                                        "BROKEN"
-                                    ]
+                                "id": {
+                                    "description": "The id of the adjacent street",
+                                    "type": "integer"
+                                },
+                                "hasSemaphore": {
+                                    "type": "boolean"
                                 }
                             }
-                        }
-                    },
-                    "streetIds": {
-                        "type": "array",
-                        "items": {
-                            "type": "integer"
                         }
                     }
                 }
