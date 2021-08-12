@@ -1,0 +1,39 @@
+{
+    "$schema": "./City design.json",
+    "streets": [
+        {
+            "id": 0,
+            "isOneWay": true,
+            "length": 5,
+            "semiCarriageways": [
+                {
+                    "lanesAmount": 1,
+                    "hasBusStop": false
+                }
+            ],
+            "startingIntersectionId": 1
+        }
+    ],
+    "intersections": [
+        {
+            "id": 1,
+            "isRoundabout": false,
+            "streets": [
+                {
+                    "id": 0,
+                    "hasSemaphore": false
+                }
+            ]
+        }
+    ],
+    "vehicles": {
+        "cars": {
+            "amount": 1,
+            "length": 2
+        },
+        "buses": {
+            "amount": 0,
+            "length": 4
+        }
+    }
+}
