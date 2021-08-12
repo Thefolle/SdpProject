@@ -42,7 +42,8 @@
                     "endingIntersectionId": {
                         "type": "integer"
                     }
-                }
+                },
+                "required": ["isOneWay"]
             }
         },
         "intersections": {
@@ -57,7 +58,7 @@
                     "isRoundabout": {
                         "type": "boolean"
                     },
-                    "streets": {
+                    "adjacentStreets": {
                         "type": "array",
                         "items": {
                             "type": "object",
