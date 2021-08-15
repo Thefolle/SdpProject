@@ -13,7 +13,8 @@ Work done:
 
 Work in progress:
 
+6. Collocare le parti della città in maniera sensata;
+7. Progettare l'algoritmo di movimento di un veicolo all'interno di una strada: come il veicolo deve seguire la propria corsia e come cambiarla, tenendo conto che potremmo introdurre strade curve;
+
 Future work:
 
-6. Collocare le parti della città in maniera sensata;
-7. Progettare l'algoritmo di movimento di un veicolo all'interno di una strada: come il veicolo deve seguire la propria corsia e come cambiarla, tenendo conto che potremmo introdurre strade curve.
