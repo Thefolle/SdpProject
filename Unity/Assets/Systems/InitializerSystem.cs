@@ -15,6 +15,9 @@ public class InitializerSystem : SystemBase
     private int[] arrayStreets;
     private int[] arrayIntersections;
 
+    // The algorithm that arranges the components in the GUI uses this point to position them 
+    private float3 pivot;
+
     /// <summary>
     /// Don't use OnCreate because at that time gameobjects are not converted to entities yet;
     /// if this approach doesn't work anymore, use a MonoBehaviour and inject prefabs there;
@@ -85,32 +88,39 @@ public class InitializerSystem : SystemBase
         for (int i = 0; i < city.Intersections.Count; i++)
             arrayIntersections[i] = 0;
 
-        float3 initialRenderPoint = new float3(0, 0, 0);
+        pivot = new float3(0, 0, 0);
         // choose a street as initial render prefab by convention
 
-        for (int i = 0; i < city.Streets.Count; i++)
+        CreateStreet(lanePrefab, footpathPrefab, city.Streets[0], 0);
+        if (city.Streets[0].StartingIntersectionId != null)
         {
-            if (i == 0)
-                if (arrayStreets[i] == 0)
-                {
-                    CreateStreet(lanePrefab, footpathPrefab, city.Streets[i], i);
-                    if (city.Streets[i].StartingIntersectionId != -1)
-                    {
-                        if (arrayIntersections[(int)city.Streets[i].StartingIntersectionId] == 0)
-                        {
-                            CreateIntersection(crossingPrefab, city.Streets[i], (int)city.Streets[i].StartingIntersectionId);
-                        }
-                    }
-                    if (city.Streets[i].EndingIntersectionId != -1)
-                    {
-                        if (arrayIntersections[(int)city.Streets[i].EndingIntersectionId] == 0)
-                        {
-
-                        }
-                    }
-                }
-            //CreateStreet(lanePrefab, footpathPrefab, city.Streets[i]);
+            pivot += new float3((float)city.Streets[0].Length, 0, 0);
+            CreateIntersection(crossingPrefab, city.Streets[0], 0);
         }
+
+        //for (int i = 0; i < city.Streets.Count; i++)
+        //{
+        //    if (i == 0)
+        //        if (arrayStreets[i] == 0)
+        //        {
+        //            CreateStreet(lanePrefab, footpathPrefab, city.Streets[i], i);
+        //            if (city.Streets[i].StartingIntersectionId != -1)
+        //            {
+        //                if (arrayIntersections[(int)city.Streets[i].StartingIntersectionId] == 0)
+        //                {
+        //                    CreateIntersection(crossingPrefab, city.Streets[i], (int)city.Streets[i].StartingIntersectionId);
+        //                }
+        //            }
+        //            if (city.Streets[i].EndingIntersectionId != -1)
+        //            {
+        //                if (arrayIntersections[(int)city.Streets[i].EndingIntersectionId] == 0)
+        //                {
+
+        //                }
+        //            }
+        //        }
+        //    //CreateStreet(lanePrefab, footpathPrefab, city.Streets[i]);
+        //}
 
         for (int i = 0; i < city.Vehicles.Cars.Amount; i++)
         {
@@ -133,10 +143,11 @@ public class InitializerSystem : SystemBase
         entityManager.AddComponentData(currentIntersection, new IntersectionComponentData());
         entityManager.AddComponentData(currentIntersection, new NonUniformScale { Value = new float3((float)street.SemiCarriageways[0].LanesAmount * 1, 0.1f, (float)street.SemiCarriageways[0].LanesAmount * 1) });
         // La distanza dell'incrocio � data dalla lunghezza della strada moltiplicata per (1 + 0.2 * numero di lanes)
-        if (street.StartingIntersectionId == IntersectionId)
-            entityManager.AddComponentData(currentIntersection, new Translation { Value = new float3((float)street.Length * (1f + 0.2f * (float)street.SemiCarriageways[0].LanesAmount), 0, (float)street.SemiCarriageways[0].LanesAmount - 1f) }); // Perch� 1.6? (float)street.SemiCarriageways[0].LanesAmount
-        if (street.EndingIntersectionId == IntersectionId)
-            entityManager.AddComponentData(currentIntersection, new Translation { Value = new float3(-(float)street.Length * 1.6f, 0, 0) });
+        entityManager.AddComponentData(currentIntersection, new Translation { Value = new float3(pivot.x + (float)street.SemiCarriageways[0].LanesAmount * 1, pivot.y, pivot.z) });
+        //if (street.StartingIntersectionId == IntersectionId)
+        //    entityManager.AddComponentData(currentIntersection, new Translation { Value = new float3((float)street.Length * (1f + 0.2f * (float)street.SemiCarriageways[0].LanesAmount), 0, (float)street.SemiCarriageways[0].LanesAmount - 1f) }); // Perch� 1.6? (float)street.SemiCarriageways[0].LanesAmount
+        //if (street.EndingIntersectionId == IntersectionId)
+        //    entityManager.AddComponentData(currentIntersection, new Translation { Value = new float3(-(float)street.Length * 1.6f, 0, 0) });
         entityManager.SetEnabled(currentIntersection, true);
     }
 
@@ -144,7 +155,7 @@ public class InitializerSystem : SystemBase
     {
         Entity currentLane = entityManager.Instantiate(lanePrefab);
         entityManager.AddComponentData(currentLane, new LaneComponentData());
-        entityManager.AddComponentData(currentLane, new NonUniformScale { Value = new float3(length * 1, 0.1f, 1) });
+        entityManager.AddComponentData(currentLane, new NonUniformScale { Value = new float3(length * 1, 0.1f, (float) 1 / 2) });
 
         // get prefab collider
         var getComponentDataFromEntity = GetComponentDataFromEntity<PhysicsCollider>();
@@ -180,7 +191,7 @@ public class InitializerSystem : SystemBase
         };
         entityManager.SetComponentData(currentLane, physicsCollider);
 
-        entityManager.AddComponentData(currentLane, new Translation { Value = new float3(0, 0, 2 * pieceNumber) });
+        entityManager.AddComponentData(currentLane, new Translation { Value = new float3(pivot.x, pivot.y, pivot.z) });
         entityManager.SetEnabled(currentLane, true);
     }
 
@@ -188,25 +199,35 @@ public class InitializerSystem : SystemBase
     {
         Entity currentFootpath = entityManager.Instantiate(Footpath);
         entityManager.AddComponentData(currentFootpath, new FootpathComponentData());
-        entityManager.AddComponentData(currentFootpath, new NonUniformScale { Value = new float3(length * 1, 0.2f, 1) });
-        if (pieceNumber == 0) entityManager.AddComponentData(currentFootpath, new Translation { Value = new float3(0, 0, -2) });
-        else entityManager.AddComponentData(currentFootpath, new Translation { Value = new float3(0, 0, 2 * pieceNumber) });
+        entityManager.AddComponentData(currentFootpath, new NonUniformScale { Value = new float3(length * 1, 0.2f, (float) 1 / 2) });
+        //if (pieceNumber == 0) entityManager.AddComponentData(currentFootpath, new Translation { Value = new float3(0, 0, -2) });
+        entityManager.SetComponentData(currentFootpath, new Translation { Value = new float3(0, 0, pivot.z) });
         entityManager.SetEnabled(currentFootpath, true);
     }
 
     private void CreateStreet(Entity lanePrefab, Entity footpathPrefab, Street street, int streetN)
     {
+        var pivotCopy = pivot;
         int i = 0;
         if (street.IsOneWay)
         {
+            UnityEngine.Debug.Log("Lanes amount:");
+            UnityEngine.Debug.Log((float)street.SemiCarriageways[0].LanesAmount / 2);
+            pivot += new float3(0, 0, ((float) street.SemiCarriageways[0].LanesAmount) / 2 * 1 + (float) 1 / 2);
+            CloneFootpath(footpathPrefab, (float)street.Length, 0);
+            pivot -= new float3(0, 0, (float) 1 / 2 + (float) 1 / 2);
             for (i = 0; i < street.SemiCarriageways[0].LanesAmount; i++)
             {
-                if (i == 0) CloneFootpath(footpathPrefab, (float)street.Length, i);
                 CloneLane(lanePrefab, (float)street.Length, i);
+                pivot -= new float3(0, 0, 1);
             }
+            pivot += new float3(0, 0, (float) 1 / 2);
+            pivot -= new float3(0, 0, (float) 1 / 2);
             CloneFootpath(footpathPrefab, (float)street.Length, i);
         }
         arrayStreets[streetN] = 1;
+
+        pivot = pivotCopy;
     }
 
     private void CloneCar(Entity carPrefab, float length)

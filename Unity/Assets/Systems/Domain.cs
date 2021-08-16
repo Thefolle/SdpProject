@@ -65,7 +65,7 @@ namespace Domain
         /// the algorithm.
         /// </summary>
         [JsonProperty("length", NullValueHandling = NullValueHandling.Ignore)]
-        public double? Length { get; set; }
+        public double Length { get; set; }
 
         [JsonProperty("semiCarriageways", NullValueHandling = NullValueHandling.Ignore)]
         public List<SemiCarriageway> SemiCarriageways { get; set; }
