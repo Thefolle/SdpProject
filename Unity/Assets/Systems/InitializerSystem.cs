@@ -65,7 +65,7 @@ public class InitializerSystem : SystemBase
         entityManager.SetEnabled(crossingPrefab, false);
 
         // load the city as a json string
-        string cityString = ((UnityEngine.TextAsset) UnityEngine.Resources.Load("City", typeof(UnityEngine.TextAsset))).text;
+        string cityString = ((UnityEngine.TextAsset)UnityEngine.Resources.Load("City", typeof(UnityEngine.TextAsset))).text;
         //UnityEngine.Debug.Log(cityString);
 
         // deserialize the string to City
@@ -94,14 +94,14 @@ public class InitializerSystem : SystemBase
                 if (arrayStreets[i] == 0)
                 {
                     CreateStreet(lanePrefab, footpathPrefab, city.Streets[i], i);
-                    if(city.Streets[i].StartingIntersectionId != -1)
+                    if (city.Streets[i].StartingIntersectionId != -1)
                     {
-                        if(arrayIntersections[(int)city.Streets[i].StartingIntersectionId] == 0)
+                        if (arrayIntersections[(int)city.Streets[i].StartingIntersectionId] == 0)
                         {
                             CreateIntersection(crossingPrefab, city.Streets[i], (int)city.Streets[i].StartingIntersectionId);
                         }
                     }
-                    if(city.Streets[i].EndingIntersectionId != -1)
+                    if (city.Streets[i].EndingIntersectionId != -1)
                     {
                         if (arrayIntersections[(int)city.Streets[i].EndingIntersectionId] == 0)
                         {
@@ -114,7 +114,7 @@ public class InitializerSystem : SystemBase
 
         for (int i = 0; i < city.Vehicles.Cars.Amount; i++)
         {
-            CloneCar(carPrefab, (float) city.Vehicles.Cars.Length);
+            CloneCar(carPrefab, (float)city.Vehicles.Cars.Length);
         }
 
         UnityEngine.Debug.Log("arrayStreets: " + String.Join("",
@@ -128,15 +128,15 @@ public class InitializerSystem : SystemBase
     private void CreateIntersection(Entity crossingPrefab, Street street, int IntersectionId)
     {
         // Baso la grandezza dell'incrocio, sul numero di lanes
-        // Ricorda che la lunghezza della strada è street.lenght * 100
+        // Ricorda che la lunghezza della strada ï¿½ street.lenght * 100
         Entity currentIntersection = entityManager.Instantiate(crossingPrefab);
         entityManager.AddComponentData(currentIntersection, new IntersectionComponentData());
-        entityManager.AddComponentData(currentIntersection, new NonUniformScale { Value = new float3((float)street.SemiCarriageways[0].LanesAmount * 100, (float)street.SemiCarriageways[0].LanesAmount * 100, 10) }); // Da noi y = z nei prefab....
-        // La distanza dell'incrocio è data dalla lunghezza della strada moltiplicata per (1 + 0.2 * numero di lanes)
+        entityManager.AddComponentData(currentIntersection, new NonUniformScale { Value = new float3((float)street.SemiCarriageways[0].LanesAmount * 1, 0.1f, (float)street.SemiCarriageways[0].LanesAmount * 1) });
+        // La distanza dell'incrocio ï¿½ data dalla lunghezza della strada moltiplicata per (1 + 0.2 * numero di lanes)
         if (street.StartingIntersectionId == IntersectionId)
-            entityManager.AddComponentData(currentIntersection, new Translation { Value = new float3((float)street.Length*(1f + 0.2f* (float)street.SemiCarriageways[0].LanesAmount), 0, (float)street.SemiCarriageways[0].LanesAmount - 1f) }); // Perché 1.6? (float)street.SemiCarriageways[0].LanesAmount
+            entityManager.AddComponentData(currentIntersection, new Translation { Value = new float3((float)street.Length * (1f + 0.2f * (float)street.SemiCarriageways[0].LanesAmount), 0, (float)street.SemiCarriageways[0].LanesAmount - 1f) }); // Perchï¿½ 1.6? (float)street.SemiCarriageways[0].LanesAmount
         if (street.EndingIntersectionId == IntersectionId)
-            entityManager.AddComponentData(currentIntersection, new Translation { Value = new float3(-(float)street.Length*1.6f, 0, 0) });
+            entityManager.AddComponentData(currentIntersection, new Translation { Value = new float3(-(float)street.Length * 1.6f, 0, 0) });
         entityManager.SetEnabled(currentIntersection, true);
     }
 
@@ -144,7 +144,42 @@ public class InitializerSystem : SystemBase
     {
         Entity currentLane = entityManager.Instantiate(lanePrefab);
         entityManager.AddComponentData(currentLane, new LaneComponentData());
-        entityManager.AddComponentData(currentLane, new NonUniformScale { Value = new float3(length * 100, 100, 10) });
+        entityManager.AddComponentData(currentLane, new NonUniformScale { Value = new float3(length * 1, 0.1f, 1) });
+
+        // get prefab collider
+        var getComponentDataFromEntity = GetComponentDataFromEntity<PhysicsCollider>();
+        var initialPhysicsCollider = getComponentDataFromEntity[currentLane];
+        quaternion orientation;
+        float3 center;
+        float3 size;
+        float bevelRadius;
+        unsafe
+        {
+            var collider = (BoxCollider*) initialPhysicsCollider.ColliderPtr;
+            orientation = collider->Orientation;
+            center = collider->Center;
+            size = collider->Size;
+            bevelRadius = collider->BevelRadius;
+        }
+
+        // modify collider
+        size.x *= length;
+
+        // set collider
+        var physicsCollider = new PhysicsCollider
+        {
+            // Use a BoxCollider since its size can be modified at runtime, unlike the generic MeshCollider
+            Value = BoxCollider.Create(
+                new BoxGeometry
+                {
+                    Center = center,
+                    BevelRadius = bevelRadius,
+                    Size = size,
+                    Orientation = orientation
+                })
+        };
+        entityManager.SetComponentData(currentLane, physicsCollider);
+
         entityManager.AddComponentData(currentLane, new Translation { Value = new float3(0, 0, 2 * pieceNumber) });
         entityManager.SetEnabled(currentLane, true);
     }
@@ -153,9 +188,9 @@ public class InitializerSystem : SystemBase
     {
         Entity currentFootpath = entityManager.Instantiate(Footpath);
         entityManager.AddComponentData(currentFootpath, new FootpathComponentData());
-        entityManager.AddComponentData(currentFootpath, new NonUniformScale { Value = new float3(length * 100, 100, 20) });
-        if(pieceNumber == 0) entityManager.AddComponentData(currentFootpath, new Translation { Value = new float3(0, 0, -2)});
-        else entityManager.AddComponentData(currentFootpath, new Translation { Value = new float3(0, 0, 2*pieceNumber) });
+        entityManager.AddComponentData(currentFootpath, new NonUniformScale { Value = new float3(length * 1, 0.2f, 1) });
+        if (pieceNumber == 0) entityManager.AddComponentData(currentFootpath, new Translation { Value = new float3(0, 0, -2) });
+        else entityManager.AddComponentData(currentFootpath, new Translation { Value = new float3(0, 0, 2 * pieceNumber) });
         entityManager.SetEnabled(currentFootpath, true);
     }
 
@@ -164,10 +199,10 @@ public class InitializerSystem : SystemBase
         int i = 0;
         if (street.IsOneWay)
         {
-            for(i = 0; i<street.SemiCarriageways[0].LanesAmount; i++)
+            for (i = 0; i < street.SemiCarriageways[0].LanesAmount; i++)
             {
-                if(i==0) CloneFootpath(footpathPrefab, (float)street.Length, i);
-                CloneLane(lanePrefab, (float) street.Length, i);
+                if (i == 0) CloneFootpath(footpathPrefab, (float)street.Length, i);
+                CloneLane(lanePrefab, (float)street.Length, i);
             }
             CloneFootpath(footpathPrefab, (float)street.Length, i);
         }
@@ -178,7 +213,9 @@ public class InitializerSystem : SystemBase
     {
         Entity currentCar = entityManager.Instantiate(carPrefab);
         entityManager.AddComponentData(currentCar, new CarComponentData());
-        entityManager.AddComponentData(currentCar, new NonUniformScale { Value = new float3(100, length * 80, 68) });
+        //entityManager.AddComponentData(currentCar, new NonUniformScale { Value = new float3(100, length * 80, 68) });
+        //entityManager.SetComponentData(currentCar, new Rotation { Value = math.mul(quaternion.RotateY(math.radians(-90)), quaternion.RotateX(math.radians(-90))) });
+        entityManager.SetComponentData(currentCar, new Translation { Value = new float3(0, 5, 1) });
         entityManager.SetEnabled(currentCar, true);
     }
 
