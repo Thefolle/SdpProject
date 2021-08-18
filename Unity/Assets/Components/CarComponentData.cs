@@ -5,4 +5,5 @@ using Unity.Entities;
 [GenerateAuthoringComponent]
 public struct CarComponentData : IComponentData
 {
+    public bool hasVehicleUpfront;
 }
