@@ -15,6 +15,8 @@ Work in progress:
 
 6. Collocare le parti della città in maniera sensata;
 7. Progettare l'algoritmo di movimento di un veicolo all'interno di una strada: come il veicolo deve seguire la propria corsia e come cambiarla, tenendo conto che potremmo introdurre strade curve;
+11. Find the mathematical evidence and algorithm to rotate a generic unknown vector by 90°; then implement the finding so as to generalize the algorithm described at 6;
+12. Create an empty prefab Street and adjust the algorithm 6 to set an hierarchy between a street and its lanes and footpaths.
 
 Future work:
 
