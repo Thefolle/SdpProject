@@ -1,2 +1,7 @@
 Unity/*
 !Unity/Assets
+
+Version2/*
+!Version2/Unity
+Version2/Unity/*
+!Version2/Unity/Assets

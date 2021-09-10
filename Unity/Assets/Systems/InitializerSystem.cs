@@ -79,7 +79,7 @@ public class InitializerSystem : SystemBase
             arrayIntersections[i] = 0;
 
         pivot = new float3(0, 0, 0);
-        direction = new float3(0, 0, 1);
+        direction = new float3(1, 0, 0);
         // choose a street as initial render prefab by convention
 
         CreateStreet(city.Streets[0], 0);
@@ -158,7 +158,7 @@ public class InitializerSystem : SystemBase
         }
         // end of clone hierarchy
 
-        entityManager.AddComponentData(currentLane, new LaneComponentData());
+        entityManager.AddComponentData(currentLane, new LaneComponentData { localToStreetId = pieceNumber });
         ///entityManager.AddComponentData(currentLane, new NonUniformScale { Value = new float3(length * 1, 0.1f, (float) 1 / 2) });
         entityManager.AddComponentData(currentLane, new NonUniformScale { Value = new float3(length * 1, 0.1f, laneWidth) });
         if (direction.x == 1 && direction.z == 0)
@@ -190,6 +190,8 @@ public class InitializerSystem : SystemBase
 
         // modify collider
         size.x *= length;
+        size.z *= laneWidth;
+        size.y *= 0.1f;
 
         // set collider
         var physicsCollider = new PhysicsCollider
@@ -311,10 +313,10 @@ public class InitializerSystem : SystemBase
             }
         }
 
-        entityManager.AddComponentData(currentCar, new CarComponentData { hasVehicleUpfront = false });
+        entityManager.AddComponentData(currentCar, new CarComponentData { hasVehicleUpfront = false, currentLane = 1 });
         //entityManager.AddComponentData(currentCar, new NonUniformScale { Value = new float3(100, length * 80, 68) });
-        entityManager.SetComponentData(currentCar, new Rotation { Value = quaternion.RotateY(math.radians(90)) });
-        entityManager.SetComponentData(currentCar, new Translation { Value = new float3(-2, 1, 0) });
+        entityManager.SetComponentData(currentCar, new Rotation { Value = quaternion.RotateY(math.radians(45)) });
+        entityManager.SetComponentData(currentCar, new Translation { Value = new float3(-3, 0.8f, 0) });
         entityManager.SetEnabled(currentCar, true);
     }
 

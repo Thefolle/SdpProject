@@ -6,4 +6,5 @@ using Unity.Entities;
 public struct CarComponentData : IComponentData
 {
     public bool hasVehicleUpfront;
+    public int currentLane;
 }
