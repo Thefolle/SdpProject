@@ -5,6 +5,6 @@ using Unity.Entities;
 [GenerateAuthoringComponent]
 public struct CarComponentData : IComponentData
 {
-    public bool hasVehicleUpfront;
-    public int currentLane;
+    public float speed;
+    public float angularSpeed;
 }
