@@ -5,6 +5,8 @@ using Unity.Entities;
 [GenerateAuthoringComponent]
 public struct CarComponentData : IComponentData
 {
-    public float speed;
-    public float angularSpeed;
+    public float Speed;
+    public float AngularSpeed;
+
+    public int TrackId;
 }
