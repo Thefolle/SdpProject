@@ -11,15 +11,15 @@ using Unity.Collections;
 public class VehicleMovementSystem : SystemBase
 {
     /// <summary>
-    /// The degree at which cars stop steering to approach toward the track. This parameter is an indicator of the convergence speed of a car to a track.
-    /// It is measured in degrees.
+    /// <para>The degree at which cars stop steering to approach toward the track. This parameter is an indicator of the convergence speed of a car to a track.
+    /// It is measured in degrees.</para>
     /// </summary>
     private const float steeringDegree = 20;
 
     /// <summary>
     /// <para>The algorithm exploits this parameter to determine the behaviour of a car w.r.t. its track.</para>
     /// <para>Greater values imply a better convergence in straight lanes, which is worse during bends. Cars may lose their track during bends for big values. Moreover, you should take into account both the width of the car and the width of the lane.</para>
-    /// <para>Lower values imply a better convergence in bends, which is worse in straight lanes.</para>
+    /// <para>Lower values imply a better convergence in bends, which is slower in straight lanes.</para>
     /// </summary>
     private const float thresholdDistance = 0.3f;
 
