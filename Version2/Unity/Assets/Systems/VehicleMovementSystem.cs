@@ -39,6 +39,7 @@ public class VehicleMovementSystem : SystemBase
         {
             /* Initialize data */
             float factor = 0;
+            float linearFactor = 1;
             var raycastInputRight = new RaycastInput
             {
                 Start = localToWorld.Position,
@@ -54,124 +55,98 @@ public class VehicleMovementSystem : SystemBase
             var rightHits = new NativeList<RaycastHit>(20, Allocator.TempJob);
             var leftHits = new NativeList<RaycastHit>(20, Allocator.TempJob);
 
-            bool isTrackHitFound = false;
+            /* now pick the hit with the closest track whose id equals the car's assigned track id*/
+            bool isRightHit = false; // the hit can be rightwards or leftwards
+            float minimumDistance = float.MaxValue;
+            bool isTrackHitFound = false; // flag that tells whether at least one admissible hit has been found
+            RaycastHit hit = default;
             if (physicsWorld.CastRay(raycastInputRight, ref rightHits) && rightHits.Length > 1)
             {
-                RaycastHit hit = default;
-                foreach (var it in rightHits) {
+                foreach (var it in rightHits)
+                {
                     if (getTrackComponentDataFromEntity.HasComponent(it.Entity))
                     {
-                        var parent = getParentComponentDataFromEntity[it.Entity].Value;
-                        if (getLaneComponentDataFromEntity.HasComponent(parent))
+                        var trackComponentData = getTrackComponentDataFromEntity[it.Entity];
+                        if (trackComponentData.id == carComponentData.TrackId)
                         {
-                            var laneComponentData = getLaneComponentDataFromEntity[parent];
-                            if (laneComponentData.id == carComponentData.TrackId)
+                            var hitDistance = math.distance(localToWorld.Position, it.Position);
+                            if (hitDistance < minimumDistance)
                             {
                                 hit = it;
                                 isTrackHitFound = true;
-
-                                var distance = math.distance(localToWorld.Position, hit.Position);
-                                if (math.dot(localToWorld.Forward, hit.SurfaceNormal) < 0 && distance < thresholdDistance)
-                                {
-                                    /* The car is approaching and is near to the track, let's turn it left */
-                                    /* Here soften the car trajectory so that it is a softened synusoid*/
-                                    var distanceCopy = distance;
-                                    if (distanceCopy > 2.5f) distanceCopy = 2.5f;
-                                    factor = -carComponentData.Speed * deltaTime;
-                                    Log("1");
-                                }
-                                else if (math.dot(localToWorld.Forward, hit.SurfaceNormal) < -math.cos(math.radians(steeringDegree)) && distance >= thresholdDistance)
-                                {
-                                    // The car is approaching but is distant from the track
-                                    factor = 0;
-                                }
-                                else if (math.dot(localToWorld.Forward, hit.SurfaceNormal) > -math.cos(math.radians(steeringDegree)) && distance >= thresholdDistance)
-                                {
-                                    // The car is going away from the track
-                                    var distanceCopy = distance;
-                                    if (distanceCopy > 2.5f) distanceCopy = 2.5f;
-                                    factor = carComponentData.Speed * deltaTime;
-                                }
-                                else
-                                {
-                                    // The car is going straight or (it is leaving but its distance from the center of the lane is admissible)
-                                    factor = 0;
-                                }
-
-                                Log(distance);
-                                Log(math.dot(localToWorld.Forward, hit.SurfaceNormal));
-                                // find the closest track with that id to avoid conflicts with neighbour streets
-                                break;
+                                isRightHit = true;
+                                minimumDistance = hitDistance;
                             }
+                            
                         }
                     }
                 }
             }
-
-            if (!isTrackHitFound && physicsWorld.CastRay(raycastInputLeft, ref leftHits) && leftHits.Length > 1)
+            if (physicsWorld.CastRay(raycastInputLeft, ref leftHits) && leftHits.Length > 1)
             {
-                RaycastHit hit = default;
                 foreach (var it in leftHits)
                 {
                     if (getTrackComponentDataFromEntity.HasComponent(it.Entity))
                     {
-                        var parent = getParentComponentDataFromEntity[it.Entity].Value;
-                        if (getLaneComponentDataFromEntity.HasComponent(parent))
+                        var trackComponentData = getTrackComponentDataFromEntity[it.Entity];
+                        if (trackComponentData.id == carComponentData.TrackId)
                         {
-                            var laneComponentData = getLaneComponentDataFromEntity[parent];
-                            if (laneComponentData.id == carComponentData.TrackId)
+                            var hitDistance = math.distance(localToWorld.Position, it.Position);
+                            if (hitDistance < minimumDistance)
                             {
                                 hit = it;
                                 isTrackHitFound = true;
-
-                                var distance = math.distance(localToWorld.Position, hit.Position);
-                                if (math.dot(localToWorld.Forward, hit.SurfaceNormal) < 0 && distance < thresholdDistance)
-                                {
-                                    // The car is approaching and is near to the track, let's turn it right
-                                    var distanceCopy = distance;
-                                    if (distanceCopy > 2.5f) distanceCopy = 2.5f;
-                                    factor = carComponentData.Speed * deltaTime;
-                                    Log("1L");
-                                } else if (math.dot(localToWorld.Forward, hit.SurfaceNormal) < -math.cos(math.radians(steeringDegree)) && distance >= thresholdDistance)
-                                {
-                                    // The car is approaching but is distant from the track
-                                    factor = 0;
-                                } else if (math.dot(localToWorld.Forward, hit.SurfaceNormal) > -math.cos(math.radians(steeringDegree)) && distance >= thresholdDistance)
-                                {
-                                    // The car is going away from the track
-                                    var distanceCopy = distance;
-                                    if (distanceCopy > 2.5f) distanceCopy = 2.5f;
-                                    factor = -carComponentData.Speed * deltaTime;
-                                } else
-                                {
-                                    // The car is going straight or (it is leaving but its distance from the center of the lane is admissible)
-                                    factor = 0;
-                                }
-
-                                Log(distance);
-                                Log(math.dot(localToWorld.Forward, hit.SurfaceNormal));
-
-                                // find the closest track with that id to avoid conflicts with neighbour streets
-                                break;
+                                isRightHit = false;
+                                minimumDistance = hitDistance;
                             }
                         }
                     }
                 }
             }
-            rightHits.Dispose();
-            leftHits.Dispose();
 
             if (isTrackHitFound == false)
             {
                 /* This scenario can take place if the track is out-of-range or the car is turning at the beginning or at the end of a lane. */
                 LogError("The car with id " + carEntity.Index + " cannot find any track with id " + carComponentData.TrackId + " to follow.");
                 factor = 0;
+                linearFactor = 1;
+            } else
+            {
+                var distance = math.distance(localToWorld.Position, hit.Position);
+                if (math.dot(localToWorld.Forward, hit.SurfaceNormal) < 0 && distance < thresholdDistance)
+                {
+                    /* The car is approaching and is near to the track */
+                    factor = 0;
+                }
+                else if (math.dot(localToWorld.Forward, hit.SurfaceNormal) < -math.cos(math.radians(steeringDegree)) && distance >= thresholdDistance)
+                {
+                    // The car is approaching but is distant from the track
+                    factor = 0;
+                }
+                else if (math.dot(localToWorld.Forward, hit.SurfaceNormal) > -math.cos(math.radians(steeringDegree)) && distance >= thresholdDistance)
+                {
+                    /* Here soften the car trajectory so that it is a softened synusoid*/
+                    // The car is going away from the track
+                    factor = 1 * (isRightHit ? +1 : -1);
+                    linearFactor = 0.3f;
+                }
+                else
+                {
+                    // The car is going straight or it is leaving; let's turn it right
+                    factor = 1 * (isRightHit ? +1 : -1) / (1 + distance);
+                }
+
+                Log(distance);
+                Log(math.dot(localToWorld.Forward, hit.SurfaceNormal));
+                Log("The current track for the car has id " + hit.Entity.Index);
             }
+            rightHits.Dispose();
+            leftHits.Dispose();
 
             physicsVelocity.Angular.y = carComponentData.AngularSpeed * factor * deltaTime;
 
             var tmp = physicsVelocity.Linear.y;
-            physicsVelocity.Linear = localToWorld.Forward * carComponentData.Speed * deltaTime;
+            physicsVelocity.Linear = localToWorld.Forward * carComponentData.Speed * linearFactor * deltaTime;
             // Neglect the y speed
             physicsVelocity.Linear.y = tmp;
         }).Run();
