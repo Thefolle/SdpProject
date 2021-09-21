@@ -120,19 +120,19 @@ public class VehicleMovementSystem : SystemBase
                 }
                 else if (math.dot(localToWorld.Forward, hit.SurfaceNormal) < -math.cos(math.radians(steeringDegree)) && distance >= thresholdDistance)
                 {
-                    // The car is approaching but is distant from the track
+                    /* The car is approaching but is distant from the track */
                     factor = 0;
                 }
                 else if (math.dot(localToWorld.Forward, hit.SurfaceNormal) > -math.cos(math.radians(steeringDegree)) && distance >= thresholdDistance)
                 {
-                    /* Here soften the car trajectory so that it is a softened synusoid*/
-                    // The car is going away from the track
+                    /* The car is going away from the track */
                     factor = 1 * (isRightHit ? +1 : -1);
                     linearFactor = 0.3f;
                 }
                 else
                 {
-                    // The car is going straight or it is leaving; let's turn it right
+                    /* The car is going straight or it is leaving; let's turn it */
+                    /* Here soften the car trajectory so that it is a softened synusoid*/
                     factor = 1 * (isRightHit ? +1 : -1) / (1 + distance);
                 }
 
