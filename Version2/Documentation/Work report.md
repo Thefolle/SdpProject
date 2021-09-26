@@ -10,6 +10,10 @@ First of all, we designed the new traffic simulator system before working on any
 
 We conceived a general city as a matrix made up of square districts, each having predefined characteristics that the user can choose through a Json given in input; the user validates the json file against the pertinent Json schema.
 
+Then, we brainstormed the approach to move cars which is further discussed in [another document](VehicleMovementDesign.md).
+
+The next step consisted of thinking about the inner data structures that represent the city so as to evaluate the minimum path given a start point and an end point. We found that a city can be modeled as a cyclic directed graph. The system builds the graph at the beginning of the simulation. We developed a dedicated library for graph management, since most of the available ones in the community are not compatible with Unity, like the NuGet QuickGraph.
+
 ## Last considerations
 
 ### How to enhance the project?
