@@ -1,14 +1,57 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
+using Unity.Transforms;
 
 public class GraphGeneratorSystem : SystemBase
 {
-    protected override void OnCreate()
+    protected override void OnStartRunning()
     {
-        base.OnCreate();
+        base.OnStartRunning();
+
+        EntityManager entityManager = World.EntityManager;
+        var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
+        var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
+        var getStreetComponentDataFromEntity = GetComponentDataFromEntity<StreetComponentData>();
+        var getCrossComponentDataFromEntity = GetComponentDataFromEntity<CrossComponentData>();
+
+        var entities = entityManager.GetAllEntities();
+        var tracks = new List<Entity>();
+        foreach (Entity entity in entities)
+        {
+            if (getTrackComponentDataFromEntity.HasComponent(entity))
+            {
+                tracks.Add(entity);
+            }
+        }
+        entities.Dispose();
 
         Graph district = new Graph();
+
+        foreach (Entity track in tracks)
+        {
+            var startingEntityId = getTrackComponentDataFromEntity[track].StartingEntity.Index;
+            var endingEntityId = getTrackComponentDataFromEntity[track].EndingEntity.Index;
+            if (getParentComponentDataFromEntity.HasComponent(track))
+            {
+                var parent = getParentComponentDataFromEntity[track].Value;
+                if (getStreetComponentDataFromEntity.HasComponent(parent))
+                {
+                    /* The track belongs to a street, which is translated to an edge */
+                    district.AddEdge(parent.Index, startingEntityId, endingEntityId, new Edge(getStreetComponentDataFromEntity[parent]));
+                } else if (getCrossComponentDataFromEntity.HasComponent(parent))
+                {
+                    /* The track belongs to a cross, which is translated to a node */
+                    district.AddNode(parent.Index, new Node(getCrossComponentDataFromEntity[parent]));
+                } else
+                {
+                    /* Inadvertitely the track has no parent */
+                    UnityEngine.Debug.LogError("The track with id " + track.Index + " has neither a street nor a cross as parent.");
+                }
+            }
+        }
+
+        
 
     }
 
@@ -28,21 +71,27 @@ public class Graph
     Dictionary<int, Node> Nodes;
     Dictionary<int, Edge> Edges;
 
-    // map each node to its neighbours with the relative edges
-    Dictionary<int, Dictionary<int, Edge>> adjacentNodes;
+    // map each node to its neighbours
+    Dictionary<int, List<int>> AdjacentNodes;
     
     public Graph Merge(Graph other)
     {
         return new Graph();
     }
 
-    public void AddNode(Node node)
+    public void AddNode(int nodeId, Node node)
     {
-        Nodes.Add(node.CrossId, node);
-        adjacentNodes.Add(node.CrossId, new Dictionary<int, Edge>());
+
     }
 
-    public void AddEdge(Edge edge)
+    /// <summary>
+    /// <para>If the edge already exists, does nothing.</para>
+    /// </summary>
+    /// <param name="edgeId"></param>
+    /// <param name="startingNode"></param>
+    /// <param name="endingNode"></param>
+    /// <param name="edge"></param>
+    public void AddEdge(int edgeId, int startingNode, int endingNode, Edge edge)
     {
 
     }
@@ -50,25 +99,23 @@ public class Graph
 
 public class Node
 {
-    public int CrossId { get; }
+    public CrossComponentData Cross;
 
     // map a trackId with the couple street-street it links; it may contain different tracks with the same couple.
     public Dictionary<int, DictionaryEntry> tracksLinkage;
 
-    public Node(int CrossId)
+    public Node(CrossComponentData cross)
     {
-        this.CrossId = CrossId;
+        Cross = cross;
     }
 }
 
 public class Edge
 {
-    public int StreetId { get; }
+    public StreetComponentData Street;
 
-    public Edge(int StreetId)
+    public Edge(StreetComponentData street)
     {
-        this.StreetId = StreetId;
+        Street = street;
     }
-
-    float Weight;
 }

@@ -10,6 +10,8 @@ using Unity.Collections;
 
 public class VehicleMovementSystem : SystemBase
 {
+    private const int EditorFactor = 2;
+
     /// <summary>
     /// <para>The degree at which cars stop steering to approach toward the track. This parameter is an indicator of the convergence speed of a car to a track.
     /// It is measured in degrees.</para>
@@ -22,6 +24,14 @@ public class VehicleMovementSystem : SystemBase
     /// <para>Lower values imply a better convergence in bends, which is slower in straight lanes.</para>
     /// </summary>
     private const float thresholdDistance = 0.3f;
+
+    /// <summary>
+    /// <para>This parameter establishes the range, expressed as distance from the track, in which the car can be considered in the track.</para>
+    /// <para>Within the range, the movement algorithm is deactivated and the car proceeds forward. Outside the range, the algorithm works normally.</para>
+    /// </summary>
+    private const float NegligibleDistance = 0.1f;
+
+    private const float LaneWideness = 2.5f * EditorFactor;
 
     protected override void OnUpdate()
     {
@@ -57,31 +67,10 @@ public class VehicleMovementSystem : SystemBase
 
             /* now pick the hit with the closest track whose id equals the car's assigned track id*/
             bool isRightHit = false; // the hit can be rightwards or leftwards
-            float minimumDistance = float.MaxValue;
+            float distance = 0;
             bool isTrackHitFound = false; // flag that tells whether at least one admissible hit has been found
             RaycastHit hit = default;
-            if (physicsWorld.CastRay(raycastInputRight, ref rightHits) && rightHits.Length > 1)
-            {
-                foreach (var it in rightHits)
-                {
-                    if (getTrackComponentDataFromEntity.HasComponent(it.Entity))
-                    {
-                        var trackComponentData = getTrackComponentDataFromEntity[it.Entity];
-                        if (trackComponentData.id == carComponentData.TrackId)
-                        {
-                            var hitDistance = math.distance(localToWorld.Position, it.Position);
-                            if (hitDistance < minimumDistance)
-                            {
-                                hit = it;
-                                isTrackHitFound = true;
-                                isRightHit = true;
-                                minimumDistance = hitDistance;
-                            }
-                            
-                        }
-                    }
-                }
-            }
+
             if (physicsWorld.CastRay(raycastInputLeft, ref leftHits) && leftHits.Length > 1)
             {
                 foreach (var it in leftHits)
@@ -91,19 +80,50 @@ public class VehicleMovementSystem : SystemBase
                         var trackComponentData = getTrackComponentDataFromEntity[it.Entity];
                         if (trackComponentData.id == carComponentData.TrackId)
                         {
-                            var hitDistance = math.distance(localToWorld.Position, it.Position);
-                            if (hitDistance < minimumDistance)
-                            {
-                                hit = it;
-                                isTrackHitFound = true;
-                                isRightHit = false;
-                                minimumDistance = hitDistance;
-                            }
+                            hit = it;
+
+                            isRightHit = false;
+                            // Don't compute the distance with math.distance, since only the projection along the surface normal is relevant
+                            distance = math.abs(math.dot(localToWorld.Position, hit.SurfaceNormal) - math.dot(hit.Position, hit.SurfaceNormal));
+                            isTrackHitFound = true;
+
+                            // take the nearest admissible track
+                            break;
                         }
                     }
                 }
             }
+            if (!isTrackHitFound && physicsWorld.CastRay(raycastInputRight, ref rightHits) && rightHits.Length > 1)
+            {
+                foreach (var it in rightHits)
+                {
+                    if (getTrackComponentDataFromEntity.HasComponent(it.Entity))
+                    {
+                        var trackComponentData = getTrackComponentDataFromEntity[it.Entity];
+                        if (trackComponentData.id == carComponentData.TrackId)
+                        {
+                            hit = it;
 
+                            /* Virtualize the physical track to the intended one*/
+                            hit.Position += carComponentData.LaneId * LaneWideness * hit.SurfaceNormal;
+
+                            var scalarDistance = math.dot(localToWorld.Position, hit.SurfaceNormal) - math.dot(hit.Position, hit.SurfaceNormal);
+
+                            distance = math.abs(scalarDistance);
+                            isRightHit = scalarDistance > 0;
+                            isTrackHitFound = true;
+                            if (isRightHit == false)
+                            {
+                                hit.SurfaceNormal *= -1;
+                            }
+
+                            // take the nearest admissible track
+                            break;
+                        }
+                    }
+                }
+            }
+                
             if (isTrackHitFound == false)
             {
                 /* This scenario can take place if the track is out-of-range or the car is turning at the beginning or at the end of a lane. */
@@ -112,8 +132,11 @@ public class VehicleMovementSystem : SystemBase
                 linearFactor = 1;
             } else
             {
-                var distance = math.distance(localToWorld.Position, hit.Position);
-                if (math.dot(localToWorld.Forward, hit.SurfaceNormal) < 0 && distance < thresholdDistance)
+                if (distance < NegligibleDistance)
+                {
+                    // The car's distance from the track is negligible
+                    factor = 0;
+                } else if (math.dot(localToWorld.Forward, hit.SurfaceNormal) < 0 && distance < thresholdDistance)
                 {
                     /* The car is approaching and is near to the track */
                     factor = 0;
