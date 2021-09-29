@@ -70,6 +70,7 @@ public class VehicleMovementSystem : SystemBase
             float distance = 0;
             bool isTrackHitFound = false; // flag that tells whether at least one admissible hit has been found
             RaycastHit hit = default;
+            var forward = math.normalize(localToWorld.Forward);
 
             if (physicsWorld.CastRay(raycastInputLeft, ref leftHits) && leftHits.Length > 1)
             {
@@ -136,17 +137,17 @@ public class VehicleMovementSystem : SystemBase
                 {
                     // The car's distance from the track is negligible
                     factor = 0;
-                } else if (math.dot(localToWorld.Forward, hit.SurfaceNormal) < 0 && distance < thresholdDistance)
+                } else if (math.dot(forward, hit.SurfaceNormal) < 0 && distance < thresholdDistance)
                 {
                     /* The car is approaching and is near to the track */
                     factor = 0;
                 }
-                else if (math.dot(localToWorld.Forward, hit.SurfaceNormal) < -math.cos(math.radians(steeringDegree)) && distance >= thresholdDistance)
+                else if (math.dot(forward, hit.SurfaceNormal) < -math.cos(math.radians(steeringDegree)) && distance >= thresholdDistance)
                 {
                     /* The car is approaching but is distant from the track */
                     factor = 0;
                 }
-                else if (math.dot(localToWorld.Forward, hit.SurfaceNormal) > -math.cos(math.radians(steeringDegree)) && distance >= thresholdDistance)
+                else if (math.dot(forward, hit.SurfaceNormal) > -math.cos(math.radians(steeringDegree)) && distance >= thresholdDistance)
                 {
                     /* The car is going away from the track */
                     factor = 1 * (isRightHit ? +1 : -1);
@@ -154,13 +155,15 @@ public class VehicleMovementSystem : SystemBase
                 }
                 else
                 {
-                    /* The car is going straight or it is leaving; let's turn it */
+                    /* The car is near and is going straight or it is leaving; let's turn it */
                     /* Here soften the car trajectory so that it is a softened synusoid*/
                     factor = 1 * (isRightHit ? +1 : -1) / (1 + distance);
                 }
 
+                Log("Car position is: " + localToWorld.Position);
+                Log("Track position is: " + hit.Position);
                 Log(distance);
-                Log(math.dot(localToWorld.Forward, hit.SurfaceNormal));
+                Log(math.dot(forward, hit.SurfaceNormal));
                 Log("The current track for the car has id " + hit.Entity.Index);
             }
             rightHits.Dispose();
