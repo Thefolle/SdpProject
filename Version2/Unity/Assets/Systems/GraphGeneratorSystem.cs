@@ -49,7 +49,7 @@ public class GraphGeneratorSystem : SystemBase
             }
         }
 
-        UnityEngine.Debug.Log(district.ToString());
+        Log(district.ToString());
 
         entities.Dispose();
     }
@@ -80,8 +80,15 @@ public class Graph
         AdjacentNodes = new Dictionary<int, List<int>>();
     }
     
+    /// <summary>
+    /// <para>Merge two graphs.</para>
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns><paramref name="this"/> graph modified in place.</returns>
     public Graph Merge(Graph other)
     {
+        // get the two nodes to merge
+        // create an edge between them through AddEdge
         return new Graph();
     }
 
@@ -118,6 +125,18 @@ public class Graph
         }
     }
 
+    public bool IsOneWay(int startingNode, int endingNode)
+    {
+        if (AdjacentNodes.ContainsKey(endingNode))
+        {
+            if (AdjacentNodes[endingNode].Contains(startingNode))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public override string ToString()
     {
         return "There are " + Nodes.Count + " nodes and " + Edges.Count + " edges in the graph.";
@@ -127,9 +146,6 @@ public class Graph
 public class Node
 {
     public StreetComponentData Cross;
-
-    // map a trackId with the couple street-street it links; it may contain different tracks with the same couple.
-    public Dictionary<int, DictionaryEntry> tracksLinkage;
 
     public Node(StreetComponentData cross)
     {
