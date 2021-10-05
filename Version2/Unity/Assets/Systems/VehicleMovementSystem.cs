@@ -16,7 +16,7 @@ public class VehicleMovementSystem : SystemBase
     /// <para>The degree at which cars stop steering to approach toward the track. This parameter is an indicator of the convergence speed of a car to a track.
     /// It is measured in degrees.</para>
     /// </summary>
-    private const float steeringDegree = 20;
+    private const float steeringDegree = 60;
 
     /// <summary>
     /// <para>The algorithm exploits this parameter to determine the behaviour of a car w.r.t. its track.</para>
@@ -72,6 +72,7 @@ public class VehicleMovementSystem : SystemBase
             RaycastHit hit = default;
             var forward = math.normalize(localToWorld.Forward);
 
+            /* Assume that there exists only one admissible hit in the world with the given id*/
             if (physicsWorld.CastRay(raycastInputLeft, ref leftHits) && leftHits.Length > 1)
             {
                 foreach (var it in leftHits)
@@ -88,7 +89,7 @@ public class VehicleMovementSystem : SystemBase
                             distance = math.abs(math.dot(localToWorld.Position, hit.SurfaceNormal) - math.dot(hit.Position, hit.SurfaceNormal));
                             isTrackHitFound = true;
 
-                            // take the nearest admissible track
+                            // hit found, no need to proceed
                             break;
                         }
                     }
@@ -105,20 +106,11 @@ public class VehicleMovementSystem : SystemBase
                         {
                             hit = it;
 
-                            /* Virtualize the physical track to the intended one*/
-                            hit.Position += carComponentData.LaneId * LaneWideness * hit.SurfaceNormal;
-
-                            var scalarDistance = math.dot(localToWorld.Position, hit.SurfaceNormal) - math.dot(hit.Position, hit.SurfaceNormal);
-
-                            distance = math.abs(scalarDistance);
-                            isRightHit = scalarDistance > 0;
+                            distance = math.abs(math.dot(localToWorld.Position, hit.SurfaceNormal) - math.dot(hit.Position, hit.SurfaceNormal));
+                            isRightHit = true;
                             isTrackHitFound = true;
-                            if (isRightHit == false)
-                            {
-                                hit.SurfaceNormal *= -1;
-                            }
 
-                            // take the nearest admissible track
+                            // hit found, no need to proceed
                             break;
                         }
                     }
@@ -162,8 +154,8 @@ public class VehicleMovementSystem : SystemBase
 
                 Log("Car position is: " + localToWorld.Position);
                 Log("Track position is: " + hit.Position);
-                Log(distance);
-                Log(math.dot(forward, hit.SurfaceNormal));
+                Log("Hit distance is: " + distance);
+                //Log(math.dot(forward, hit.SurfaceNormal));
                 Log("The current track for the car has id " + hit.Entity.Index);
             }
             rightHits.Dispose();

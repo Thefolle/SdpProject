@@ -9,8 +9,4 @@ public struct CarComponentData : IComponentData
     public float AngularSpeed;
 
     public int TrackId;
-    /// <summary>
-    /// This parameter is relative to the TrackId
-    /// </summary>
-    public int LaneId;
 }
