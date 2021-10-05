@@ -1,15 +1,11 @@
 # Entity hierarchy
 
 - Cross
+  - Base
   - Tracks
-    - Track
 
 - Street
-  - ForwardLanes
-    - TrackedLane
-      - Track
-  - BackwardLanes: if the street is one-way, this field is absent
-    - TrackedLane
-      - Track
+  - TrackedLanes
+    - Track
 
 - Car

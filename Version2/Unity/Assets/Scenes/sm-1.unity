@@ -4652,6 +4652,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 891410918}
+  - component: {fileID: 891410920}
+  - component: {fileID: 891410919}
   m_Layer: 0
   m_Name: Street1.2
   m_TagString: Untagged
@@ -4677,6 +4679,34 @@ Transform:
   m_Father: {fileID: 1027029546}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &891410919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891410917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f713a22331588e441ac9166fb73c527c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsOneWay: 0
+  IsBorder: 0
+  Side: 0
+--- !u!114 &891410920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891410917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConversionMode: 0
 --- !u!1001 &921955798
 PrefabInstance:
   m_ObjectHideFlags: 0

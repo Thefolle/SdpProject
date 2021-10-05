@@ -30,17 +30,25 @@ public class GraphGeneratorSystem : SystemBase
             if (entityManager.HasComponent<Parent>(track))
             {
                 var parent = entityManager.GetComponentData<Parent>(track).Value;
-                if (entityManager.HasComponent<StreetComponentData>(parent))
+                if (entityManager.HasComponent<Parent>(parent))
                 {
-                    //Log("I'm a street");
-                    /* The track belongs to a street, which is translated to a node */
-                    district.AddNode(parent.Index, new Node(entityManager.GetComponentData<StreetComponentData>(parent)));
+                    var grandParent = entityManager.GetComponentData<Parent>(parent).Value;
+                    if (entityManager.HasComponent<StreetComponentData>(grandParent))
+                    {
+                        /* The track belongs to a street, which is translated to a node */
+                        district.AddNode(grandParent.Index, new Node(entityManager.GetComponentData<StreetComponentData>(grandParent)));
+                    }
                 } else if (entityManager.HasComponent<CrossComponentData>(parent))
                 {
                     /* The track belongs to a cross, which is translated to an edge */
                     var startingEntityId = entityManager.GetComponentData<TrackComponentData>(track).StartingEntity.Index;
                     var endingEntityId = entityManager.GetComponentData<TrackComponentData>(track).EndingEntity.Index;
-                    district.AddEdge(parent.Index, startingEntityId, endingEntityId, new Edge(entityManager.GetComponentData<CrossComponentData>(parent)));
+                    district.AddEdge(
+                        parent.Index,
+                        startingEntityId,
+                        endingEntityId,
+                        new Edge(entityManager.GetComponentData<CrossComponentData>(parent))
+                        );
                 } else
                 {
                     /* Inadvertitely the track has no parent */
@@ -111,7 +119,7 @@ public class Graph
     {
         if (AdjacentNodes.ContainsKey(startingNode) && AdjacentNodes[startingNode].Contains(endingNode))
         {
-            /* Since there are two physical tracks per bend, neglect one of them */
+            /* Since there are multiple tracks per bend, neglect one of them */
             return;
         }
         Edges.Add(edgeId, edge);
