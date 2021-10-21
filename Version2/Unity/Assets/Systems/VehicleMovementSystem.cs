@@ -45,7 +45,7 @@ public class VehicleMovementSystem : SystemBase
         var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
         var getLaneComponentDataFromEntity = GetComponentDataFromEntity<LaneComponentData>();
 
-        Entities.ForEach((Entity carEntity, CarComponentData carComponentData, LocalToWorld localToWorld, ref PhysicsVelocity physicsVelocity) =>
+        Entities.ForEach((Entity carEntity, LocalToWorld localToWorld, ref PhysicsVelocity physicsVelocity, in CarComponentData carComponentData) =>
         {
             /* Initialize data */
             float factor = 0;

@@ -27,39 +27,78 @@ public class GraphGeneratorSystem : SystemBase
 
         foreach (Entity track in tracks)
         {
-            if (entityManager.HasComponent<Parent>(track))
+            var street = GetStreetFromTrack(track);
+            if (street != Entity.Null)
             {
-                var parent = entityManager.GetComponentData<Parent>(track).Value;
-                if (entityManager.HasComponent<Parent>(parent))
-                {
-                    var grandParent = entityManager.GetComponentData<Parent>(parent).Value;
-                    if (entityManager.HasComponent<StreetComponentData>(grandParent))
-                    {
-                        /* The track belongs to a street, which is translated to a node */
-                        district.AddNode(grandParent.Index, new Node(entityManager.GetComponentData<StreetComponentData>(grandParent)));
-                    }
-                } else if (entityManager.HasComponent<CrossComponentData>(parent))
+                district.AddNode(street.Index, new Node(entityManager.GetComponentData<StreetComponentData>(street)));
+            } else
+            {
+                var cross = GetCrossFromTrack(track);
+                if (cross != Entity.Null)
                 {
                     /* The track belongs to a cross, which is translated to an edge */
+                    if (entityManager.GetComponentData<TrackComponentData>(track).StartingEntity == Entity.Null) continue;
+                    if (entityManager.GetComponentData<TrackComponentData>(track).EndingEntity == Entity.Null) continue;
                     var startingEntityId = entityManager.GetComponentData<TrackComponentData>(track).StartingEntity.Index;
                     var endingEntityId = entityManager.GetComponentData<TrackComponentData>(track).EndingEntity.Index;
                     district.AddEdge(
-                        parent.Index,
+                        track.Index,
                         startingEntityId,
                         endingEntityId,
-                        new Edge(entityManager.GetComponentData<CrossComponentData>(parent))
+                        new Edge(entityManager.GetComponentData<CrossComponentData>(cross)) // added multiple times; not needed so far
                         );
-                } else
-                {
-                    /* Inadvertitely the track has no parent */
-                    LogError("The track with id " + track.Index + " has neither a street nor a cross as parent.");
+
+                    // I may create something to add a cross once
                 }
             }
+
+            /* Inadvertitely the track has no parent */
+            Log("The track with id " + track.Index + " has neither a street nor a cross as parent.");
         }
 
         Log(district.ToString());
 
         entities.Dispose();
+    }
+
+    private Entity GetStreetFromTrack(Entity track)
+    {
+        EntityManager entityManager = World.EntityManager;
+        if (entityManager.HasComponent<Parent>(track))
+        {
+            var parent = entityManager.GetComponentData<Parent>(track).Value;
+            if (entityManager.HasComponent<Parent>(parent))
+            {
+                var grandParent = entityManager.GetComponentData<Parent>(parent).Value;
+                if (entityManager.HasComponent<StreetComponentData>(grandParent))
+                {
+                    /* The track belongs to a street, which is translated to a node */
+                    return grandParent;
+                }
+            }
+        }
+
+        return Entity.Null;
+    }
+
+    private bool IsStreet(Entity track)
+    {
+        return GetStreetFromTrack(track) != Entity.Null;
+    }
+
+    private Entity GetCrossFromTrack(Entity track)
+    {
+        EntityManager entityManager = World.EntityManager;
+        if (entityManager.HasComponent<Parent>(track))
+        {
+            var parent = entityManager.GetComponentData<Parent>(track).Value;
+            if (entityManager.HasComponent<CrossComponentData>(parent))
+            {
+                return parent;
+            }
+        }
+
+        return Entity.Null;
     }
 
     protected override void OnUpdate()
@@ -119,7 +158,7 @@ public class Graph
     {
         if (AdjacentNodes.ContainsKey(startingNode) && AdjacentNodes[startingNode].Contains(endingNode))
         {
-            /* Since there are multiple tracks per bend, neglect one of them */
+            /* Since there are multiple tracks per bend, pick only one of them */
             return;
         }
         Edges.Add(edgeId, edge);
