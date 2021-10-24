@@ -10,4 +10,15 @@ public struct CrossComponentData : IComponentData
     /// The entity manager indeed may throw errors when try to get an empty component data from an entity.</para>
     /// </summary>
     private readonly int pad;
+
+    /// <summary>
+    /// <para>This representation of adjacent streets is not scalable, unlike a vector. However, a vector would lose
+    /// topological associations.</para>
+    /// </summary>
+    public Entity TopStreet;
+    public Entity RightStreet;
+    public Entity BottomStreet;
+    public Entity LeftStreet;
+    public Entity CornerStreet;
+
 }

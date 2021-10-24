@@ -1,6 +1,6 @@
 # Entity hierarchy
 
-- Cross
+- Cross_i (where i is the number of adjacent streets)
   - Base
   - Bends
 

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3825847854627185317}
   - component: {fileID: 5935872628051469117}
   m_Layer: 0
-  m_Name: Bend21
+  m_Name: Right-Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -322,7 +322,7 @@ GameObject:
   - component: {fileID: 9194665548140591579}
   - component: {fileID: 9051090498789482289}
   m_Layer: 0
-  m_Name: Bend12
+  m_Name: Bottom-Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -628,7 +628,7 @@ GameObject:
   - component: {fileID: 5294598972920474922}
   - component: {fileID: 4718114619307296518}
   m_Layer: 0
-  m_Name: Bend0
+  m_Name: Bottom-Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -934,7 +934,7 @@ GameObject:
   - component: {fileID: 1536722839963328375}
   - component: {fileID: 102558524682402663}
   m_Layer: 0
-  m_Name: Bend2
+  m_Name: Top-Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1240,7 +1240,7 @@ GameObject:
   - component: {fileID: 4924647238819213580}
   - component: {fileID: 7722675149887730293}
   m_Layer: 0
-  m_Name: Bend22
+  m_Name: Left-Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1546,7 +1546,7 @@ GameObject:
   - component: {fileID: 1559287393183879364}
   - component: {fileID: 3593730718596567809}
   m_Layer: 0
-  m_Name: Bend23
+  m_Name: Left-Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1852,7 +1852,7 @@ GameObject:
   - component: {fileID: 8965831955661973713}
   - component: {fileID: 4608563773483683976}
   m_Layer: 0
-  m_Name: Bend10
+  m_Name: Right-Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2158,7 +2158,7 @@ GameObject:
   - component: {fileID: 6789348587656434902}
   - component: {fileID: 4697010135965812593}
   m_Layer: 0
-  m_Name: Bend6
+  m_Name: Bottom-Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2836,7 +2836,7 @@ GameObject:
   - component: {fileID: 5790532445446205667}
   - component: {fileID: 3745815776890689855}
   m_Layer: 0
-  m_Name: Bend18
+  m_Name: Top-Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3142,7 +3142,7 @@ GameObject:
   - component: {fileID: 1509368972166956089}
   - component: {fileID: 8696733070443601294}
   m_Layer: 0
-  m_Name: Bend8
+  m_Name: Left-Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3448,7 +3448,7 @@ GameObject:
   - component: {fileID: 1145537512346205622}
   - component: {fileID: 513990238389028792}
   m_Layer: 0
-  m_Name: Bend17
+  m_Name: Bottom-Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3754,7 +3754,7 @@ GameObject:
   - component: {fileID: 5153429169770225716}
   - component: {fileID: 3577261604904874088}
   m_Layer: 0
-  m_Name: Bend13
+  m_Name: Bottom-Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4060,7 +4060,7 @@ GameObject:
   - component: {fileID: 2853425626906366025}
   - component: {fileID: 7645641449807497419}
   m_Layer: 0
-  m_Name: Bend1
+  m_Name: Top-Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4366,7 +4366,7 @@ GameObject:
   - component: {fileID: 3486699322439132857}
   - component: {fileID: 6787061060836117491}
   m_Layer: 0
-  m_Name: Bend14
+  m_Name: Top-Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4672,7 +4672,7 @@ GameObject:
   - component: {fileID: 9191690814658802430}
   - component: {fileID: 1883642634010890266}
   m_Layer: 0
-  m_Name: Bend16
+  m_Name: Bottom-Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4978,7 +4978,7 @@ GameObject:
   - component: {fileID: 2858660142508563134}
   - component: {fileID: 3904610283893737414}
   m_Layer: 0
-  m_Name: Bend20
+  m_Name: Right-Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5284,7 +5284,7 @@ GameObject:
   - component: {fileID: 2261706453912282628}
   - component: {fileID: 2981477227401905257}
   m_Layer: 0
-  m_Name: Bend11
+  m_Name: Right-Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5590,7 +5590,7 @@ GameObject:
   - component: {fileID: 1924780545652402455}
   - component: {fileID: 5103900810180896508}
   m_Layer: 0
-  m_Name: Bend15
+  m_Name: Top-Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5896,7 +5896,7 @@ GameObject:
   - component: {fileID: 4861306662653525593}
   - component: {fileID: 5927906908615824385}
   m_Layer: 0
-  m_Name: Bend5
+  m_Name: Top-Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6202,7 +6202,7 @@ GameObject:
   - component: {fileID: 2193372600257115421}
   - component: {fileID: 7850907567439514259}
   m_Layer: 0
-  m_Name: Bend4
+  m_Name: Top-Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6508,7 +6508,7 @@ GameObject:
   - component: {fileID: 5956572823881548374}
   - component: {fileID: 5165335509016813807}
   m_Layer: 0
-  m_Name: Bend7
+  m_Name: Bottom-Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6814,7 +6814,7 @@ GameObject:
   - component: {fileID: 3727295166368517726}
   - component: {fileID: 4562654175651064999}
   m_Layer: 0
-  m_Name: Bend3
+  m_Name: Bottom-Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7120,7 +7120,7 @@ GameObject:
   - component: {fileID: 9103913317970485404}
   - component: {fileID: 4634755513379546528}
   m_Layer: 0
-  m_Name: Bend19
+  m_Name: Top-Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7426,7 +7426,7 @@ GameObject:
   - component: {fileID: 5786492659791158791}
   - component: {fileID: 5339610275524928821}
   m_Layer: 0
-  m_Name: Bend9
+  m_Name: Left-Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
