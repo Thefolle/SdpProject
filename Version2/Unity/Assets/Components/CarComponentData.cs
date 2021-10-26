@@ -9,4 +9,8 @@ public struct CarComponentData : IComponentData
     public float AngularSpeed;
 
     public int TrackId;
+
+    /// <summary>
+    /// <para>This field is a queue that stores the adjacent streets and crosses to follow in the near future.</para>
+    /// </summary>
 }

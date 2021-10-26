@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Entities;
 using Unity.Physics;
 using Unity.Mathematics;
@@ -80,7 +78,7 @@ public class VehicleMovementSystem : SystemBase
                     if (getTrackComponentDataFromEntity.HasComponent(it.Entity))
                     {
                         var trackComponentData = getTrackComponentDataFromEntity[it.Entity];
-                        if (trackComponentData.id == carComponentData.TrackId)
+                        if (it.Entity.Index == carComponentData.TrackId)
                         {
                             hit = it;
 
@@ -102,7 +100,7 @@ public class VehicleMovementSystem : SystemBase
                     if (getTrackComponentDataFromEntity.HasComponent(it.Entity))
                     {
                         var trackComponentData = getTrackComponentDataFromEntity[it.Entity];
-                        if (trackComponentData.id == carComponentData.TrackId)
+                        if (it.Entity.Index == carComponentData.TrackId)
                         {
                             hit = it;
 
@@ -152,11 +150,11 @@ public class VehicleMovementSystem : SystemBase
                     factor = 1 * (isRightHit ? +1 : -1) / (1 + distance);
                 }
 
-                Log("Car position is: " + localToWorld.Position);
+                /*Log("Car position is: " + localToWorld.Position);
                 Log("Track position is: " + hit.Position);
                 Log("Hit distance is: " + distance);
-                //Log(math.dot(forward, hit.SurfaceNormal));
-                Log("The current track for the car has id " + hit.Entity.Index);
+                Log(math.dot(forward, hit.SurfaceNormal));
+                Log("The current track for the car has id " + hit.Entity.Index);*/
             }
             rightHits.Dispose();
             leftHits.Dispose();
