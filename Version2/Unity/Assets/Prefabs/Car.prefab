@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8060944816824983180}
   - component: {fileID: 8563068498391085963}
   - component: {fileID: 4568013165841984475}
-  - component: {fileID: 8838742912043866512}
+  - component: {fileID: 6249604207084272226}
   m_Layer: 0
   m_Name: Car
   m_TagString: Untagged
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MotionType: 0
   m_Smoothing: 0
-  m_Mass: 1
+  m_Mass: 1500
   m_LinearDamping: 0.01
   m_AngularDamping: 0.05
   m_InitialLinearVelocity:
@@ -291,7 +291,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ConversionMode: 0
---- !u!114 &8838742912043866512
+--- !u!114 &6249604207084272226
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -305,4 +305,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 100
   AngularSpeed: 40
+  maxSpeed: 100
   TrackId: 0

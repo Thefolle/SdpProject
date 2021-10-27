@@ -7,6 +7,6 @@ public struct CarComponentData : IComponentData
 {
     public float Speed;
     public float AngularSpeed;
-
+    public float maxSpeed;
     public int TrackId;
 }
