@@ -54,12 +54,16 @@ public class VehicleMovementSystem : SystemBase
                 End = localToWorld.Position + 20 * localToWorld.Right,
                 Filter = CollisionFilter.Default
             };
+            UnityEngine.Debug.DrawLine(localToWorld.Position, localToWorld.Position + 20 * localToWorld.Right, UnityEngine.Color.green, 0);
+
             var raycastInputLeft = new RaycastInput
             {
                 Start = localToWorld.Position,
                 End = localToWorld.Position + 20 * -localToWorld.Right,
                 Filter = CollisionFilter.Default
             };
+            UnityEngine.Debug.DrawLine(localToWorld.Position, localToWorld.Position + 20 * -localToWorld.Right, UnityEngine.Color.green, 0);
+
             var rightHits = new NativeList<RaycastHit>(20, Allocator.TempJob);
             var leftHits = new NativeList<RaycastHit>(20, Allocator.TempJob);
 
