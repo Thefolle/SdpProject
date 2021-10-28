@@ -15,7 +15,7 @@ using Unity.Collections;
 /// <item>The car has physically passed from a street (cross) to a cross (street).</item>
 /// </list></para>
 /// </summary>
-public class TrackAssignerSystem : SystemBase
+public class VehicleSpawningSystem : SystemBase
 {
     /// <summary>
     /// <para>For now, model this as a global variable. In future, when the spawning system will be created,
@@ -98,7 +98,7 @@ public class TrackAssignerSystem : SystemBase
                                         }
                                     }
                                 }
-                            } 
+                            }
                         }
                     }
                 }
@@ -147,10 +147,88 @@ public class TrackAssignerSystem : SystemBase
                 {
                     carComponentData.TrackId = hit.Entity.Index;
                     Log("I've assigned track " + carComponentData.TrackId + " to car with id " + carEntity.Index);
-                }
-            }
-        }).Run();
 
+                    /* Request a random path */
+                    var trackedLane = getParentComponentDataFromEntity[hit.Entity].Value;
+                    var trackedLaneName = entityManager.GetName(trackedLane);
+                    var street = getParentComponentDataFromEntity[trackedLane].Value;
+                    var streetComponentData = getStreetComponentDataFromEntity[street];
+                    int edgeInitialNode;
+                    int edgeEndingNode;
+                    if (trackedLaneName.Contains("Forward"))
+                    {
+                        edgeInitialNode = streetComponentData.startingCross.Index;
+                        edgeEndingNode = streetComponentData.endingCross.Index;
+                    }
+                    else if (trackedLaneName.Contains("Backward"))
+                    {
+                        edgeInitialNode = streetComponentData.endingCross.Index;
+                        edgeEndingNode = streetComponentData.startingCross.Index;
+                    }
+                    else
+                    {
+                        LogErrorFormat("%s", "The trackedLane name is malformed: it doesn't contain neither \"Forward\" nor \"Backward\"");
+                        /* Cannot recover from this error */
+                        edgeInitialNode = 0;
+                        edgeEndingNode = 0;
+                    }
+
+
+                    var graph = World.GetExistingSystem<GraphGeneratorSystem>().District;
+                    var randomPath = graph.RandomPath(edgeInitialNode, edgeEndingNode);
+                    var carPath = GetBufferFromEntity<PathComponentData>()[carEntity];
+                    foreach (var crossId in randomPath)
+                    {
+                        Log(crossId);
+                        var step = new PathComponentData
+                        {
+                            crossId = crossId
+                        };
+                        carPath.Add(step);
+                    }
+
+                }
+
+            }
+        }).WithoutBurst().Run();
+
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="approachingCross">The first cross the car is going to meet.</param>
+    /// <param name="nextCrossId">The cross after the <paramref name="approachingCross"/> that the car pass through.</param>
+    /// <param name="relativeTrack">The relative track id the car is following, so that the cross tries to return
+    /// the track id with the same relative track id.</param>
+    /// <returns>The track id the requesting car should follow.</returns>
+    public int GetTrackId(Entity approachingCross, int nextCrossId, int relativeTrack)
+    {
+        var getCrossComponentData = GetComponentDataFromEntity<CrossComponentData>();
+        var getStreetComponentData = GetComponentDataFromEntity<StreetComponentData>();
+        var crossComponentData = getCrossComponentData[approachingCross];
+        var direction = "";
+
+        // evaluate which is the direction that leads to the next cross
+        if (crossComponentData.TopStreet != Entity.Null)
+        {
+            var topStreetComponentData = getStreetComponentData[crossComponentData.TopStreet];
+            var otherNode = -1;
+            if (topStreetComponentData.startingCross.Index == approachingCross.Index)
+            {
+                otherNode = topStreetComponentData.endingCross.Index;
+            } else
+            {
+                otherNode = topStreetComponentData.startingCross.Index;
+            }
+
+            if (otherNode == nextCrossId)
+            {
+                direction = "top";
+            }
+        }
+
+        return 0;
     }
 
 }

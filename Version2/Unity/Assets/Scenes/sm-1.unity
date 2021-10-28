@@ -452,8 +452,8 @@ Transform:
   - {fileID: 1675772310}
   - {fileID: 1687395703}
   - {fileID: 417967090}
-  - {fileID: 3814239201563295191}
   - {fileID: 2041030166}
+  - {fileID: 3814239201563295191}
   - {fileID: 2049855349}
   - {fileID: 1387156774791808098}
   m_Father: {fileID: 0}
@@ -701,45 +701,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 721346358134948490, guid: 28c89431782c6bb4393079e112a32245, type: 3}
   m_PrefabInstance: {fileID: 417967089}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &303541740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 303541739}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 281f700d6125e6e4f8613722cd279439, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TopStreet: {fileID: 1978712130}
-  RightStreet: {fileID: 1060525441}
-  BottomStreet: {fileID: 1662695483}
-  LeftStreet: {fileID: 161275595}
-  CornerStreet: {fileID: 705491452}
 --- !u!1 &325949232 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 721346358134948490, guid: 28c89431782c6bb4393079e112a32245, type: 3}
   m_PrefabInstance: {fileID: 3814239201563295190}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &325949233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325949232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 281f700d6125e6e4f8613722cd279439, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TopStreet: {fileID: 2140955834}
-  RightStreet: {fileID: 949745212}
-  BottomStreet: {fileID: 1108305983}
-  LeftStreet: {fileID: 2098875477}
-  CornerStreet: {fileID: 705491452}
 --- !u!1001 &329648299
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -898,6 +864,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: cross-sm1
       objectReference: {fileID: 0}
+    - target: {fileID: 4843035478410069495, guid: 28c89431782c6bb4393079e112a32245, type: 3}
+      propertyPath: TopStreet
+      value: 
+      objectReference: {fileID: 1978712130}
+    - target: {fileID: 4843035478410069495, guid: 28c89431782c6bb4393079e112a32245, type: 3}
+      propertyPath: LeftStreet
+      value: 
+      objectReference: {fileID: 161275595}
+    - target: {fileID: 4843035478410069495, guid: 28c89431782c6bb4393079e112a32245, type: 3}
+      propertyPath: RightStreet
+      value: 
+      objectReference: {fileID: 1060525441}
+    - target: {fileID: 4843035478410069495, guid: 28c89431782c6bb4393079e112a32245, type: 3}
+      propertyPath: BottomStreet
+      value: 
+      objectReference: {fileID: 1662695483}
+    - target: {fileID: 4843035478410069495, guid: 28c89431782c6bb4393079e112a32245, type: 3}
+      propertyPath: CornerStreet
+      value: 
+      objectReference: {fileID: 705491452}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28c89431782c6bb4393079e112a32245, type: 3}
 --- !u!4 &417967090 stripped
@@ -5691,6 +5677,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: cross-sm1
       objectReference: {fileID: 0}
+    - target: {fileID: 4843035478410069495, guid: 28c89431782c6bb4393079e112a32245, type: 3}
+      propertyPath: TopStreet
+      value: 
+      objectReference: {fileID: 2140955834}
+    - target: {fileID: 4843035478410069495, guid: 28c89431782c6bb4393079e112a32245, type: 3}
+      propertyPath: LeftStreet
+      value: 
+      objectReference: {fileID: 2098875477}
+    - target: {fileID: 4843035478410069495, guid: 28c89431782c6bb4393079e112a32245, type: 3}
+      propertyPath: RightStreet
+      value: 
+      objectReference: {fileID: 949745212}
+    - target: {fileID: 4843035478410069495, guid: 28c89431782c6bb4393079e112a32245, type: 3}
+      propertyPath: BottomStreet
+      value: 
+      objectReference: {fileID: 1108305983}
+    - target: {fileID: 4843035478410069495, guid: 28c89431782c6bb4393079e112a32245, type: 3}
+      propertyPath: CornerStreet
+      value: 
+      objectReference: {fileID: 705491452}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28c89431782c6bb4393079e112a32245, type: 3}
 --- !u!4 &3814239201563295191 stripped

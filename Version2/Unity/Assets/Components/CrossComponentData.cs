@@ -1,6 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Entities;
+using Unity.Physics;
+using Unity.Mathematics;
+using Unity.Transforms;
+using Unity.Physics.Systems;
+using static UnityEngine.Debug;
+using Unity.Collections;
 
 [GenerateAuthoringComponent]
 public struct CrossComponentData : IComponentData

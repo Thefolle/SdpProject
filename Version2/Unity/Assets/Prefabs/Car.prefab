@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8563068498391085963}
   - component: {fileID: 4568013165841984475}
   - component: {fileID: 6249604207084272226}
+  - component: {fileID: 7087047461198237048}
   m_Layer: 0
   m_Name: Car
   m_TagString: Untagged
@@ -307,3 +308,16 @@ MonoBehaviour:
   AngularSpeed: 40
   maxSpeed: 100
   TrackId: 0
+--- !u!114 &7087047461198237048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1661342248428840291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 416d3ef1a89eabb4bb8ba1dd52496b7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Values: 

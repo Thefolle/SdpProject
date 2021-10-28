@@ -7,6 +7,12 @@ using System;
 
 public class GraphGeneratorSystem : SystemBase
 {
+    /// <summary>
+    /// <para>This data structure is global and helps in navigating the city.</para>
+    /// </summary>
+    public Graph District;
+    
+
     protected override void OnStartRunning()
     {
         base.OnStartRunning();
@@ -35,10 +41,10 @@ public class GraphGeneratorSystem : SystemBase
         {
             var streetComponentData = entityManager.GetComponentData<StreetComponentData>(street);
             if (streetComponentData.IsBorder) continue; // TODO
-            district.AddEdge(streetComponentData.startingCross.Index, streetComponentData.endingCross.Index, new Edge(streetComponentData));
+            district.AddEdge(streetComponentData.startingCross.Index, streetComponentData.endingCross.Index, new Edge(street));
             if (!streetComponentData.IsOneWay)
             {
-                district.AddEdge(streetComponentData.endingCross.Index, streetComponentData.startingCross.Index, new Edge(streetComponentData));
+                district.AddEdge(streetComponentData.endingCross.Index, streetComponentData.startingCross.Index, new Edge(street));
             }
         }
 
@@ -49,6 +55,8 @@ public class GraphGeneratorSystem : SystemBase
 
             district.AddNode(cross.Index, new Node(crossComponentData));
         }
+
+        District = district;
 
         Log(district.ToString());
 
@@ -70,12 +78,14 @@ public class Graph
     // use a dictionary to access node in O(1) given the id; moreover, treat nodes as integers now
     Dictionary<int, Node> Nodes;
     Dictionary<int, Dictionary<int, Edge>> Edges;
-  
+
+    private int Seed;
 
     public Graph()
     {
         Nodes = new Dictionary<int, Node>();
         Edges = new Dictionary<int, Dictionary<int, Edge>>();
+        Seed = 17; // TODO: improve assignment
     }
     
     /// <summary>
@@ -132,6 +142,45 @@ public class Graph
         return new List<int>();
     }
 
+    /// <summary>
+    /// <para>Compute a random path receiving as parameter an edge represented by its initial end ending node.</para>
+    /// </summary>
+    /// <param name="edgeInitialNode">The initial node from where the edge starts.</param>
+    /// <param name="edgeEndingNode">The final node to where the edge ends.</param>
+    /// <returns>The list of cross ids that the path traverses.</returns>
+    public List<int> RandomPath(int edgeInitialNode, int edgeEndingNode)
+    {
+        var path = new List<int>();
+        int pathLength = 2;
+        var randomGenerator = new Random(Seed);
+
+        int currentNode = edgeEndingNode;
+        int i = 0;
+        path.Add(currentNode);
+        i++;
+        for (; i < pathLength; i++)
+        {
+            var possibleNextCrossIds = Edges[currentNode].Keys;
+            Log("possible next cross ids: " + possibleNextCrossIds.Count);
+            int j = 0;
+            int randomJ = randomGenerator.Next(0, possibleNextCrossIds.Count - 1);
+            Log("randomJ: " + randomJ);
+            foreach(var nextCrossId in possibleNextCrossIds)
+            {
+                if (j == randomJ && !path.Contains(nextCrossId))
+                {
+                    path.Add(nextCrossId);
+                    currentNode = nextCrossId;
+                    Log("Next cross selected: " + nextCrossId);
+                    break;
+                }
+                j++;
+            }
+        }
+
+        return path;
+    }
+
     public bool IsOneWay(int startingNode, int endingNode)
     {
         //if (AdjacentNodes.ContainsKey(endingNode))
@@ -174,9 +223,9 @@ public class Node
 
 public class Edge
 {
-    public StreetComponentData Street;
+    public Entity Street;
 
-    public Edge(StreetComponentData street)
+    public Edge(Entity street)
     {
         Street = street;
     }
