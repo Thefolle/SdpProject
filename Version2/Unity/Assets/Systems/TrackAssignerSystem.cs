@@ -68,6 +68,7 @@ public class TrackAssignerSystem : SystemBase
                 bool isTrackHitFound = false; // flag that tells whether at least one admissible hit has been found
                 RaycastHit hit = default;
                 var forward = math.normalize(localToWorld.Forward);
+                var minimumDistance = float.MaxValue;
 
                 if (physicsWorld.CastRay(raycastInputLeft, ref leftHits) && leftHits.Length > 1)
                 {
@@ -87,12 +88,14 @@ public class TrackAssignerSystem : SystemBase
                                     if (getStreetComponentDataFromEntity.HasComponent(grandParent))
                                     {
                                         // TODO: check if the street of the it.Entity track equals the assigned street of the car
-                                        hit = it;
+                                        var carDistanceFromTrack = math.distance(localToWorld.Position, it.Position);
+                                        if (carDistanceFromTrack < minimumDistance)
+                                        {
+                                            minimumDistance = carDistanceFromTrack;
+                                            hit = it;
 
-                                        isTrackHitFound = true;
-
-                                        // hit found, no need to proceed
-                                        break;
+                                            isTrackHitFound = true;
+                                        }
                                     }
                                 }
                             } 
@@ -117,12 +120,14 @@ public class TrackAssignerSystem : SystemBase
                                     if (getStreetComponentDataFromEntity.HasComponent(grandParent))
                                     {
                                         // TODO: check if the street of the it.Entity track equals the assigned street of the car
-                                        hit = it;
+                                        var carDistanceFromTrack = math.distance(localToWorld.Position, it.Position);
+                                        if (carDistanceFromTrack < minimumDistance)
+                                        {
+                                            minimumDistance = carDistanceFromTrack;
+                                            hit = it;
 
-                                        isTrackHitFound = true;
-
-                                        // hit found, no need to proceed
-                                        break;
+                                            isTrackHitFound = true;
+                                        }
                                     }
                                 }
                             }
