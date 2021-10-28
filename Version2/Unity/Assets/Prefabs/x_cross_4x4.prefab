@@ -2530,6 +2530,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281f700d6125e6e4f8613722cd279439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TopStreet: {fileID: 0}
+  RightStreet: {fileID: 0}
+  BottomStreet: {fileID: 0}
+  LeftStreet: {fileID: 0}
+  CornerStreet: {fileID: 0}
 --- !u!1 &2253753979873652193
 GameObject:
   m_ObjectHideFlags: 0
@@ -2592,7 +2597,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5200634987612382211, guid: 0192439e8947c0c479942e173ba246ec, type: 3}
+  - {fileID: -876546973899608171, guid: 8977b7291d6ad874589b17d48568e6e3, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
