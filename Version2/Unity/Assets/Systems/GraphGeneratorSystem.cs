@@ -33,112 +33,26 @@ public class GraphGeneratorSystem : SystemBase
 
         foreach (Entity street in streets)
         {
-            district.AddNode(street.Index, new Node(entityManager.GetComponentData<StreetComponentData>(street)));
+            var streetComponentData = entityManager.GetComponentData<StreetComponentData>(street);
+            if (streetComponentData.IsBorder) continue; // TODO
+            district.AddEdge(streetComponentData.startingCross.Index, streetComponentData.endingCross.Index, new Edge(streetComponentData));
+            if (!streetComponentData.IsOneWay)
+            {
+                district.AddEdge(streetComponentData.endingCross.Index, streetComponentData.startingCross.Index, new Edge(streetComponentData));
+            }
         }
 
         foreach (Entity cross in crosses)
         {
-            /* 
-             * should distinguish whether a certain track is actually present;
-             * for now, assume no absent tracks.
-             */
             var crossComponentData = entityManager.GetComponentData<CrossComponentData>(cross);
             if (crossComponentData.TopStreet == Entity.Null && crossComponentData.RightStreet == Entity.Null && crossComponentData.BottomStreet == Entity.Null && crossComponentData.LeftStreet == Entity.Null) continue;
-            var topStreetIndex = crossComponentData.TopStreet.Index;
-            var rightStreetIndex = crossComponentData.RightStreet.Index;
-            var bottomStreetIndex = crossComponentData.BottomStreet.Index;
-            var leftStreetIndex = crossComponentData.LeftStreet.Index;
-            var cornerStreetIndex = crossComponentData.CornerStreet.Index;
 
-            var adjacentStreetIndexes = new List<int>();
-            /* Distinguish the varios types of crosses according to their adjacent streets */
-            if (topStreetIndex != Entity.Null.Index) adjacentStreetIndexes.Add(topStreetIndex);
-            if (rightStreetIndex != Entity.Null.Index) adjacentStreetIndexes.Add(rightStreetIndex);
-            if (bottomStreetIndex != Entity.Null.Index) adjacentStreetIndexes.Add(bottomStreetIndex);
-            if (leftStreetIndex != Entity.Null.Index) adjacentStreetIndexes.Add(leftStreetIndex);
-            if (cornerStreetIndex != Entity.Null.Index) adjacentStreetIndexes.Add(cornerStreetIndex);
-
-            foreach (var streetIndexOuter in adjacentStreetIndexes)
-            {
-                foreach (var streetIndexInner in adjacentStreetIndexes)
-                {
-                    if (streetIndexInner != streetIndexOuter)
-                    {
-                        district.AddEdge(streetIndexOuter, streetIndexInner, new Edge(crossComponentData));
-                    }
-                }
-            }
-            
+            district.AddNode(cross.Index, new Node(crossComponentData));
         }
-
-        //        var cross = GetCrossFromTrack(track);
-        //        if (cross != Entity.Null)
-        //        {
-        //            /* The track belongs to a cross, which is translated to an edge */
-        //            if (entityManager.GetComponentData<TrackComponentData>(track).StartingEntity == Entity.Null) continue;
-        //            if (entityManager.GetComponentData<TrackComponentData>(track).EndingEntity == Entity.Null) continue;
-        //            var startingStreet = GetStreetFromTrack(entityManager.GetComponentData<TrackComponentData>(track).StartingEntity);
-        //            var endingStreet = GetStreetFromTrack(entityManager.GetComponentData<TrackComponentData>(track).EndingEntity);
-        //            //var startingEntityId = entityManager.GetComponentData<TrackComponentData>(track).StartingEntity.Index;
-        //            //var endingEntityId = entityManager.GetComponentData<TrackComponentData>(track).EndingEntity.Index;
-        //            district.AddEdge(
-        //                track.Index,
-        //                startingStreet.Index,
-        //                endingStreet.Index,
-        //                new Edge(entityManager.GetComponentData<CrossComponentData>(cross)) // added multiple times; not needed so far
-        //                );
-
-        //            // I may create something to add a cross once
-        //        }
-        //    }
-
-        //    /* Inadvertitely the track has no parent */
-        //    Log("The track with id " + track.Index + " has neither a street nor a cross as parent.");
-        //}
 
         Log(district.ToString());
 
         entities.Dispose();
-    }
-
-    private Entity GetStreetFromTrack(Entity track)
-    {
-        EntityManager entityManager = World.EntityManager;
-        if (entityManager.HasComponent<Parent>(track))
-        {
-            var parent = entityManager.GetComponentData<Parent>(track).Value;
-            if (entityManager.HasComponent<Parent>(parent))
-            {
-                var grandParent = entityManager.GetComponentData<Parent>(parent).Value;
-                if (entityManager.HasComponent<StreetComponentData>(grandParent))
-                {
-                    /* The track belongs to a street, which is translated to a node */
-                    return grandParent;
-                }
-            }
-        }
-
-        return Entity.Null;
-    }
-
-    private bool IsStreet(Entity track)
-    {
-        return GetStreetFromTrack(track) != Entity.Null;
-    }
-
-    private Entity GetCrossFromTrack(Entity track)
-    {
-        EntityManager entityManager = World.EntityManager;
-        if (entityManager.HasComponent<Parent>(track))
-        {
-            var parent = entityManager.GetComponentData<Parent>(track).Value;
-            if (entityManager.HasComponent<CrossComponentData>(parent))
-            {
-                return parent;
-            }
-        }
-
-        return Entity.Null;
     }
 
     protected override void OnUpdate()
@@ -250,9 +164,9 @@ public class Graph
 
 public class Node
 {
-    public StreetComponentData Cross;
+    public CrossComponentData Cross;
 
-    public Node(StreetComponentData cross)
+    public Node(CrossComponentData cross)
     {
         Cross = cross;
     }
@@ -260,9 +174,9 @@ public class Node
 
 public class Edge
 {
-    public CrossComponentData Street;
+    public StreetComponentData Street;
 
-    public Edge(CrossComponentData street)
+    public Edge(StreetComponentData street)
     {
         Street = street;
     }

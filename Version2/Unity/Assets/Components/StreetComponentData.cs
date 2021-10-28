@@ -7,6 +7,9 @@ public struct StreetComponentData : IComponentData
 {
     public bool IsOneWay;
 
+    public Entity startingCross;
+    public Entity endingCross;
+
     /// <summary>
     /// <para>This field is a topological hint that allows dynamic linking of districts at runtime.</para>
     /// </summary>
