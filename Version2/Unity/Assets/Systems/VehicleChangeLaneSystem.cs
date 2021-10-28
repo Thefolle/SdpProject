@@ -29,7 +29,7 @@ public class VehicleChangeLaneSystem : SystemBase
         //var currentStreetHere = currentStreet;
 
 
-        Entities.ForEach((Entity carEntity, LocalToWorld localToWorld, ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData1, in CarComponentData carComponentData) =>
+        Entities.ForEach((Entity carEntity, LocalToWorld localToWorld, ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData) =>
         {
             var raycastInputLeft = new RaycastInput
             {
@@ -113,9 +113,9 @@ public class VehicleChangeLaneSystem : SystemBase
                                     }
 
                                     if (adjacentTrackIdInSameDirection[0] != -1) // Before check left
-                                        carComponentData1.TrackId = adjacentTrackIdInSameDirection[0];
+                                        carComponentData.TrackId = adjacentTrackIdInSameDirection[0];
                                     else if (adjacentTrackIdInSameDirection[1] != -1) // If left not available, check right
-                                        carComponentData1.TrackId = adjacentTrackIdInSameDirection[1];
+                                        carComponentData.TrackId = adjacentTrackIdInSameDirection[1];
 
                                     /*LogError("before change track: ");
                                     foreach (var aaa in adjacentTrackIdInSameDirection)

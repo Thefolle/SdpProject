@@ -23,9 +23,9 @@ public class TrackAssignerSystem : SystemBase
     /// </summary>
     bool hasSpawned;
 
-    protected override void OnStartRunning()
+    protected override void OnCreate()
     {
-        base.OnStartRunning();
+        base.OnCreate();
 
         hasSpawned = true;
     }

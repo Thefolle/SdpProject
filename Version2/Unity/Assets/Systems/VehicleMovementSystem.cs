@@ -14,7 +14,7 @@ public class VehicleMovementSystem : SystemBase
     /// <para>The degree at which cars stop steering to approach toward the track. This parameter is an indicator of the convergence speed of a car to a track.
     /// It is measured in degrees.</para>
     /// </summary>
-    private const float steeringDegree = 60;
+    private const float steeringDegree = 75;
 
     /// <summary>
     /// <para>The algorithm exploits this parameter to determine the behaviour of a car w.r.t. its track.</para>
@@ -44,7 +44,7 @@ public class VehicleMovementSystem : SystemBase
         var getLaneComponentDataFromEntity = GetComponentDataFromEntity<LaneComponentData>();
         var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
 
-        Entities.ForEach((Entity carEntity, LocalToWorld localToWorld, ref PhysicsVelocity physicsVelocity, ref CarComponentData carCompData , in CarComponentData carComponentData) =>
+        Entities.ForEach((Entity carEntity, LocalToWorld localToWorld, ref PhysicsVelocity physicsVelocity, in CarComponentData carComponentData) =>
         {
             /* Initialize data */
             float factor = 0;
@@ -55,7 +55,7 @@ public class VehicleMovementSystem : SystemBase
                 End = localToWorld.Position + 20 * localToWorld.Right,
                 Filter = CollisionFilter.Default
             };
-            UnityEngine.Debug.DrawLine(localToWorld.Position, localToWorld.Position + 20 * localToWorld.Right, UnityEngine.Color.green, 0);
+            //UnityEngine.Debug.DrawLine(localToWorld.Position, localToWorld.Position + 20 * localToWorld.Right, UnityEngine.Color.green, 0);
 
             var raycastInputLeft = new RaycastInput
             {
@@ -63,7 +63,7 @@ public class VehicleMovementSystem : SystemBase
                 End = localToWorld.Position + 20 * -localToWorld.Right,
                 Filter = CollisionFilter.Default
             };
-            UnityEngine.Debug.DrawLine(localToWorld.Position, localToWorld.Position + 20 * -localToWorld.Right, UnityEngine.Color.green, 0);
+           // UnityEngine.Debug.DrawLine(localToWorld.Position, localToWorld.Position + 20 * -localToWorld.Right, UnityEngine.Color.green, 0);
 
             var rightHits = new NativeList<RaycastHit>(20, Allocator.TempJob);
             var leftHits = new NativeList<RaycastHit>(20, Allocator.TempJob);
@@ -146,13 +146,13 @@ public class VehicleMovementSystem : SystemBase
                 {
                     /* The car is going away from the track */
                     factor = 1 * (isRightHit ? +1 : -1);
-                    linearFactor = 0.3f;
+                    ////linearFactor = 1f;
                 }
                 else
                 {
                     /* The car is near and is going straight or it is leaving; let's turn it */
                     /* Here soften the car trajectory so that it is a softened synusoid*/
-                    factor = 1 * (isRightHit ? +1 : -1) / (1 + distance);
+                    factor = 1 * (isRightHit ? +1 : -1) * (3 + distance);
                 }
 
                 /*Log("Car position is: " + localToWorld.Position);
