@@ -50,11 +50,12 @@ public class AntiCollisionSystem : SystemBase
         {
             // Anti-collision Raycasts
             float speedFactor;                   // This factor is for regulating the raycasts wrt the car velocity
-            if (carComponentData.Speed >= 10)
-                speedFactor = 0.05f * carComponentData.Speed;
+            if (carComponentData.Speed >= 20)
+                speedFactor = 0.03f * carComponentData.Speed;
             else
                 speedFactor = 0;
-            
+            //speedFactor = 0.03f * carComponentData.Speed;
+
             var StartR = localToWorld.Position + 1 * localToWorld.Forward + 1 * localToWorld.Right;
             var EndR = localToWorld.Position + 2 * localToWorld.Forward + speedFactor * localToWorld.Forward + 1 * localToWorld.Right;
             var raycastCollisionRight = new RaycastInput
