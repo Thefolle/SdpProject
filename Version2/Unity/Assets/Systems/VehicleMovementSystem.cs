@@ -44,7 +44,7 @@ public class VehicleMovementSystem : SystemBase
         var getLaneComponentDataFromEntity = GetComponentDataFromEntity<LaneComponentData>();
         var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
 
-        Entities.ForEach((Entity carEntity, LocalToWorld localToWorld, ref PhysicsVelocity physicsVelocity, in CarComponentData carComponentData) =>
+        Entities.ForEach((Entity carEntity, LocalToWorld localToWorld, ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData) =>
         {
             /* Initialize data */
             float factor = 0;
@@ -126,6 +126,7 @@ public class VehicleMovementSystem : SystemBase
                 LogError("The car with id " + carEntity.Index + " cannot find any track with id " + carComponentData.TrackId + " to follow.");
                 factor = 0;
                 linearFactor = 1;
+                carComponentData.EndOfTrackReached = true; // allow TrackAssignerSystem to find the next track id
             } else
             {
                 if (distance < NegligibleDistance)

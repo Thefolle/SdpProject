@@ -35,7 +35,7 @@ public class GraphGeneratorSystem : SystemBase
             }
         }
 
-        Graph district = new Graph();
+        var district = new Graph(((int)new DateTimeOffset().ToUnixTimeSeconds()));
 
         foreach (Entity street in streets)
         {
@@ -53,7 +53,7 @@ public class GraphGeneratorSystem : SystemBase
             var crossComponentData = entityManager.GetComponentData<CrossComponentData>(cross);
             if (crossComponentData.TopStreet == Entity.Null && crossComponentData.RightStreet == Entity.Null && crossComponentData.BottomStreet == Entity.Null && crossComponentData.LeftStreet == Entity.Null) continue;
 
-            district.AddNode(cross.Index, new Node(crossComponentData));
+            district.AddNode(cross.Index, new Node(cross));
         }
 
         District = district;
@@ -81,11 +81,11 @@ public class Graph
 
     private int Seed;
 
-    public Graph()
+    public Graph(int seed = 17)
     {
         Nodes = new Dictionary<int, Node>();
         Edges = new Dictionary<int, Dictionary<int, Edge>>();
-        Seed = 17; // TODO: improve assignment
+        Seed = seed;
     }
     
     /// <summary>
@@ -205,6 +205,18 @@ public class Graph
         return count;
     }
 
+    public Node GetNode(int nodeId)
+    {
+        if (Nodes.ContainsKey(nodeId))
+        {
+            return Nodes[nodeId];
+        } else
+        {
+            return null;
+        }
+        
+    }
+
     public override string ToString()
     {
         return "There are " + Nodes.Count + " nodes and " + EdgeCount() + " edges in the graph.";
@@ -213,9 +225,9 @@ public class Graph
 
 public class Node
 {
-    public CrossComponentData Cross;
+    public Entity Cross;
 
-    public Node(CrossComponentData cross)
+    public Node(Entity cross)
     {
         Cross = cross;
     }
