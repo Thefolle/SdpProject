@@ -6,6 +6,7 @@ public class TrackAssignerSystem : SystemBase
 {
     protected override void OnUpdate()
     {
+        /*
         var getBufferFromEntity = GetBufferFromEntity<PathComponentData>();
         var getCrossComponentData = GetComponentDataFromEntity<CrossComponentData>();
         var getStreetComponentData = GetComponentDataFromEntity<StreetComponentData>();
@@ -29,6 +30,7 @@ public class TrackAssignerSystem : SystemBase
 
                 /* Compute the track id to assign */
                 
+    /*
                 var crossComponentData = getCrossComponentData[currentCross];
                 if (crossComponentData.TopStreet != Entity.Null)
                 {
@@ -51,5 +53,6 @@ public class TrackAssignerSystem : SystemBase
 
             }
         }).Run();
+    */
     }
 }

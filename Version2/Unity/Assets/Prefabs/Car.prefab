@@ -308,6 +308,9 @@ MonoBehaviour:
   AngularSpeed: 40
   maxSpeed: 100
   TrackId: 0
+  testID: 0
+  tryOvertake: 0
+  lastTimeTried: -1
 --- !u!114 &7087047461198237048
 MonoBehaviour:
   m_ObjectHideFlags: 0

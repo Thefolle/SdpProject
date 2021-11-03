@@ -51,13 +51,36 @@ public class AntiCollisionSystem : SystemBase
             // Anti-collision Raycasts
             float speedFactor;                   // This factor is for regulating the raycasts wrt the car velocity
             if (carComponentData.Speed >= 20)
+            {
                 speedFactor = 0.03f * carComponentData.Speed;
+            }
             else
+            {
                 speedFactor = 0;
+            }
             //speedFactor = 0.03f * carComponentData.Speed;
 
-            var StartR = localToWorld.Position + 1 * localToWorld.Forward + 1 * localToWorld.Right;
-            var EndR = localToWorld.Position + 2 * localToWorld.Forward + speedFactor * localToWorld.Forward + 1 * localToWorld.Right;
+            var StartR = new float3();
+            var EndR = new float3();
+            var StartL = new float3();
+            var EndL = new float3();
+
+            if (carCompData.tryOvertake == false)
+            {
+                StartR = localToWorld.Position + 1 * localToWorld.Forward + 1 * localToWorld.Right;
+                EndR = localToWorld.Position + 5.5f * localToWorld.Forward + speedFactor * localToWorld.Forward + 1 * localToWorld.Right;
+                StartL = localToWorld.Position + 1 * localToWorld.Forward - 1 * localToWorld.Right;
+                EndL = localToWorld.Position + 5.5f * localToWorld.Forward + speedFactor * localToWorld.Forward - 1 * localToWorld.Right;
+            } else // is overtaking, less starting value of anti-collision raycast 
+            {
+                StartR = localToWorld.Position + 1 * localToWorld.Forward + 1 * localToWorld.Right;
+                EndR = localToWorld.Position + 1.5f * localToWorld.Forward + speedFactor * localToWorld.Forward + 1 * localToWorld.Right;
+                StartL = localToWorld.Position + 1 * localToWorld.Forward - 1 * localToWorld.Right;
+                EndL = localToWorld.Position + 1.5f * localToWorld.Forward + speedFactor * localToWorld.Forward - 1 * localToWorld.Right;
+            }
+
+            //var StartR = localToWorld.Position + 1 * localToWorld.Forward + 1 * localToWorld.Right;
+            //var EndR = localToWorld.Position + 2.5f * localToWorld.Forward + speedFactor * localToWorld.Forward + 1 * localToWorld.Right;
             var raycastCollisionRight = new RaycastInput
             {
                 // Start = localToWorld.Position + x0 * localToWorld.Forward + y0 * localToWorld.Right,    // Assign the value x0 and y0 in order to be positioned at the front extreme right side of the car.
@@ -67,8 +90,8 @@ public class AntiCollisionSystem : SystemBase
                 Filter = CollisionFilter.Default
             };
             UnityEngine.Debug.DrawLine(StartR, EndR, UnityEngine.Color.green, 0);
-            var StartL = localToWorld.Position + 1 * localToWorld.Forward - 1 * localToWorld.Right;
-            var EndL = localToWorld.Position + 2 * localToWorld.Forward + speedFactor* localToWorld.Forward - 1 * localToWorld.Right;
+            //var StartL = localToWorld.Position + 1 * localToWorld.Forward - 1 * localToWorld.Right;
+            //var EndL = localToWorld.Position + 2.5f * localToWorld.Forward + speedFactor* localToWorld.Forward - 1 * localToWorld.Right;
             var raycastCollisionLeft = new RaycastInput
             {
                 Start = StartL,
@@ -85,7 +108,7 @@ public class AntiCollisionSystem : SystemBase
             {
                 foreach (var i in leftCollision)
                 {
-                    if (!getTrackComponentDataFromEntity.HasComponent(i.Entity) && !isCollisionFound && i.Entity.Index != carEntity.Index)
+                    if (!getTrackComponentDataFromEntity.HasComponent(i.Entity) && !isCollisionFound && i.Entity.Index != carEntity.Index && getCarComponentDataFromEntity[i.Entity].TrackId == getCarComponentDataFromEntity[carEntity].TrackId)
                     {
                         coll = i;
                         isCollisionFound = true;
@@ -93,16 +116,17 @@ public class AntiCollisionSystem : SystemBase
                         break;
                     }
                 }
-                foreach (var j in rightCollision)
-                {
-                    if (!getTrackComponentDataFromEntity.HasComponent(j.Entity) && !isCollisionFound && j.Entity.Index != carEntity.Index)
+                if(!isCollisionFound)
+                    foreach (var j in rightCollision)
                     {
-                        coll = j;
-                        isCollisionFound = true;
-                        // hit found, no need to proceed
-                        break;
+                        if (!getTrackComponentDataFromEntity.HasComponent(j.Entity) && !isCollisionFound && j.Entity.Index != carEntity.Index && getCarComponentDataFromEntity[j.Entity].TrackId == getCarComponentDataFromEntity[carEntity].TrackId)
+                        {
+                            coll = j;
+                            isCollisionFound = true;
+                            // hit found, no need to proceed
+                            break;
+                        }
                     }
-                }
             }
 
             if (isCollisionFound)     // Braking method in case of raycast collision with another car
@@ -111,6 +135,26 @@ public class AntiCollisionSystem : SystemBase
                     carCompData.Speed = 0;
                 else
                     carCompData.Speed -= 0.01f * carComponentData.maxSpeed;        // that 0.10 is the braking factor. It reduces the car speed of 10% of the initial speed (it is just an example, we may change it to a proper value)
+
+                // SISTEMA LAMPEGGIO - Michele
+                var otherCarCompData = getCarComponentDataFromEntity[coll.Entity];
+
+                if (carCompData.maxSpeed > otherCarCompData.maxSpeed)
+                    if(carCompData.Speed > otherCarCompData.Speed -2 && carCompData.Speed < otherCarCompData.Speed + 2) // myCar has more maxSpeed, but is capped by otherCar in lane
+                    {
+                        if ((carCompData.lastTimeTried == -1 || math.abs(carCompData.lastTimeTried - elapsedTime) > 10) && otherCarCompData.Speed == 0f) // Avoid spam-trying
+                        {
+                            LogError("Asked for overtake");
+                            carCompData.tryOvertake = true;
+                            carCompData.rightOvertakeAllowed = true;
+                        } else if ((carCompData.lastTimeTried == -1 || math.abs(carCompData.lastTimeTried - elapsedTime) > 10) && otherCarCompData.Speed != 0f)
+                        {
+                            LogError("Asked for overtake");
+                            carCompData.tryOvertake = true;
+                            carCompData.rightOvertakeAllowed = false;
+                        }
+                    }
+
             }
             else
             {
