@@ -46,7 +46,7 @@ public class VehicleSpawningSystem : SystemBase
         var isSpawned = hasSpawned;
         hasSpawned = false;
 
-        Entities.ForEach((Entity carEntity, LocalToWorld localToWorld, ref CarComponentData carComponentData) =>
+        Entities.ForEach((ref CarComponentData carComponentData, in LocalToWorld localToWorld, in Entity carEntity) =>
         {
             if (isSpawned)
             {
@@ -152,6 +152,8 @@ public class VehicleSpawningSystem : SystemBase
                     var trackedLane = getParentComponentDataFromEntity[hit.Entity].Value;
                     var trackedLaneName = entityManager.GetName(trackedLane);
                     var street = getParentComponentDataFromEntity[trackedLane].Value;
+                    carComponentData.CrossOrStreet = street;
+                    carComponentData.ImInCross = false;
                     var streetComponentData = getStreetComponentDataFromEntity[street];
                     int edgeInitialNode;
                     int edgeEndingNode;

@@ -217,6 +217,17 @@ public class Graph
         
     }
 
+    public Edge GetEdge(int startingNodeId, int endingNodeId)
+    {
+        if (Edges.ContainsKey(startingNodeId) && Edges[startingNodeId].ContainsKey(endingNodeId))
+        {
+            return Edges[startingNodeId][endingNodeId];
+        } else
+        {
+            return null;
+        }
+    }
+
     public override string ToString()
     {
         return "There are " + Nodes.Count + " nodes and " + EdgeCount() + " edges in the graph.";

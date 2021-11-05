@@ -15,5 +15,7 @@ public struct CarComponentData : IComponentData
     public bool rightOvertakeAllowed;
 
     public int TrackId;
+    public Entity CrossOrStreet;
+    public bool ImInCross;
     public bool EndOfTrackReached;
 }
