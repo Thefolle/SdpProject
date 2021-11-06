@@ -26,6 +26,15 @@ public class TrackAssignerSystem : SystemBase
                 if (!carComponentData.ImInCross)
                 {
                     var path = getBufferFromEntity[carEntity];
+                    if (path.Length == 0)
+                    {
+                        LogFormat("A car has reached its destination");
+                        return;
+                    } else if (path.Length == 1)
+                    {
+                        LogFormat("A car is going to reach its destination");
+                        return;
+                    }
                     var currentCrossId = path.ElementAt(0).crossId;
                     var nextCrossId = path.ElementAt(1).crossId;
 
@@ -193,7 +202,7 @@ public class TrackAssignerSystem : SystemBase
                         /* Destination reached: indeed, it is not possible to infer which track to assign since the next cross
                          * is not in the path to follow
                          */
-                        LogFormat("The car has reached the destination.");
+                        LogFormat("A car has reached its destination.");
                         return;
                     }
                     var currentCrossId = path.ElementAt(0).crossId;

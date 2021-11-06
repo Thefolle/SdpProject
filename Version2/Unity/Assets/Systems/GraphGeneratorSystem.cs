@@ -35,7 +35,9 @@ public class GraphGeneratorSystem : SystemBase
             }
         }
 
-        var district = new Graph(((int)new DateTimeOffset().ToUnixTimeSeconds()));
+        var now = DateTime.Now;
+        LogFormat("The current time is {0} ({1})", now, now.Millisecond);
+        var district = new Graph((int)now.Millisecond);
 
         foreach (Entity street in streets)
         {
@@ -58,7 +60,7 @@ public class GraphGeneratorSystem : SystemBase
 
         District = district;
 
-        Log(district.ToString());
+        //Log(district.ToString());
 
         entities.Dispose();
     }
@@ -81,7 +83,7 @@ public class Graph
 
     private int Seed;
 
-    public Graph(int seed = 17)
+    public Graph(int seed)
     {
         Nodes = new Dictionary<int, Node>();
         Edges = new Dictionary<int, Dictionary<int, Edge>>();
@@ -97,7 +99,7 @@ public class Graph
     {
         // get the two nodes to merge
         // create an edge between them through AddEdge
-        return new Graph();
+        return new Graph(17);
     }
 
     /// <summary>
@@ -151,7 +153,7 @@ public class Graph
     public List<int> RandomPath(int edgeInitialNode, int edgeEndingNode)
     {
         var path = new List<int>();
-        int pathLength = 2;
+        int pathLength = 3;
         var randomGenerator = new Random(Seed);
 
         int currentNode = edgeEndingNode;
