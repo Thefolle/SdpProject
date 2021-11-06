@@ -37,7 +37,7 @@ public class GraphGeneratorSystem : SystemBase
 
         var now = DateTime.Now;
         LogFormat("The current time is {0} ({1})", now, now.Millisecond);
-        var district = new Graph((int)now.Millisecond);
+        var district = new Graph((int)now.Millisecond); // Don't set a static number here: streets and crosses have randomly-generated ids as well
 
         foreach (Entity street in streets)
         {
@@ -82,12 +82,14 @@ public class Graph
     Dictionary<int, Dictionary<int, Edge>> Edges;
 
     private int Seed;
+    private Random RandomGenerator;
 
     public Graph(int seed)
     {
         Nodes = new Dictionary<int, Node>();
         Edges = new Dictionary<int, Dictionary<int, Edge>>();
         Seed = seed;
+        RandomGenerator = new Random(seed);
     }
     
     /// <summary>
@@ -149,51 +151,42 @@ public class Graph
     /// </summary>
     /// <param name="edgeInitialNode">The initial node from where the edge starts.</param>
     /// <param name="edgeEndingNode">The final node to where the edge ends.</param>
-    /// <returns>The list of cross ids that the path traverses.</returns>
-    public List<int> RandomPath(int edgeInitialNode, int edgeEndingNode)
+    /// <returns>The list of nodes that the path traverses.</returns>
+    public List<Node> RandomPath(int edgeInitialNode, int edgeEndingNode)
     {
-        var path = new List<int>();
-        int pathLength = 3;
-        var randomGenerator = new Random(Seed);
+        var pathInt = new List<int>();
+        int pathLength = 5;
 
-        int currentNode = edgeEndingNode;
         int i = 0;
-        path.Add(currentNode);
+        pathInt.Add(edgeInitialNode);
         i++;
+        pathInt.Add(edgeEndingNode);
+        i++;
+        int currentNode = edgeEndingNode;
         for (; i < pathLength; i++)
         {
             var possibleNextCrossIds = Edges[currentNode].Keys;
-            Log("possible next cross ids: " + possibleNextCrossIds.Count);
             int j = 0;
-            int randomJ = randomGenerator.Next(0, possibleNextCrossIds.Count - 1);
-            Log("randomJ: " + randomJ);
+            int randomJ = RandomGenerator.Next(0, possibleNextCrossIds.Count - 1);
             foreach(var nextCrossId in possibleNextCrossIds)
             {
-                if (j == randomJ && !path.Contains(nextCrossId))
+                if (j == randomJ && !pathInt.Contains(nextCrossId))
                 {
-                    path.Add(nextCrossId);
+                    pathInt.Add(nextCrossId);
                     currentNode = nextCrossId;
-                    Log("Next cross selected: " + nextCrossId);
                     break;
                 }
                 j++;
             }
         }
 
-        return path;
-    }
+        var path = new List<Node>();
+        foreach (var nodeInt in pathInt)
+        {
+            path.Add(GetNode(nodeInt));
+        }
 
-    public bool IsOneWay(int startingNode, int endingNode)
-    {
-        //if (AdjacentNodes.ContainsKey(endingNode))
-        //{
-        //    if (AdjacentNodes[endingNode].Contains(startingNode))
-        //    {
-        //        return false;
-        //    }
-        //}
-        //return true;
-        return false;
+        return path;
     }
 
     private int EdgeCount()

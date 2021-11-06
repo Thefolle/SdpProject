@@ -305,12 +305,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 100
-  AngularSpeed: 40
+  AngularSpeed: 150
   maxSpeed: 100
-  TrackId: 0
-  testID: 0
   tryOvertake: 0
   lastTimeTried: -1
+  rightOvertakeAllowed: 0
+  TrackId: 0
+  CrossOrStreet: {fileID: 0}
+  ImInCross: 0
+  NextStreet: {fileID: 0}
+  EndOfTrackReached: 0
+  IsTrackAssigned: 0
+  HasJustSpawned: 1
 --- !u!114 &7087047461198237048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,4 +329,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 416d3ef1a89eabb4bb8ba1dd52496b7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Values: 

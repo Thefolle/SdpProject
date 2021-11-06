@@ -1,6 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Physics;
+using Unity.Physics.Systems;
 using Unity.Transforms;
 using static UnityEngine.Debug;
 
@@ -14,154 +16,122 @@ public class TrackAssignerSystem : SystemBase
         var getStreetComponentData = GetComponentDataFromEntity<StreetComponentData>();
         var getChildComponentDataFromEntity = GetBufferFromEntity<Child>();
         EntityManager entityManager = World.EntityManager;
+        PhysicsWorld physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
 
         var graph = World.GetExistingSystem<GraphGeneratorSystem>().District;
 
-        Entities.ForEach((Entity carEntity, ref CarComponentData carComponentData) =>
+        Entities.ForEach((ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
-            if (carComponentData.EndOfTrackReached)
+            var bottom = -math.normalize(localToWorld.Up);
+            var raycastInput = new RaycastInput
             {
-                carComponentData.EndOfTrackReached = false;
-                // TODO: probe if the car is on a cross or a street through a downward raycast
-                if (!carComponentData.ImInCross)
+                Start = localToWorld.Position,
+                End = localToWorld.Position + 10 * bottom,
+                Filter = CollisionFilter.Default
+            };
+
+            var hits = new NativeList<RaycastHit>(20, Allocator.TempJob);
+
+            bool ImInCross = true;
+            bool admissibleHitFound = false;
+
+            if (physicsWorld.CastRay(raycastInput, ref hits) && hits.Length > 1)
+            {
+                foreach (var it in hits)
+                {
+                    if (entityManager.GetName(it.Entity).Contains("Lane"))
+                    {
+                        ImInCross = false;
+                        admissibleHitFound = true;
+                        break;
+                    }
+                    else if (entityManager.GetName(it.Entity).Equals("Base"))
+                    {
+                        ImInCross = true;
+                        admissibleHitFound = true;
+                        break;
+                    }
+                }
+            }
+            hits.Dispose();
+
+            if (!admissibleHitFound)
+            {
+                LogErrorFormat("The car with id {0} doesn't know if it is on a street or on a cross", carEntity.Index);
+                return;
+            }
+            else
+            {
+                if (ImInCross && !carComponentData.ImInCross) // the car is passing from a street to a cross
                 {
                     var path = getBufferFromEntity[carEntity];
-                    if (path.Length == 0)
+                    if (path.Length == 0 || path.Length == 2)
                     {
-                        LogFormat("A car has reached its destination");
-                        return;
-                    } else if (path.Length == 1)
-                    {
-                        LogFormat("A car is going to reach its destination");
+                        LogErrorFormat("The path of a car has length {0} which is inconsistent.", path.Length);
                         return;
                     }
-                    var currentCrossId = path.ElementAt(0).crossId;
-                    var nextCrossId = path.ElementAt(1).crossId;
-
-                    var currentCross = graph.GetNode(currentCrossId).Cross;
+                    else if (path.Length == 1)
+                    {
+                        LogFormat("The car with id {0} has reached its destination", carEntity.Index);
+                        return;
+                    }
+                    var currentStreet = path.ElementAt(0).CrossOrStreet;
+                    var currentCross = path.ElementAt(1).CrossOrStreet;
+                    var nextStreet = path.ElementAt(2).CrossOrStreet;
+                    path.RemoveAt(0);
 
                     /* Compute the track id to assign:
-                     * First, infer which is the incoming street;
-                     * Second, infer which is the outgoing street;
-                     */
+                        * First, infer which is the incoming street;
+                        * Second, infer which is the outgoing street;
+                        */
                     var crossComponentData = getCrossComponentData[currentCross];
                     string trackToAssignName = "";
-                    if (crossComponentData.TopStreet != Entity.Null && crossComponentData.TopStreet.Index == carComponentData.CrossOrStreet.Index)
+                    if (crossComponentData.TopStreet != Entity.Null && crossComponentData.TopStreet == currentStreet)
                     {
                         trackToAssignName += "Top";
                     }
-                    else if (crossComponentData.RightStreet != Entity.Null && crossComponentData.RightStreet.Index == carComponentData.CrossOrStreet.Index)
+                    else if (crossComponentData.RightStreet != Entity.Null && crossComponentData.RightStreet == currentStreet)
                     {
                         trackToAssignName += "Right";
                     }
-                    else if (crossComponentData.BottomStreet != Entity.Null && crossComponentData.BottomStreet.Index == carComponentData.CrossOrStreet.Index)
+                    else if (crossComponentData.BottomStreet != Entity.Null && crossComponentData.BottomStreet == currentStreet)
                     {
                         trackToAssignName += "Bottom";
                     }
-                    else if (crossComponentData.LeftStreet != Entity.Null && crossComponentData.LeftStreet.Index == carComponentData.CrossOrStreet.Index)
+                    else if (crossComponentData.LeftStreet != Entity.Null && crossComponentData.LeftStreet == currentStreet)
                     {
                         trackToAssignName += "Left";
                     }
-                    else if (crossComponentData.CornerStreet != Entity.Null && crossComponentData.CornerStreet.Index == carComponentData.CrossOrStreet.Index)
+                    else if (crossComponentData.CornerStreet != Entity.Null && crossComponentData.CornerStreet == currentStreet)
                     {
                         trackToAssignName += "Corner";
                     }
                     else
                     {
-                        LogErrorFormat("The cross with id {0} is not linked to the incoming street of a car. Check that its CrossComponentData is consistent.", currentCrossId);
+                        LogErrorFormat("The cross with id {0} is not linked to the incoming street of a car. Check that its CrossComponentData is consistent.", currentCross.Index);
                     }
 
                     trackToAssignName += "-";
 
-                    if (crossComponentData.TopStreet != Entity.Null)
+                    if (crossComponentData.TopStreet != Entity.Null && crossComponentData.TopStreet == nextStreet)
                     {
-                        var topStreetComponentData = getStreetComponentData[crossComponentData.TopStreet];
-                        var otherNodeId = -1;
-                        if (topStreetComponentData.startingCross.Index == currentCrossId)
-                        {
-                            otherNodeId = topStreetComponentData.endingCross.Index;
-                        }
-                        else
-                        {
-                            otherNodeId = topStreetComponentData.startingCross.Index;
-                        }
-
-                        if (otherNodeId == nextCrossId)
-                        {
-                            trackToAssignName += "Top";
-                        }
+                        trackToAssignName += "Top";
                     }
-                    else if (crossComponentData.RightStreet != Entity.Null)
+                    else if (crossComponentData.RightStreet != Entity.Null && crossComponentData.RightStreet == nextStreet)
                     {
-                        var rightStreetComponentData = getStreetComponentData[crossComponentData.RightStreet];
-                        var otherNodeId = -1;
-                        if (rightStreetComponentData.startingCross.Index == currentCrossId)
-                        {
-                            otherNodeId = rightStreetComponentData.endingCross.Index;
-                        }
-                        else
-                        {
-                            otherNodeId = rightStreetComponentData.startingCross.Index;
-                        }
-
-                        if (otherNodeId == nextCrossId)
-                        {
-                            trackToAssignName += "Right";
-                        }
+                        trackToAssignName += "Right";
                     }
-                    else if (crossComponentData.BottomStreet != Entity.Null)
+                    else if (crossComponentData.BottomStreet != Entity.Null && crossComponentData.BottomStreet == nextStreet)
                     {
-                        var bottomStreetComponentData = getStreetComponentData[crossComponentData.BottomStreet];
-                        var otherNodeId = -1;
-                        if (bottomStreetComponentData.startingCross.Index == currentCrossId)
-                        {
-                            otherNodeId = bottomStreetComponentData.endingCross.Index;
-                        }
-                        else
-                        {
-                            otherNodeId = bottomStreetComponentData.startingCross.Index;
-                        }
-
-                        if (otherNodeId == nextCrossId)
-                        {
-                            trackToAssignName += "Bottom";
-                        }
+                        trackToAssignName += "Bottom";
                     }
-                    else if (crossComponentData.LeftStreet != Entity.Null)
+                    else if (crossComponentData.LeftStreet != Entity.Null && crossComponentData.LeftStreet == nextStreet)
                     {
-                        var leftStreetComponentData = getStreetComponentData[crossComponentData.LeftStreet];
-                        var otherNodeId = -1;
-                        if (leftStreetComponentData.startingCross.Index == currentCrossId)
-                        {
-                            otherNodeId = leftStreetComponentData.endingCross.Index;
-                        }
-                        else
-                        {
-                            otherNodeId = leftStreetComponentData.startingCross.Index;
-                        }
-
-                        if (otherNodeId == nextCrossId)
-                        {
-                            trackToAssignName += "Left";
-                        }
+                        trackToAssignName += "Left";
                     }
-                    else if (crossComponentData.CornerStreet != Entity.Null)
+                    else if (crossComponentData.CornerStreet != Entity.Null && crossComponentData.CornerStreet == nextStreet)
                     {
-                        var cornerStreetComponentData = getStreetComponentData[crossComponentData.CornerStreet];
-                        var otherNodeId = -1;
-                        if (cornerStreetComponentData.startingCross.Index == currentCrossId)
-                        {
-                            otherNodeId = cornerStreetComponentData.endingCross.Index;
-                        }
-                        else
-                        {
-                            otherNodeId = cornerStreetComponentData.startingCross.Index;
-                        }
-
-                        if (otherNodeId == nextCrossId)
-                        {
-                            trackToAssignName += "Corner";
-                        }
+                        trackToAssignName += "Corner";
                     }
                     else
                     {
@@ -180,15 +150,14 @@ public class TrackAssignerSystem : SystemBase
                     }
                     if (trackToAssign == Entity.Null)
                     {
-                        LogErrorFormat("The cross with id {0} doesn't contain a track with name {1}", currentCrossId, trackToAssignName);
+                        LogErrorFormat("The cross with id {0} doesn't contain a track with name {1}", currentCross.Index, trackToAssignName);
                     }
 
                     carComponentData.ImInCross = true;
-                    carComponentData.CrossOrStreet = currentCross;
                     carComponentData.TrackId = trackToAssign.Index;
                     LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
                 }
-                else // The car is in a street now
+                else if (!ImInCross && carComponentData.ImInCross) // The car is passing from a cross to a street
                 {
                     var path = getBufferFromEntity[carEntity];
 
@@ -200,25 +169,29 @@ public class TrackAssignerSystem : SystemBase
                     else if (path.Length == 1)
                     {
                         /* Destination reached: indeed, it is not possible to infer which track to assign since the next cross
-                         * is not in the path to follow
-                         */
-                        LogFormat("A car has reached its destination.");
+                            * is not in the path to follow
+                            */
+                        LogFormat("The car with id {0} has reached its destination.", carEntity.Index);
                         return;
                     }
-                    var currentCrossId = path.ElementAt(0).crossId;
-                    var nextCrossId = path.ElementAt(1).crossId;
+                    var currentCross = path.ElementAt(0).CrossOrStreet;
+                    var nextStreet = path.ElementAt(1).CrossOrStreet;
                     path.RemoveAt(0);
 
-                    var street = graph.GetEdge(currentCrossId, nextCrossId).Street;
+                    var street = nextStreet;
                     var streetComponentData = getStreetComponentData[street];
                     var trackCandidatesName = "";
-                    if (streetComponentData.startingCross.Index == currentCrossId)
+                    if (streetComponentData.startingCross == currentCross)
                     {
                         trackCandidatesName += "ForwardLane";
                     }
-                    else
+                    else if (streetComponentData.endingCross == currentCross)
                     {
                         trackCandidatesName += "BackwardLane";
+                    }
+                    else
+                    {
+                        LogErrorFormat("The street with id {0} is not linked to the cross with id {1} due to some inconsistency.", street.Index, currentCross.Index);
                     }
 
                     var lanes = getChildComponentDataFromEntity[street];
@@ -242,15 +215,20 @@ public class TrackAssignerSystem : SystemBase
                     if (trackToFollow == Entity.Null)
                     {
                         LogErrorFormat("No admissible tracks in a street are available for a car.");
-                    } else
+                    }
+                    else
                     {
                         carComponentData.ImInCross = false;
-                        carComponentData.CrossOrStreet = street;
                         carComponentData.TrackId = trackToFollow.Index;
                         LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
                     }
                 }
+                else
+                {
+                    /* The car is where it declares to be. Nothing to do */
+                }
             }
+            
         }).WithoutBurst().Run();
     
     }

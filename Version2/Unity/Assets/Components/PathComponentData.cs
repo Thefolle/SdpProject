@@ -7,5 +7,5 @@ using UnityEngine;
 [GenerateAuthoringComponent]
 public struct PathComponentData : IBufferElementData
 {
-    public int crossId;
+    public Entity CrossOrStreet;
 }

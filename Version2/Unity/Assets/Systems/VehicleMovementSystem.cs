@@ -55,7 +55,7 @@ public class VehicleMovementSystem : SystemBase
                 End = localToWorld.Position + 20 * localToWorld.Right,
                 Filter = CollisionFilter.Default
             };
-            //UnityEngine.Debug.DrawLine(localToWorld.Position, localToWorld.Position + 20 * localToWorld.Right, UnityEngine.Color.green, 0);
+            DrawLine(raycastInputRight.Start, raycastInputRight.End, UnityEngine.Color.green, 0);
 
             var raycastInputLeft = new RaycastInput
             {
@@ -63,7 +63,7 @@ public class VehicleMovementSystem : SystemBase
                 End = localToWorld.Position + 20 * -localToWorld.Right,
                 Filter = CollisionFilter.Default
             };
-           // UnityEngine.Debug.DrawLine(localToWorld.Position, localToWorld.Position + 20 * -localToWorld.Right, UnityEngine.Color.green, 0);
+            DrawLine(raycastInputLeft.Start, raycastInputLeft.End, UnityEngine.Color.green, 0);
 
             var rightHits = new NativeList<RaycastHit>(20, Allocator.TempJob);
             var leftHits = new NativeList<RaycastHit>(20, Allocator.TempJob);
@@ -122,11 +122,18 @@ public class VehicleMovementSystem : SystemBase
                 
             if (isTrackHitFound == false)
             {
-                /* This scenario can take place if the track is out-of-range or the car is turning at the beginning or at the end of a lane. */
-                LogError("The car with id " + carEntity.Index + " cannot find any track with id " + carComponentData.TrackId + " to follow.");
+                /* This scenario can take place if:
+                 * 
+                 * - the track is out-of-range or non-existing;
+                 * - the car has lost the track for some frames: for instance, when it is turning
+                 * at the beginning or at the end of a lane.
+                 * 
+                 * The second scenario is evaluated as acceptable since all the observed configurations have led the car
+                 * to converge toward its assigned track id. See docs for further details.
+                 */
+
                 factor = 0;
                 linearFactor = 1;
-                carComponentData.EndOfTrackReached = true; // allow TrackAssignerSystem to find the next track id
             } else
             {
                 if (distance < NegligibleDistance)

@@ -8,48 +8,23 @@ using Unity.Physics.Systems;
 using static UnityEngine.Debug;
 using Unity.Collections;
 
-/// <summary>
-/// <para>This system assigns to a car the initial id to track when:
-/// <list type="bullet">
-/// <item>The car has spawned;</item>
-/// <item>The car has physically passed from a street (cross) to a cross (street).</item>
-/// </list></para>
-/// </summary>
 public class VehicleSpawningSystem : SystemBase
 {
-    /// <summary>
-    /// <para>For now, model this as a global variable. In future, when the spawning system will be created,
-    /// you may want to improve this approach.</para>
-    /// </summary>
-    bool hasSpawned;
-
-    protected override void OnCreate()
-    {
-        base.OnCreate();
-
-        hasSpawned = true;
-    }
 
     protected override void OnUpdate()
     {
-        // if (condition 1 is true)
-        // assign track
-        // else if (condition 2 is true)
-        // assign track (improvement: follow the same relative track as before)
-
         PhysicsWorld physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
         EntityManager entityManager = World.EntityManager;
         var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
         var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
         var getStreetComponentDataFromEntity = GetComponentDataFromEntity<StreetComponentData>();
 
-        var isSpawned = hasSpawned;
-        hasSpawned = false;
-
         Entities.ForEach((ref CarComponentData carComponentData, in LocalToWorld localToWorld, in Entity carEntity) =>
         {
-            if (isSpawned)
+            if (carComponentData.HasJustSpawned)
             {
+                carComponentData.HasJustSpawned = false;
+
                 var raycastInputRight = new RaycastInput
                 {
                     Start = localToWorld.Position,
@@ -152,7 +127,6 @@ public class VehicleSpawningSystem : SystemBase
                     var trackedLane = getParentComponentDataFromEntity[hit.Entity].Value;
                     var trackedLaneName = entityManager.GetName(trackedLane);
                     var street = getParentComponentDataFromEntity[trackedLane].Value;
-                    carComponentData.CrossOrStreet = street;
                     carComponentData.ImInCross = false;
                     var streetComponentData = getStreetComponentDataFromEntity[street];
                     int edgeInitialNode;
@@ -177,60 +151,28 @@ public class VehicleSpawningSystem : SystemBase
 
 
                     var graph = World.GetExistingSystem<GraphGeneratorSystem>().District;
-                    var randomPath = graph.RandomPath(edgeInitialNode, edgeEndingNode);
                     var carPath = GetBufferFromEntity<PathComponentData>()[carEntity];
-                    foreach (var crossId in randomPath)
+                    var randomPath = graph.RandomPath(edgeInitialNode, edgeEndingNode);
+
+                    var isFirst = true;
+                    var lastStep = -1;
+                    foreach (var node in randomPath)
                     {
-                        Log(crossId);
-                        var step = new PathComponentData
+                        if (isFirst)
                         {
-                            crossId = crossId
-                        };
-                        carPath.Add(step);
+                            // carPath.Add(new PathComponentData { CrossOrStreet = node.Cross }); //neglect the first node when a car is spawned in a street
+                            lastStep = node.Cross.Index;
+                            isFirst = false;
+                        } else
+                        {
+                            carPath.Add(new PathComponentData { CrossOrStreet = graph.GetEdge(lastStep, node.Cross.Index).Street });
+                            carPath.Add(new PathComponentData { CrossOrStreet = node.Cross });
+                            lastStep = node.Cross.Index;
+                        }
                     }
-
                 }
-
             }
         }).WithoutBurst().Run();
-
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="approachingCross">The first cross the car is going to meet.</param>
-    /// <param name="nextCrossId">The cross after the <paramref name="approachingCross"/> that the car pass through.</param>
-    /// <param name="relativeTrack">The relative track id the car is following, so that the cross tries to return
-    /// the track id with the same relative track id.</param>
-    /// <returns>The track id the requesting car should follow.</returns>
-    public int GetTrackId(Entity approachingCross, int nextCrossId, int relativeTrack)
-    {
-        var getCrossComponentData = GetComponentDataFromEntity<CrossComponentData>();
-        var getStreetComponentData = GetComponentDataFromEntity<StreetComponentData>();
-        var crossComponentData = getCrossComponentData[approachingCross];
-        var direction = "";
-
-        // evaluate which is the direction that leads to the next cross
-        if (crossComponentData.TopStreet != Entity.Null)
-        {
-            var topStreetComponentData = getStreetComponentData[crossComponentData.TopStreet];
-            var otherNode = -1;
-            if (topStreetComponentData.startingCross.Index == approachingCross.Index)
-            {
-                otherNode = topStreetComponentData.endingCross.Index;
-            } else
-            {
-                otherNode = topStreetComponentData.startingCross.Index;
-            }
-
-            if (otherNode == nextCrossId)
-            {
-                direction = "top";
-            }
-        }
-
-        return 0;
     }
 
 }
