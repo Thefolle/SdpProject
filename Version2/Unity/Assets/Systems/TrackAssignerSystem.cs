@@ -28,7 +28,6 @@ public class TrackAssignerSystem : SystemBase
                     var path = getBufferFromEntity[carEntity];
                     var currentCrossId = path.ElementAt(0).crossId;
                     var nextCrossId = path.ElementAt(1).crossId;
-                    path.RemoveAt(0);
 
                     var currentCross = graph.GetNode(currentCrossId).Cross;
 
@@ -182,11 +181,65 @@ public class TrackAssignerSystem : SystemBase
                 }
                 else // The car is in a street now
                 {
-                    /*var path = getBufferFromEntity[carEntity];
+                    var path = getBufferFromEntity[carEntity];
 
-                    if (path.Length == )
+                    if (path.Length == 0)
+                    {
+                        LogErrorFormat("The cross where a car is passing through is not stored in its path to follow");
+                        return;
+                    }
+                    else if (path.Length == 1)
+                    {
+                        /* Destination reached: indeed, it is not possible to infer which track to assign since the next cross
+                         * is not in the path to follow
+                         */
+                        LogFormat("The car has reached the destination.");
+                        return;
+                    }
                     var currentCrossId = path.ElementAt(0).crossId;
-                    var nextCrossId = path.ElementAt(1).crossId;*/
+                    var nextCrossId = path.ElementAt(1).crossId;
+                    path.RemoveAt(0);
+
+                    var street = graph.GetEdge(currentCrossId, nextCrossId).Street;
+                    var streetComponentData = getStreetComponentData[street];
+                    var trackCandidatesName = "";
+                    if (streetComponentData.startingCross.Index == currentCrossId)
+                    {
+                        trackCandidatesName += "ForwardLane";
+                    }
+                    else
+                    {
+                        trackCandidatesName += "BackwardLane";
+                    }
+
+                    var lanes = getChildComponentDataFromEntity[street];
+                    var trackToFollow = Entity.Null;
+                    foreach (var laneChild in lanes)
+                    {
+                        if (entityManager.GetName(laneChild.Value).Contains(trackCandidatesName))
+                        {
+                            /* Just take the first admissible track for now */
+                            var trackChild = getChildComponentDataFromEntity[laneChild.Value];
+                            if (trackChild.Length > 1)
+                            {
+                                LogErrorFormat("A lane has multiple track children");
+                                return;
+                            }
+                            trackToFollow = trackChild.ElementAt(0).Value;
+                            break;
+                        }
+                    }
+
+                    if (trackToFollow == Entity.Null)
+                    {
+                        LogErrorFormat("No admissible tracks in a street are available for a car.");
+                    } else
+                    {
+                        carComponentData.ImInCross = false;
+                        carComponentData.CrossOrStreet = street;
+                        carComponentData.TrackId = trackToFollow.Index;
+                        LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
+                    }
                 }
             }
         }).WithoutBurst().Run();
