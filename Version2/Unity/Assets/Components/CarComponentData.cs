@@ -17,9 +17,9 @@ public struct CarComponentData : IComponentData
     public int TrackId;
 
     /// <summary>
-    /// <para>Convenience flag that stores whether the car is currently on a cross or on a street.</para>
+    /// <para>Convenience variable that stores where the car is standing on.</para>
     /// </summary>
-    public bool ImInCross;
+    public VehicleIsOn vehicleIsOn;
 
     // Spawning system variables
     public bool HasJustSpawned;

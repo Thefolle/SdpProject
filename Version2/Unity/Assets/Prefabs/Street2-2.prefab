@@ -62,6 +62,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsOneWay: 0
+  startingCross: {fileID: 0}
+  endingCross: {fileID: 0}
   IsBorder: 0
   Side: 0
 --- !u!1001 &1088790816504480767

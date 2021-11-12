@@ -46,6 +46,8 @@ public class VehicleMovementSystem : SystemBase
 
         Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
+            if (carComponentData.HasJustSpawned) return;
+
             /* Initialize data */
             float factor = 0;
             float linearFactor = 1;

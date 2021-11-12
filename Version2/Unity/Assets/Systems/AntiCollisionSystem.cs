@@ -46,7 +46,7 @@ public class AntiCollisionSystem : SystemBase
         var getLaneComponentDataFromEntity = GetComponentDataFromEntity<LaneComponentData>();
         var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
 
-        Entities.ForEach((Entity carEntity, LocalToWorld localToWorld, ref PhysicsVelocity physicsVelocity, ref CarComponentData carCompData, in CarComponentData carComponentData) =>
+        Entities.ForEach((Entity carEntity, LocalToWorld localToWorld, ref PhysicsVelocity physicsVelocity, ref CarComponentData  carComponentData) =>
         {
             // Anti-collision Raycasts
             float speedFactor;                   // This factor is for regulating the raycasts wrt the car velocity
@@ -65,7 +65,7 @@ public class AntiCollisionSystem : SystemBase
             var StartL = new float3();
             var EndL = new float3();
 
-            if (carCompData.tryOvertake == false)
+            if (carComponentData.tryOvertake == false)
             {
                 StartR = localToWorld.Position + 1 * localToWorld.Forward + 1 * localToWorld.Right;
                 EndR = localToWorld.Position + 5.5f * localToWorld.Forward + speedFactor * localToWorld.Forward + 1 * localToWorld.Right;
@@ -131,37 +131,37 @@ public class AntiCollisionSystem : SystemBase
 
             if (isCollisionFound)     // Braking method in case of raycast collision with another car
             {
-                if (carCompData.Speed < 10)
-                    carCompData.Speed = 0;
+                if (carComponentData.Speed < 10)
+                    carComponentData.Speed = 0;
                 else
-                    carCompData.Speed -= 0.01f * carComponentData.maxSpeed;        // that 0.10 is the braking factor. It reduces the car speed of 10% of the initial speed (it is just an example, we may change it to a proper value)
+                    carComponentData.Speed -= 0.01f * carComponentData.maxSpeed;        // that 0.10 is the braking factor. It reduces the car speed of 10% of the initial speed (it is just an example, we may change it to a proper value)
 
                 // SISTEMA LAMPEGGIO - Michele
-                var otherCarCompData = getCarComponentDataFromEntity[coll.Entity];
+                var othercarComponentData = getCarComponentDataFromEntity[coll.Entity];
 
-                if (carCompData.maxSpeed > otherCarCompData.maxSpeed)
-                    if(carCompData.Speed > otherCarCompData.Speed -2 && carCompData.Speed < otherCarCompData.Speed + 2) // myCar has more maxSpeed, but is capped by otherCar in lane
+                if (carComponentData.maxSpeed > othercarComponentData.maxSpeed)
+                    if(carComponentData.Speed > othercarComponentData.Speed -2 && carComponentData.Speed < othercarComponentData.Speed + 2) // myCar has more maxSpeed, but is capped by otherCar in lane
                     {
-                        if ((carCompData.lastTimeTried == -1 || math.abs(carCompData.lastTimeTried - elapsedTime) > 10) && otherCarCompData.Speed == 0f) // Avoid spam-trying
+                        if ((carComponentData.lastTimeTried == -1 || math.abs(carComponentData.lastTimeTried - elapsedTime) > 10) && othercarComponentData.Speed == 0f) // Avoid spam-trying
                         {
                             LogError("Asked for overtake");
-                            carCompData.tryOvertake = true;
-                            carCompData.rightOvertakeAllowed = true;
-                        } else if ((carCompData.lastTimeTried == -1 || math.abs(carCompData.lastTimeTried - elapsedTime) > 10) && otherCarCompData.Speed != 0f)
+                            carComponentData.tryOvertake = true;
+                            carComponentData.rightOvertakeAllowed = true;
+                        } else if ((carComponentData.lastTimeTried == -1 || math.abs(carComponentData.lastTimeTried - elapsedTime) > 10) && othercarComponentData.Speed != 0f)
                         {
                             LogError("Asked for overtake");
-                            carCompData.tryOvertake = true;
-                            carCompData.rightOvertakeAllowed = false;
+                            carComponentData.tryOvertake = true;
+                            carComponentData.rightOvertakeAllowed = false;
                         }
                     }
 
             }
             else
             {
-                if (carCompData.Speed > carComponentData.maxSpeed)
-                    carCompData.Speed = carComponentData.maxSpeed;
+                if (carComponentData.Speed > carComponentData.maxSpeed)
+                    carComponentData.Speed = carComponentData.maxSpeed;
                 else
-                    carCompData.Speed += 0.003f * carComponentData.maxSpeed;
+                    carComponentData.Speed += 0.003f * carComponentData.maxSpeed;
             }
             leftCollision.Dispose();
             rightCollision.Dispose();

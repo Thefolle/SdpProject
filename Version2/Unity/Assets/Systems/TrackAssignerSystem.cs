@@ -14,7 +14,9 @@ public class TrackAssignerSystem : SystemBase
         var getBufferFromEntity = GetBufferFromEntity<PathComponentData>();
         var getCrossComponentData = GetComponentDataFromEntity<CrossComponentData>();
         var getStreetComponentData = GetComponentDataFromEntity<StreetComponentData>();
-        var getChildComponentDataFromEntity = GetBufferFromEntity<Child>();
+        var getTrackComponentData = GetComponentDataFromEntity<TrackComponentData>();
+        var getParentComponentData = GetComponentDataFromEntity<Parent>();
+        var getChildComponentData = GetBufferFromEntity<Child>();
         EntityManager entityManager = World.EntityManager;
         PhysicsWorld physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
 
@@ -32,7 +34,7 @@ public class TrackAssignerSystem : SystemBase
 
             var hits = new NativeList<RaycastHit>(20, Allocator.TempJob);
 
-            bool ImInCross = true;
+            VehicleIsOn vehicleIsOn = default;
             bool admissibleHitFound = false;
 
             if (physicsWorld.CastRay(raycastInput, ref hits) && hits.Length > 1)
@@ -41,13 +43,19 @@ public class TrackAssignerSystem : SystemBase
                 {
                     if (entityManager.GetName(it.Entity).Contains("Lane"))
                     {
-                        ImInCross = false;
+                        vehicleIsOn = VehicleIsOn.Street;
                         admissibleHitFound = true;
                         break;
                     }
                     else if (entityManager.GetName(it.Entity).Equals("Base"))
                     {
-                        ImInCross = true;
+                        vehicleIsOn = VehicleIsOn.Cross;
+                        admissibleHitFound = true;
+                        break;
+                    }
+                    else if (entityManager.GetName(it.Entity).Equals("SpawningPoint"))
+                    {
+                        vehicleIsOn = VehicleIsOn.SpawningPoint;
                         admissibleHitFound = true;
                         break;
                     }
@@ -57,12 +65,12 @@ public class TrackAssignerSystem : SystemBase
 
             if (!admissibleHitFound)
             {
-                LogErrorFormat("The car with id {0} doesn't know if it is on a street or on a cross", carEntity.Index);
+                LogErrorFormat("The car with id {0} doesn't know where it is standing on.", carEntity.Index);
                 return;
             }
             else
             {
-                if (ImInCross && !carComponentData.ImInCross) // the car is passing from a street to a cross
+                if (vehicleIsOn == VehicleIsOn.Cross && carComponentData.vehicleIsOn == VehicleIsOn.Street) // the car is passing from a street to a cross
                 {
                     var path = getBufferFromEntity[carEntity];
                     if (path.Length == 0 || path.Length == 2)
@@ -138,7 +146,7 @@ public class TrackAssignerSystem : SystemBase
                         LogErrorFormat("Cannot find the outgoing street of a track to assign to a car.");
                     }
 
-                    var buffer = getChildComponentDataFromEntity[currentCross];
+                    var buffer = getChildComponentData[currentCross];
                     var trackToAssign = Entity.Null;
                     foreach (var trackChild in buffer)
                     {
@@ -153,11 +161,11 @@ public class TrackAssignerSystem : SystemBase
                         LogErrorFormat("The cross with id {0} doesn't contain a track with name {1}", currentCross.Index, trackToAssignName);
                     }
 
-                    carComponentData.ImInCross = true;
+                    carComponentData.vehicleIsOn = VehicleIsOn.Cross;
                     carComponentData.TrackId = trackToAssign.Index;
                     LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
                 }
-                else if (!ImInCross && carComponentData.ImInCross) // The car is passing from a cross to a street
+                else if (vehicleIsOn == VehicleIsOn.Street && carComponentData.vehicleIsOn == VehicleIsOn.Cross) // The car is passing from a cross to a street
                 {
                     var path = getBufferFromEntity[carEntity];
 
@@ -194,14 +202,14 @@ public class TrackAssignerSystem : SystemBase
                         LogErrorFormat("The street with id {0} is not linked to the cross with id {1} due to some inconsistency.", street.Index, currentCross.Index);
                     }
 
-                    var lanes = getChildComponentDataFromEntity[street];
+                    var lanes = getChildComponentData[street];
                     var trackToFollow = Entity.Null;
                     foreach (var laneChild in lanes)
                     {
                         if (entityManager.GetName(laneChild.Value).Contains(trackCandidatesName))
                         {
                             /* Just take the first admissible track for now */
-                            var trackChild = getChildComponentDataFromEntity[laneChild.Value];
+                            var trackChild = getChildComponentData[laneChild.Value];
                             if (trackChild.Length > 1)
                             {
                                 LogErrorFormat("A lane has multiple track children");
@@ -218,18 +226,179 @@ public class TrackAssignerSystem : SystemBase
                     }
                     else
                     {
-                        carComponentData.ImInCross = false;
+                        carComponentData.vehicleIsOn = VehicleIsOn.Street;
                         carComponentData.TrackId = trackToFollow.Index;
                         LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
                     }
                 }
-                else
+                else if (carComponentData.HasJustSpawned && /* other checks for robustness */ vehicleIsOn == VehicleIsOn.SpawningPoint && carComponentData.vehicleIsOn == VehicleIsOn.SpawningPoint)
                 {
-                    /* The car is where it declares to be. Nothing to do */
+                    /* TODO: postpone the track assignment if some car is approaching along the nearest track */
+
+                    carComponentData.HasJustSpawned = false;
+                    /* Search for the nearest admissible track */
+                    var raycastInputRight = new RaycastInput
+                    {
+                        Start = localToWorld.Position,
+                        End = localToWorld.Position + 20 * localToWorld.Right,
+                        Filter = CollisionFilter.Default
+                    };
+                    var raycastInputLeft = new RaycastInput
+                    {
+                        Start = localToWorld.Position,
+                        End = localToWorld.Position + 20 * -localToWorld.Right,
+                        Filter = CollisionFilter.Default
+                    };
+                    var rightHits = new NativeList<RaycastHit>(20, Allocator.TempJob);
+                    var leftHits = new NativeList<RaycastHit>(20, Allocator.TempJob);
+
+                    bool isTrackHitFound = false; // flag that tells whether at least one admissible hit has been found
+                    RaycastHit hit = default;
+                    var forward = math.normalize(localToWorld.Forward);
+                    var minimumDistance = float.MaxValue;
+
+                    if (physicsWorld.CastRay(raycastInputLeft, ref leftHits) && leftHits.Length > 1)
+                    {
+                        foreach (var it in leftHits)
+                        {
+                            if (getTrackComponentData.HasComponent(it.Entity))
+                            {
+                                var trackComponentData = getTrackComponentData[it.Entity];
+
+                                /* Does the track it.Entity belong to the current street? */
+                                if (getParentComponentData.HasComponent(it.Entity))
+                                {
+                                    var parent = getParentComponentData[it.Entity].Value;
+                                    if (getParentComponentData.HasComponent(parent))
+                                    {
+                                        var grandParent = getParentComponentData[parent].Value;
+                                        if (getStreetComponentData.HasComponent(grandParent))
+                                        {
+                                            var carDistanceFromTrack = math.distance(localToWorld.Position, it.Position);
+                                            if (carDistanceFromTrack < minimumDistance)
+                                            {
+                                                minimumDistance = carDistanceFromTrack;
+                                                hit = it;
+
+                                                isTrackHitFound = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (!isTrackHitFound && physicsWorld.CastRay(raycastInputRight, ref rightHits) && rightHits.Length > 1)
+                    {
+                        foreach (var it in rightHits)
+                        {
+                            if (getTrackComponentData.HasComponent(it.Entity))
+                            {
+                                var trackComponentData = getTrackComponentData[it.Entity];
+
+                                /* Does the track it.Entity belong to the current street? */
+                                if (getParentComponentData.HasComponent(it.Entity))
+                                {
+                                    var parent = getParentComponentData[it.Entity].Value;
+                                    if (getParentComponentData.HasComponent(parent))
+                                    {
+                                        var grandParent = getParentComponentData[parent].Value;
+                                        if (getStreetComponentData.HasComponent(grandParent))
+                                        {
+                                            var carDistanceFromTrack = math.distance(localToWorld.Position, it.Position);
+                                            if (carDistanceFromTrack < minimumDistance)
+                                            {
+                                                minimumDistance = carDistanceFromTrack;
+                                                hit = it;
+
+                                                isTrackHitFound = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    rightHits.Dispose();
+                    leftHits.Dispose();
+
+                    if (isTrackHitFound == false)
+                    {
+                        /* This scenario can take place if the track is out-of-range or the car is turning at the beginning or at the end of a lane. */
+                        LogError("The car with id " + carEntity.Index + " cannot find any track to follow.");
+                    }
+                    else
+                    {
+                        carComponentData.TrackId = hit.Entity.Index;
+                        Log("I've assigned track " + carComponentData.TrackId + " to car with id " + carEntity.Index);
+
+                        /* Request a random path */
+                        var trackedLane = getParentComponentData[hit.Entity].Value;
+                        var trackedLaneName = entityManager.GetName(trackedLane);
+                        var street = getParentComponentData[trackedLane].Value;
+                        var streetComponentData = getStreetComponentData[street];
+                        int edgeInitialNode;
+                        int edgeEndingNode;
+                        /* Exploit the track name to infer which are the starting and the ending crosses. That's why 
+                         * the algorithm must work with tracks rather than streets
+                         */
+                        if (trackedLaneName.Contains("Forward"))
+                        {
+                            edgeInitialNode = streetComponentData.startingCross.Index;
+                            edgeEndingNode = streetComponentData.endingCross.Index;
+                        }
+                        else if (trackedLaneName.Contains("Backward"))
+                        {
+                            edgeInitialNode = streetComponentData.endingCross.Index;
+                            edgeEndingNode = streetComponentData.startingCross.Index;
+                        }
+                        else
+                        {
+                            LogErrorFormat("%s", "The trackedLane name is malformed: it doesn't contain neither \"Forward\" nor \"Backward\"");
+                            /* Cannot recover from this error */
+                            edgeInitialNode = 0;
+                            edgeEndingNode = 0;
+                        }
+
+
+                        var graph = World.GetExistingSystem<GraphGeneratorSystem>().District;
+                        var carPath = GetBufferFromEntity<PathComponentData>()[carEntity];
+                        var randomPath = graph.RandomPath(edgeInitialNode, edgeEndingNode);
+
+                        var isFirst = true;
+                        var lastStep = -1;
+                        foreach (var node in randomPath)
+                        {
+                            if (isFirst)
+                            {
+                                // carPath.Add(new PathComponentData { CrossOrStreet = node.Cross }); //neglect the first node when a car is spawned in a street
+                                lastStep = node.Cross.Index;
+                                isFirst = false;
+                            }
+                            else
+                            {
+                                carPath.Add(new PathComponentData { CrossOrStreet = graph.GetEdge(lastStep, node.Cross.Index).Street });
+                                carPath.Add(new PathComponentData { CrossOrStreet = node.Cross });
+                                lastStep = node.Cross.Index;
+                            }
+                        }
+                    }
+                }
+                else if (vehicleIsOn == VehicleIsOn.Street && carComponentData.vehicleIsOn == VehicleIsOn.SpawningPoint)
+                {
+                    carComponentData.vehicleIsOn = VehicleIsOn.Street;
                 }
             }
             
         }).WithoutBurst().Run();
     
     }
+}
+
+public enum VehicleIsOn
+{
+    Street,
+    Cross,
+    SpawningPoint
 }
