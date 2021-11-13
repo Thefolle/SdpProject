@@ -231,7 +231,7 @@ public class TrackAssignerSystem : SystemBase
                         LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
                     }
                 }
-                else if (carComponentData.HasJustSpawned && /* other checks for robustness */ vehicleIsOn == VehicleIsOn.SpawningPoint && carComponentData.vehicleIsOn == VehicleIsOn.SpawningPoint)
+                else if (carComponentData.HasJustSpawned && /* other checks for robustness */ carComponentData.vehicleIsOn == VehicleIsOn.SpawningPoint /*&& vehicleIsOn == VehicleIsOn.SpawningPoint this check doesn't allow arbitrary spawning on the city*/)
                 {
                     /* TODO: postpone the track assignment if some car is approaching along the nearest track */
 
@@ -288,7 +288,8 @@ public class TrackAssignerSystem : SystemBase
                             }
                         }
                     }
-                    if (!isTrackHitFound && physicsWorld.CastRay(raycastInputRight, ref rightHits) && rightHits.Length > 1)
+                    if (/*!isTrackHitFound && this check prevents car from being arbitrarily spawned between the center of the street
+                         and the leftmost track of the right group of lanes*/ physicsWorld.CastRay(raycastInputRight, ref rightHits) && rightHits.Length > 1)
                     {
                         foreach (var it in rightHits)
                         {

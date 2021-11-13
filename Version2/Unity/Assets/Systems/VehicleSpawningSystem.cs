@@ -38,6 +38,20 @@ public class VehicleSpawningSystem : SystemBase
 
             entityManager.SetComponentData(carEntity, new Translation { Value = localToWorld.Position + (carHeight * 2) * math.normalize(localToWorld.Up) });
             entityManager.SetComponentData(carEntity, new Rotation { Value = rotation.Value });
+
+            //var carComponentData = entityManager.GetComponentData<CarComponentData>(carEntity);
+            //entityManager.SetComponentData(carEntity, new CarComponentData { 
+            //    AngularSpeed = carComponentData.AngularSpeed,
+            //    HasJustSpawned = true,
+            //    lastTimeTried = carComponentData.lastTimeTried,
+            //    maxSpeed = carComponentData.maxSpeed,
+            //    rightOvertakeAllowed = carComponentData.rightOvertakeAllowed,
+            //    Speed = carComponentData.Speed,
+            //    TrackId = carComponentData.TrackId,
+            //    tryOvertake = carComponentData.tryOvertake,
+            //    vehicleIsOn = VehicleIsOn.SpawningPoint
+            //});
+
             entityManager.SetEnabled(carEntity, true);
         }).WithStructuralChanges().Run();
     
