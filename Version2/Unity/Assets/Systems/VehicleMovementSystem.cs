@@ -21,7 +21,7 @@ public class VehicleMovementSystem : SystemBase
     /// <para>Greater values imply a better convergence in straight lanes, which is worse during bends. Cars may lose their track during bends for big values. Moreover, you should take into account both the width of the car and the width of the lane.</para>
     /// <para>Lower values imply a better convergence in bends, which is slower in straight lanes.</para>
     /// </summary>
-    private const float thresholdDistance = 0.3f;
+    private const float thresholdDistance = 0.6f;
 
     /// <summary>
     /// <para>This parameter establishes the range, expressed as distance from the track, in which the car can be considered in the track.</para>
@@ -49,7 +49,7 @@ public class VehicleMovementSystem : SystemBase
             if (carComponentData.HasJustSpawned) return;
 
             /* Initialize data */
-            float factor = 0;
+            float angularFactor = 0;
             float linearFactor = 1;
             var raycastInputRight = new RaycastInput
             {
@@ -134,35 +134,43 @@ public class VehicleMovementSystem : SystemBase
                  * to converge toward its assigned track id. See docs for further details.
                  */
 
-                factor = 0;
+                angularFactor = 0;
                 linearFactor = 1;
             } else
             {
+                var gap = math.dot(forward, hit.SurfaceNormal);
                 if (distance < NegligibleDistance)
                 {
                     // The car's distance from the track is negligible
-                    factor = 0;
-                } else if (math.dot(forward, hit.SurfaceNormal) < 0 && distance < thresholdDistance)
+                    angularFactor = 0;
+                }
+                else if (gap < 0 && distance < thresholdDistance)
                 {
                     /* The car is approaching and is near to the track */
-                    factor = 0;
+                    /* Here soften the car trajectory so that it is a softened synusoid: the effect is achieved by
+                     * using a lowered angular factor w.r.t. the scenario where the car is near but it is leaving
+                     */
+                    angularFactor = 1 * (!isRightHit ? +1 : -1) / 2;
                 }
-                else if (math.dot(forward, hit.SurfaceNormal) < -math.cos(math.radians(steeringDegree)) && distance >= thresholdDistance)
+                else if (gap < -math.cos(math.radians(steeringDegree)) && distance >= thresholdDistance)
                 {
                     /* The car is approaching but is distant from the track */
-                    factor = 0;
+                    angularFactor = 0;
                 }
-                else if (math.dot(forward, hit.SurfaceNormal) > -math.cos(math.radians(steeringDegree)) && distance >= thresholdDistance)
+                else if (gap > -math.cos(math.radians(steeringDegree)) && distance >= thresholdDistance)
                 {
-                    /* The car is going away from the track */
-                    factor = 1 * (isRightHit ? +1 : -1);
-                    ////linearFactor = 1f;
+                    /* The car is going away and it is distant from the track */
+                    angularFactor = 1 * (isRightHit ? +1 : -1);
                 }
                 else
                 {
                     /* The car is near and is going straight or it is leaving; let's turn it */
-                    /* Here soften the car trajectory so that it is a softened synusoid*/
-                    factor = 1 * (isRightHit ? +1 : -1) * (3 + distance);
+                    angularFactor = 1 * (isRightHit ? +1 : -1);
+                }
+
+                if (carComponentData.vehicleIsOn == VehicleIsOn.Cross && gap > math.radians(20))
+                {
+                    linearFactor = 0.5f;
                 }
 
                 /*Log("Car position is: " + localToWorld.Position);
@@ -174,10 +182,14 @@ public class VehicleMovementSystem : SystemBase
             rightHits.Dispose();
             leftHits.Dispose();
 
-            physicsVelocity.Angular.y = carComponentData.AngularSpeed * factor * deltaTime;
+            physicsVelocity.Angular.y = carComponentData.AngularSpeed * angularFactor * deltaTime;
 
+            //if (carComponentData.vehicleIsOn == VehicleIsOn.Cross)
+            //{
+            //    linearFactor = 0.5f;
+            //}
             var tmp = physicsVelocity.Linear.y;
-            physicsVelocity.Linear = localToWorld.Forward * carComponentData.Speed * linearFactor * deltaTime;
+            physicsVelocity.Linear = forward * carComponentData.Speed * linearFactor * deltaTime;
             // Neglect the y speed
             physicsVelocity.Linear.y = tmp;
         }).Run();

@@ -304,15 +304,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f991f876e7549245b246e948dbee612, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 100
+  Speed: 800
   AngularSpeed: 150
-  maxSpeed: 100
+  maxSpeed: 800
   tryOvertake: 0
   lastTimeTried: -1
   rightOvertakeAllowed: 0
   TrackId: 0
   vehicleIsOn: 2
   HasJustSpawned: 1
+  HasReachedDestination: 0
 --- !u!114 &7087047461198237048
 MonoBehaviour:
   m_ObjectHideFlags: 0
