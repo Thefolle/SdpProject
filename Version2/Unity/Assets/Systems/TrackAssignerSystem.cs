@@ -73,17 +73,21 @@ public class TrackAssignerSystem : SystemBase
                 if (vehicleIsOn == VehicleIsOn.Cross && carComponentData.vehicleIsOn == VehicleIsOn.Street) // the car is passing from a street to a cross
                 {
                     var path = getBufferFromEntity[carEntity];
-                    if (path.Length == 0 || path.Length == 2)
+                    if (path.Length == 0)
                     {
-                        LogErrorFormat("The path of a car has length {0} which is inconsistent.", path.Length);
+                        LogErrorFormat("The path of the car with id {0} has length {1} which is inconsistent.", carEntity.Index, path.Length);
                         return;
                     }
-                    else if (path.Length == 1)
+                    else if (path.Length == 1 || path.Length == 2)
                     {
+                        /* Destination reached: indeed, the path only contains the previous street and the current cross
+                            */
                         LogFormat("The car with id {0} has reached its destination", carEntity.Index);
+                        /* The despawn will be carried out by another system */
+                        carComponentData.HasReachedDestination = true;
                         return;
                     }
-                    var currentStreet = path.ElementAt(0).CrossOrStreet;
+                    var previousStreet = path.ElementAt(0).CrossOrStreet;
                     var currentCross = path.ElementAt(1).CrossOrStreet;
                     var nextStreet = path.ElementAt(2).CrossOrStreet;
                     path.RemoveAt(0);
@@ -94,23 +98,23 @@ public class TrackAssignerSystem : SystemBase
                         */
                     var crossComponentData = getCrossComponentData[currentCross];
                     string trackToAssignName = "";
-                    if (crossComponentData.TopStreet != Entity.Null && crossComponentData.TopStreet == currentStreet)
+                    if (crossComponentData.TopStreet != Entity.Null && crossComponentData.TopStreet == previousStreet)
                     {
                         trackToAssignName += "Top";
                     }
-                    else if (crossComponentData.RightStreet != Entity.Null && crossComponentData.RightStreet == currentStreet)
+                    else if (crossComponentData.RightStreet != Entity.Null && crossComponentData.RightStreet == previousStreet)
                     {
                         trackToAssignName += "Right";
                     }
-                    else if (crossComponentData.BottomStreet != Entity.Null && crossComponentData.BottomStreet == currentStreet)
+                    else if (crossComponentData.BottomStreet != Entity.Null && crossComponentData.BottomStreet == previousStreet)
                     {
                         trackToAssignName += "Bottom";
                     }
-                    else if (crossComponentData.LeftStreet != Entity.Null && crossComponentData.LeftStreet == currentStreet)
+                    else if (crossComponentData.LeftStreet != Entity.Null && crossComponentData.LeftStreet == previousStreet)
                     {
                         trackToAssignName += "Left";
                     }
-                    else if (crossComponentData.CornerStreet != Entity.Null && crossComponentData.CornerStreet == currentStreet)
+                    else if (crossComponentData.CornerStreet != Entity.Null && crossComponentData.CornerStreet == previousStreet)
                     {
                         trackToAssignName += "Corner";
                     }
@@ -171,7 +175,7 @@ public class TrackAssignerSystem : SystemBase
 
                     if (path.Length == 0)
                     {
-                        LogErrorFormat("The cross where a car is passing through is not stored in its path to follow");
+                        LogErrorFormat("The path of car with id {0} has length 0 which is inconsistent.", carEntity.Index);
                         return;
                     }
                     else if (path.Length == 1)
@@ -180,6 +184,8 @@ public class TrackAssignerSystem : SystemBase
                             * is not in the path to follow
                             */
                         LogFormat("The car with id {0} has reached its destination.", carEntity.Index);
+                        /* The despawn will be carried out by another system */
+                        carComponentData.HasReachedDestination = true;
                         return;
                     }
                     var currentCross = path.ElementAt(0).CrossOrStreet;

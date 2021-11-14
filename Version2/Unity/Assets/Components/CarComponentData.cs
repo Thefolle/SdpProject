@@ -23,4 +23,5 @@ public struct CarComponentData : IComponentData
 
     // Spawning system variables
     public bool HasJustSpawned;
+    public bool HasReachedDestination;
 }
