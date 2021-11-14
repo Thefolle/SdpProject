@@ -68,9 +68,9 @@ public class AntiCollisionSystem : SystemBase
             if (carComponentData.tryOvertake == false)
             {
                 StartR = localToWorld.Position + 1 * localToWorld.Forward + 1 * localToWorld.Right;
-                EndR = localToWorld.Position + 5.5f * localToWorld.Forward + speedFactor * localToWorld.Forward + 1 * localToWorld.Right;
+                EndR = localToWorld.Position + 2.5f * localToWorld.Forward + speedFactor * localToWorld.Forward + 1 * localToWorld.Right;
                 StartL = localToWorld.Position + 1 * localToWorld.Forward - 1 * localToWorld.Right;
-                EndL = localToWorld.Position + 5.5f * localToWorld.Forward + speedFactor * localToWorld.Forward - 1 * localToWorld.Right;
+                EndL = localToWorld.Position + 2.5f * localToWorld.Forward + speedFactor * localToWorld.Forward - 1 * localToWorld.Right;
             } else // is overtaking, less starting value of anti-collision raycast 
             {
                 StartR = localToWorld.Position + 1 * localToWorld.Forward + 1 * localToWorld.Right;
@@ -108,23 +108,45 @@ public class AntiCollisionSystem : SystemBase
             {
                 foreach (var i in leftCollision)
                 {
-                    if (!getTrackComponentDataFromEntity.HasComponent(i.Entity) && !isCollisionFound && i.Entity.Index != carEntity.Index && getCarComponentDataFromEntity[i.Entity].TrackId == getCarComponentDataFromEntity[carEntity].TrackId)
+                    if (!getTrackComponentDataFromEntity.HasComponent(i.Entity) && !isCollisionFound && i.Entity.Index != carEntity.Index)
                     {
-                        coll = i;
-                        isCollisionFound = true;
-                        // hit found, no need to proceed
-                        break;
+                        if (getCarComponentDataFromEntity.HasComponent(i.Entity))
+                        {
+                            if (getCarComponentDataFromEntity[i.Entity].TrackId == getCarComponentDataFromEntity[carEntity].TrackId)
+                            {
+                                coll = i;
+                                isCollisionFound = true;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            coll = i;
+                            isCollisionFound = true;
+                            break;
+                        }
                     }
                 }
-                if(!isCollisionFound)
+                if (!isCollisionFound)
                     foreach (var j in rightCollision)
                     {
-                        if (!getTrackComponentDataFromEntity.HasComponent(j.Entity) && !isCollisionFound && j.Entity.Index != carEntity.Index && getCarComponentDataFromEntity[j.Entity].TrackId == getCarComponentDataFromEntity[carEntity].TrackId)
+                        if (!getTrackComponentDataFromEntity.HasComponent(j.Entity) && !isCollisionFound && j.Entity.Index != carEntity.Index)
                         {
-                            coll = j;
-                            isCollisionFound = true;
-                            // hit found, no need to proceed
-                            break;
+                            if (getCarComponentDataFromEntity.HasComponent(j.Entity))
+                            {
+                                if (getCarComponentDataFromEntity[j.Entity].TrackId == getCarComponentDataFromEntity[carEntity].TrackId)
+                                {
+                                    coll = j;
+                                    isCollisionFound = true;
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                coll = j;
+                                isCollisionFound = true;
+                                break;
+                            }
                         }
                     }
             }
@@ -137,24 +159,37 @@ public class AntiCollisionSystem : SystemBase
                     carComponentData.Speed -= 0.01f * carComponentData.maxSpeed;        // that 0.10 is the braking factor. It reduces the car speed of 10% of the initial speed (it is just an example, we may change it to a proper value)
 
                 // SISTEMA LAMPEGGIO - Michele
-                var othercarComponentData = getCarComponentDataFromEntity[coll.Entity];
+                if (getCarComponentDataFromEntity.HasComponent(coll.Entity))
+                {
+                    var othercarComponentData = getCarComponentDataFromEntity[coll.Entity];
 
-                if (carComponentData.maxSpeed > othercarComponentData.maxSpeed)
-                    if(carComponentData.Speed > othercarComponentData.Speed -2 && carComponentData.Speed < othercarComponentData.Speed + 2) // myCar has more maxSpeed, but is capped by otherCar in lane
+                    if (carComponentData.maxSpeed > othercarComponentData.maxSpeed)
                     {
-                        if ((carComponentData.lastTimeTried == -1 || math.abs(carComponentData.lastTimeTried - elapsedTime) > 10) && othercarComponentData.Speed == 0f) // Avoid spam-trying
+                        if (carComponentData.Speed > othercarComponentData.Speed - 2 && carComponentData.Speed < othercarComponentData.Speed + 2) // myCar has more maxSpeed, but is capped by otherCar in lane
                         {
-                            LogError("Asked for overtake");
-                            carComponentData.tryOvertake = true;
-                            carComponentData.rightOvertakeAllowed = true;
-                        } else if ((carComponentData.lastTimeTried == -1 || math.abs(carComponentData.lastTimeTried - elapsedTime) > 10) && othercarComponentData.Speed != 0f)
+                            if ((carComponentData.lastTimeTried == -1 || math.abs(carComponentData.lastTimeTried - elapsedTime) > 10) && othercarComponentData.Speed == 0f) // Avoid spam-trying
+                            {
+                                LogError("Asked for overtake");
+                                carComponentData.tryOvertake = true;
+                                carComponentData.rightOvertakeAllowed = true;
+                            } else if ((carComponentData.lastTimeTried == -1 || math.abs(carComponentData.lastTimeTried - elapsedTime) > 10) && othercarComponentData.Speed != 0f)
+                            {
+                                LogError("Asked for overtake");
+                                carComponentData.tryOvertake = true;
+                                carComponentData.rightOvertakeAllowed = false;
+                            }
+                        }
+                        if (carComponentData.Speed > 20 && othercarComponentData.Speed < 10)
                         {
-                            LogError("Asked for overtake");
-                            carComponentData.tryOvertake = true;
-                            carComponentData.rightOvertakeAllowed = false;
+                            if ((carComponentData.lastTimeTried == -1 || math.abs(carComponentData.lastTimeTried - elapsedTime) > 10))
+                            {
+                                LogError("Asked for overtake");
+                                carComponentData.tryOvertake = true;
+                                carComponentData.rightOvertakeAllowed = true;
+                            }
                         }
                     }
-
+                }
             }
             else
             {
