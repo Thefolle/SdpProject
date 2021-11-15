@@ -52,7 +52,10 @@ public class AntiCollisionSystem : SystemBase
             float speedFactor;                   // This factor is for regulating the raycasts wrt the car velocity
             if (carComponentData.Speed >= 20)
             {
-                speedFactor = 0.03f * carComponentData.Speed;
+                if(carComponentData.Speed > 800)
+                    speedFactor = 0.01f * 800; // Max cap
+                else
+                    speedFactor = 0.01f * carComponentData.Speed;
             }
             else
             {
