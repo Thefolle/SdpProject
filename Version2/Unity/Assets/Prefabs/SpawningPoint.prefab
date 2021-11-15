@@ -303,7 +303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f0d2bd639c2254fbed1b5f1852733c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarPrefab: {fileID: 1661342248428840291, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  CarPrefab: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
   OwnerStreet: {fileID: 0}
   SpawningPeriod: 10
   CurrentTimeOffset: 0
