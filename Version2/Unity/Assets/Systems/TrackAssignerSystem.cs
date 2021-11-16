@@ -151,6 +151,8 @@ public class TrackAssignerSystem : SystemBase
                         LogErrorFormat("Cannot find the outgoing street of a track to assign to a car.");
                     }
 
+                    //LogFormat("The track name is: {0}", trackToAssignName);
+
                     var buffer = getChildComponentData[currentCross];
                     var trackToAssign = Entity.Null;
                     foreach (var trackChild in buffer)
@@ -168,7 +170,7 @@ public class TrackAssignerSystem : SystemBase
 
                     carComponentData.vehicleIsOn = VehicleIsOn.Cross;
                     carComponentData.TrackId = trackToAssign.Index;
-                    LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
+                    //LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
                 }
                 else if (vehicleIsOn == VehicleIsOn.Street && carComponentData.vehicleIsOn == VehicleIsOn.Cross) // The car is passing from a cross to a street
                 {
