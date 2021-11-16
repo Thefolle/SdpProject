@@ -178,7 +178,7 @@ public class VehicleMovementSystem : SystemBase
 
                 //Log("Car position is: " + localToWorld.Position);
                 //Log("Track position is: " + hit.Position);
-                Log("Hit distance is: " + distance);
+                //Log("Hit distance is: " + distance);
                 //Log(math.dot(forward, hit.SurfaceNormal));
                 //Log("The current track for the car has id " + hit.Entity.Index);
             }

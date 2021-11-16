@@ -10,6 +10,7 @@ public class TrackAssignerSystem : SystemBase
 {
     protected override void OnUpdate()
     {
+        if (World.Time.ElapsedTime < 2) return;
         
         var getBufferFromEntity = GetBufferFromEntity<PathComponentData>();
         var getCrossComponentData = GetComponentDataFromEntity<CrossComponentData>();
@@ -367,7 +368,6 @@ public class TrackAssignerSystem : SystemBase
                             edgeInitialNode = 0;
                             edgeEndingNode = 0;
                         }
-
 
                         var graph = World.GetExistingSystem<GraphGeneratorSystem>().District;
                         var carPath = GetBufferFromEntity<PathComponentData>()[carEntity];
