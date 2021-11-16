@@ -45,6 +45,8 @@ public class AntiCollisionSystem : SystemBase
         var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
         var getLaneComponentDataFromEntity = GetComponentDataFromEntity<LaneComponentData>();
         var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
+        var getTrafficLightComponentDataFromEntity = GetComponentDataFromEntity<TrafficLightComponentData>();
+        var getTrafficLightCrossComponentDataFromEntity = GetComponentDataFromEntity<TrafficLightCrossComponentData>();
 
         Entities.ForEach((Entity carEntity, LocalToWorld localToWorld, ref PhysicsVelocity physicsVelocity, ref CarComponentData  carComponentData) =>
         {
@@ -70,16 +72,16 @@ public class AntiCollisionSystem : SystemBase
 
             if (carComponentData.tryOvertake == false)
             {
-                StartR = localToWorld.Position + 1 * localToWorld.Forward + 1 * localToWorld.Right;
+                StartR = localToWorld.Position + 1.66f * localToWorld.Forward + 1 * localToWorld.Right;
                 EndR = localToWorld.Position + 2.5f * localToWorld.Forward + speedFactor * localToWorld.Forward + 1 * localToWorld.Right;
-                StartL = localToWorld.Position + 1 * localToWorld.Forward - 1 * localToWorld.Right;
+                StartL = localToWorld.Position + 1.66f * localToWorld.Forward - 1 * localToWorld.Right;
                 EndL = localToWorld.Position + 2.5f * localToWorld.Forward + speedFactor * localToWorld.Forward - 1 * localToWorld.Right;
             } else // is overtaking, less starting value of anti-collision raycast 
             {
-                StartR = localToWorld.Position + 1 * localToWorld.Forward + 1 * localToWorld.Right;
-                EndR = localToWorld.Position + 1.5f * localToWorld.Forward + speedFactor * localToWorld.Forward + 1 * localToWorld.Right;
-                StartL = localToWorld.Position + 1 * localToWorld.Forward - 1 * localToWorld.Right;
-                EndL = localToWorld.Position + 1.5f * localToWorld.Forward + speedFactor * localToWorld.Forward - 1 * localToWorld.Right;
+                StartR = localToWorld.Position + 1.66f * localToWorld.Forward + 1 * localToWorld.Right;
+                EndR = localToWorld.Position + 2f * localToWorld.Forward + speedFactor * localToWorld.Forward + 1 * localToWorld.Right;
+                StartL = localToWorld.Position + 1.66f * localToWorld.Forward - 1 * localToWorld.Right;
+                EndL = localToWorld.Position + 2f * localToWorld.Forward + speedFactor * localToWorld.Forward - 1 * localToWorld.Right;
             }
 
             //var StartR = localToWorld.Position + 1 * localToWorld.Forward + 1 * localToWorld.Right;
@@ -154,16 +156,14 @@ public class AntiCollisionSystem : SystemBase
                     }
             }
 
+            var slowDownTo0 = false;
             if (isCollisionFound)     // Braking method in case of raycast collision with another car
             {
-                if (carComponentData.Speed < 10)
-                    carComponentData.Speed = 0;
-                else
-                    carComponentData.Speed -= 0.01f * carComponentData.maxSpeed;        // that 0.10 is the braking factor. It reduces the car speed of 10% of the initial speed (it is just an example, we may change it to a proper value)
 
                 // SISTEMA LAMPEGGIO - Michele
                 if (getCarComponentDataFromEntity.HasComponent(coll.Entity))
                 {
+                    slowDownTo0 = true;
                     var othercarComponentData = getCarComponentDataFromEntity[coll.Entity];
 
                     if (carComponentData.maxSpeed > othercarComponentData.maxSpeed)
@@ -193,8 +193,38 @@ public class AntiCollisionSystem : SystemBase
                         }
                     }
                 }
+                else if(getTrafficLightComponentDataFromEntity.HasComponent(coll.Entity))
+                {
+                    var trafficLight = getTrafficLightComponentDataFromEntity[coll.Entity];
+                    if (carComponentData.vehicleIsOn == VehicleIsOn.Street) // If you are already on the cross: free the cross
+                    {
+                        var trafficLightCross = getParentComponentDataFromEntity[coll.Entity];
+                        if (getTrafficLightCrossComponentDataFromEntity.HasComponent(trafficLightCross.Value))
+                        {
+                            var trafficLightNumber = entityManager.GetName(coll.Entity).Substring(entityManager.GetName(coll.Entity).LastIndexOf('-') + 1);
+                            var trafficLightCrossComponentData = getTrafficLightCrossComponentDataFromEntity[trafficLightCross.Value];
+
+                            //LogError("trafficLightNumber: " + trafficLightNumber + ", isTurnOf: " + trafficLightCrossComponentData.greenTurn);
+                            if (trafficLightNumber != trafficLightCrossComponentData.greenTurn.ToString())
+                            {
+                                slowDownTo0 = true;
+                            }
+                            else
+                            {
+                                slowDownTo0 = false;
+                            }
+                        }
+                    }
+                    //LogError("Traffic Light is green: " + trafficLight.isGreen);
+                }
+
+                if(slowDownTo0)
+                    if (carComponentData.Speed < 10)
+                        carComponentData.Speed = 0;
+                    else
+                        carComponentData.Speed -= 0.01f * carComponentData.maxSpeed;        // that 0.10 is the braking factor. It reduces the car speed of 10% of the initial speed (it is just an example, we may change it to a proper value)
             }
-            else
+            if(!isCollisionFound || slowDownTo0 == false)
             {
                 if (carComponentData.Speed > carComponentData.maxSpeed)
                     carComponentData.Speed = carComponentData.maxSpeed;
