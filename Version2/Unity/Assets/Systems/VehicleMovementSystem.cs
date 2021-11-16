@@ -27,7 +27,7 @@ public class VehicleMovementSystem : SystemBase
     /// <para>This parameter establishes the range, expressed as distance from the track, in which the car can be considered in the track.</para>
     /// <para>Within the range, the movement algorithm is deactivated and the car proceeds forward. Outside the range, the algorithm works normally.</para>
     /// </summary>
-    private const float NegligibleDistance = 0.1f;
+    private const float NegligibleDistance = 0.2f;
 
     private const float LaneWideness = 2.5f * EditorFactor;
 
@@ -139,7 +139,7 @@ public class VehicleMovementSystem : SystemBase
             } else
             {
                 var gap = math.dot(forward, hit.SurfaceNormal);
-                if (distance < NegligibleDistance)
+                if (distance < NegligibleDistance && math.abs(gap) < math.abs(math.cos(math.radians(80))))
                 {
                     // The car's distance from the track is negligible
                     angularFactor = 0;
@@ -162,32 +162,31 @@ public class VehicleMovementSystem : SystemBase
                     /* The car is going away and it is distant from the track */
                     angularFactor = 1 * (isRightHit ? +1 : -1);
                 }
-                else
+                else if (gap >= 0 && distance < thresholdDistance)
                 {
                     /* The car is near and is going straight or it is leaving; let's turn it */
                     angularFactor = 1 * (isRightHit ? +1 : -1);
+                } else
+                {
+                    LogErrorFormat("A car reached an unforseen state.");
                 }
 
                 if (carComponentData.vehicleIsOn == VehicleIsOn.Cross && gap > math.radians(20))
                 {
-                    linearFactor = 0.5f;
+                    linearFactor = 0.35f;
                 }
 
-                /*Log("Car position is: " + localToWorld.Position);
-                Log("Track position is: " + hit.Position);
+                //Log("Car position is: " + localToWorld.Position);
+                //Log("Track position is: " + hit.Position);
                 Log("Hit distance is: " + distance);
-                Log(math.dot(forward, hit.SurfaceNormal));
-                Log("The current track for the car has id " + hit.Entity.Index);*/
+                //Log(math.dot(forward, hit.SurfaceNormal));
+                //Log("The current track for the car has id " + hit.Entity.Index);
             }
             rightHits.Dispose();
             leftHits.Dispose();
 
             physicsVelocity.Angular.y = carComponentData.AngularSpeed * angularFactor * deltaTime;
 
-            //if (carComponentData.vehicleIsOn == VehicleIsOn.Cross)
-            //{
-            //    linearFactor = 0.5f;
-            //}
             var tmp = physicsVelocity.Linear.y;
             physicsVelocity.Linear = forward * carComponentData.Speed * linearFactor * deltaTime;
             // Neglect the y speed
