@@ -8,13 +8,17 @@ using Unity.Physics.Systems;
 using static UnityEngine.Debug;
 using Unity.Collections;
 
+public static class GlobalVariables
+{
+    public static float trafficLightTimeSwitch = 10f;
+}
+
 public class TrafficLightSystem : SystemBase
 {
     protected override void OnUpdate()
     {
         float deltaTime = Time.DeltaTime;
         double elapsedTime = Time.ElapsedTime;
-        float trafficLightTimeSwitch = 10f;
 
 
         PhysicsWorld physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
@@ -27,34 +31,39 @@ public class TrafficLightSystem : SystemBase
         var getLocalToWorldComponentDataFromEntity = GetComponentDataFromEntity<LocalToWorld>();
         var getTrafficLightComponentDataFromEntity = GetComponentDataFromEntity<TrafficLightComponentData>();
 
-        Entities.ForEach((Entity trafficLightCross, ref TrafficLightCrossComponentData TrafficLightCrossCompData) =>
-        {
-            var nOfTrafficLightsInCross = getChildComponentDataFromEntity[trafficLightCross].Length;
-            var turn = (math.floor(elapsedTime / trafficLightTimeSwitch) % nOfTrafficLightsInCross);
-            TrafficLightCrossCompData.greenTurn = turn;
-            //LogError(TrafficLightCrossCompData.greenTurn + " is green");
+        /* Ottimizzazione: chiamo la funzione solo quando serve aggiornare il "turn", quindi attorno ad un secondo 
+         * prima fino ad un secondo dopo lo switch (2 secondi di delta per sicurezza)
+         */
 
-            /*
-            foreach (var trafficLight in getChildComponentDataFromEntity[trafficLightCross])
+        if (((elapsedTime/GlobalVariables.trafficLightTimeSwitch) % 1) < 0.1 || ((elapsedTime / GlobalVariables.trafficLightTimeSwitch) % 1) > 0.9)
+            Entities.ForEach((Entity trafficLightCross, ref TrafficLightCrossComponentData TrafficLightCrossCompData) =>
             {
-                if (getTrafficLightComponentDataFromEntity.HasComponent(trafficLight.Value))
-                {
-                    var trafficLightNumber = entityManager.GetName(trafficLight.Value).Substring(entityManager.GetName(trafficLight.Value).LastIndexOf('-') + 1);
-                    //LogError("trafficLightNumber: " + trafficLightNumber);
-                    //var turn = (math.floor(elapsedTime / trafficLightTimeSwitch) % nOfTrafficLightsInCross);
+                var nOfTrafficLightsInCross = getChildComponentDataFromEntity[trafficLightCross].Length;
+                var turn = (math.floor(elapsedTime / GlobalVariables.trafficLightTimeSwitch) % nOfTrafficLightsInCross);
+                TrafficLightCrossCompData.greenTurn = turn;
+                //LogError(TrafficLightCrossCompData.greenTurn + " is green");
 
-                    var trafficLightComponentData = getTrafficLightComponentDataFromEntity[trafficLight.Value];
-                    if (trafficLightNumber == turn.ToString())
+                /*
+                foreach (var trafficLight in getChildComponentDataFromEntity[trafficLightCross])
+                {
+                    if (getTrafficLightComponentDataFromEntity.HasComponent(trafficLight.Value))
                     {
-                        //LogError(trafficLightNumber + " is green");
-                        trafficLightComponentData.isGreen = true;
+                        var trafficLightNumber = entityManager.GetName(trafficLight.Value).Substring(entityManager.GetName(trafficLight.Value).LastIndexOf('-') + 1);
+                        //LogError("trafficLightNumber: " + trafficLightNumber);
+                        //var turn = (math.floor(elapsedTime / trafficLightTimeSwitch) % nOfTrafficLightsInCross);
+
+                        var trafficLightComponentData = getTrafficLightComponentDataFromEntity[trafficLight.Value];
+                        if (trafficLightNumber == turn.ToString())
+                        {
+                            //LogError(trafficLightNumber + " is green");
+                            trafficLightComponentData.isGreen = true;
+                        }
+                        else
+                        {
+                            trafficLightComponentData.isGreen = false;
+                        }
                     }
-                    else
-                    {
-                        trafficLightComponentData.isGreen = false;
-                    }
-                }
-            }*/
-        }).Run();
+                }*/
+            }).Run();
     }
 }

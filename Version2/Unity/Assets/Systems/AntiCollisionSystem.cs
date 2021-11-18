@@ -198,7 +198,7 @@ public class AntiCollisionSystem : SystemBase
                     var trafficLight = getTrafficLightComponentDataFromEntity[coll.Entity];
                     if (carComponentData.vehicleIsOn == VehicleIsOn.Street) // If you are already on the cross: free the cross
                     {
-                        var trafficLightCross = getParentComponentDataFromEntity[coll.Entity];
+                        /*var trafficLightCross = getParentComponentDataFromEntity[coll.Entity];
                         if (getTrafficLightCrossComponentDataFromEntity.HasComponent(trafficLightCross.Value))
                         {
                             var trafficLightNumber = entityManager.GetName(coll.Entity).Substring(entityManager.GetName(coll.Entity).LastIndexOf('-') + 1);
@@ -213,7 +213,11 @@ public class AntiCollisionSystem : SystemBase
                             {
                                 slowDownTo0 = false;
                             }
-                        }
+                        }*/
+                        if(trafficLight.isGreen)
+                            slowDownTo0 = false;
+                        else
+                            slowDownTo0 = true;
                     }
                     //LogError("Traffic Light is green: " + trafficLight.isGreen);
                 }
