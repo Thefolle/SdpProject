@@ -6,6 +6,7 @@ using Unity.Physics.Systems;
 using static UnityEngine.Debug;
 using Unity.Collections;
 
+[UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
 public class VehicleMovementSystem : SystemBase
 {
     private const int EditorFactor = 2;
@@ -31,9 +32,10 @@ public class VehicleMovementSystem : SystemBase
 
     private const float LaneWideness = 2.5f * EditorFactor;
 
+
     protected override void OnUpdate()
     {
-        float deltaTime = Time.DeltaTime;
+        float deltaTime = Time.fixedDeltaTime;
         double elapsedTime = Time.ElapsedTime;
         if (elapsedTime < 2) return;
 
@@ -57,7 +59,7 @@ public class VehicleMovementSystem : SystemBase
                 End = localToWorld.Position + 20 * localToWorld.Right,
                 Filter = CollisionFilter.Default
             };
-            DrawLine(raycastInputRight.Start, raycastInputRight.End, UnityEngine.Color.green, 0);
+            //DrawLine(raycastInputRight.Start, raycastInputRight.End, UnityEngine.Color.green, 0);
 
             var raycastInputLeft = new RaycastInput
             {
@@ -65,7 +67,7 @@ public class VehicleMovementSystem : SystemBase
                 End = localToWorld.Position + 20 * -localToWorld.Right,
                 Filter = CollisionFilter.Default
             };
-            DrawLine(raycastInputLeft.Start, raycastInputLeft.End, UnityEngine.Color.green, 0);
+            //DrawLine(raycastInputLeft.Start, raycastInputLeft.End, UnityEngine.Color.green, 0);
 
             var rightHits = new NativeList<RaycastHit>(20, Allocator.TempJob);
             var leftHits = new NativeList<RaycastHit>(20, Allocator.TempJob);

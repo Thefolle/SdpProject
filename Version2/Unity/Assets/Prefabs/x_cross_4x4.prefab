@@ -1645,6 +1645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGreen: 0
+  streetApproaching: {fileID: 0}
 --- !u!114 &5830155930759996997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2858,6 +2859,7 @@ GameObject:
   - component: {fileID: 7064765458010046198}
   - component: {fileID: 1511040379690072650}
   - component: {fileID: 2366882937409646105}
+  - component: {fileID: 6767074039858304812}
   m_Layer: 0
   m_Name: Base
   m_TagString: Untagged
@@ -3134,6 +3136,18 @@ MonoBehaviour:
         Tag07: 0
     m_SerializedVersion: 1
   m_SerializedVersion: 1
+--- !u!114 &6767074039858304812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2253753979873652193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9a65dd5e3ee9a64181b3dc903d28dc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2339031274149120302
 GameObject:
   m_ObjectHideFlags: 0
@@ -4841,6 +4855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGreen: 0
+  streetApproaching: {fileID: 0}
 --- !u!114 &5891137452674897025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7291,6 +7306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGreen: 0
+  streetApproaching: {fileID: 0}
 --- !u!114 &5946172150661759122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8517,6 +8533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGreen: 0
+  streetApproaching: {fileID: 0}
 --- !u!114 &2912063288324712964
 MonoBehaviour:
   m_ObjectHideFlags: 0

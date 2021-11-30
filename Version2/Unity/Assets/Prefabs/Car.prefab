@@ -113,7 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MotionType: 0
   m_Smoothing: 0
-  m_Mass: 1
+  m_Mass: 1500
   m_LinearDamping: 0.01
   m_AngularDamping: 0.05
   m_InitialLinearVelocity:
@@ -314,6 +314,8 @@ MonoBehaviour:
   vehicleIsOn: 2
   HasJustSpawned: 1
   HasReachedDestination: 0
+  myTrafficLight: 0
+  lastTimeMyTrafficLight: -1
 --- !u!114 &5093662526584122206
 MonoBehaviour:
   m_ObjectHideFlags: 0

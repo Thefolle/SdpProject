@@ -18,6 +18,7 @@ public class TrackAssignerSystem : SystemBase
         var getTrackComponentData = GetComponentDataFromEntity<TrackComponentData>();
         var getParentComponentData = GetComponentDataFromEntity<Parent>();
         var getChildComponentData = GetBufferFromEntity<Child>();
+        var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
         EntityManager entityManager = World.EntityManager;
         PhysicsWorld physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
 
@@ -170,6 +171,10 @@ public class TrackAssignerSystem : SystemBase
 
                     carComponentData.vehicleIsOn = VehicleIsOn.Cross;
                     carComponentData.TrackId = trackToAssign.Index;
+
+                    var parentEntity = getParentComponentDataFromEntity[trackToAssign];
+                    carComponentData.TrackParent = parentEntity.Value;
+
                     //LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
                 }
                 else if (vehicleIsOn == VehicleIsOn.Street && carComponentData.vehicleIsOn == VehicleIsOn.Cross) // The car is passing from a cross to a street
@@ -237,6 +242,10 @@ public class TrackAssignerSystem : SystemBase
                     {
                         carComponentData.vehicleIsOn = VehicleIsOn.Street;
                         carComponentData.TrackId = trackToFollow.Index;
+
+                        var parentEntity = getParentComponentDataFromEntity[trackToFollow];
+                        carComponentData.TrackParent = parentEntity.Value;
+
                         LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
                     }
                 }
@@ -341,6 +350,10 @@ public class TrackAssignerSystem : SystemBase
                     else
                     {
                         carComponentData.TrackId = hit.Entity.Index;
+
+                        var parentEntity = getParentComponentDataFromEntity[hit.Entity];
+                        carComponentData.TrackParent = parentEntity.Value;
+
                         Log("I've assigned track " + carComponentData.TrackId + " to car with id " + carEntity.Index);
 
                         /* Request a random path */

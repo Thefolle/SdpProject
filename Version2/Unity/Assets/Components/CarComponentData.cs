@@ -15,6 +15,7 @@ public struct CarComponentData : IComponentData
     public bool rightOvertakeAllowed;
 
     public int TrackId;
+    public Entity TrackParent;
 
     /// <summary>
     /// <para>Convenience variable that stores where the car is standing on.</para>
@@ -24,4 +25,12 @@ public struct CarComponentData : IComponentData
     // Spawning system variables
     public bool HasJustSpawned;
     public bool HasReachedDestination;
+
+    // Cross system
+    public bool myTrafficLight;
+    public double lastTimeMyTrafficLight;
+
+    public bool isOnStreet;
+    public bool isOnCross;
+    public bool isOnStreetAndCross;
 }
