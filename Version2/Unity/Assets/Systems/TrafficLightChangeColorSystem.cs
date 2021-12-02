@@ -18,6 +18,7 @@ public class TrafficLightChangeColorSystem : SystemBase
     {
         float deltaTime = Time.DeltaTime;
         double elapsedTime = Time.ElapsedTime;
+        if (elapsedTime < 2) return;
 
         PhysicsWorld physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
         EntityManager entityManager = World.EntityManager;
@@ -43,43 +44,51 @@ public class TrafficLightChangeColorSystem : SystemBase
                 if (getTrafficLightCrossComponentDataFromEntity.HasComponent(trafficLightCross.Value))
                 {
                     var trafficLightCrossComponentData = getTrafficLightCrossComponentDataFromEntity[trafficLightCross.Value];
-                    foreach (var trafficLightPanel in getChildComponentDataFromEntity[trafficLight])
+                    if (getChildComponentDataFromEntity.HasComponent(trafficLight))
                     {
-                        var thisTrafficLightPanelName = entityManager.GetName(trafficLightPanel.Value);
-                        if (trafficLightNumber == trafficLightCrossComponentData.greenTurn.ToString())
+                        foreach (var trafficLightPanel in getChildComponentDataFromEntity[trafficLight])
                         {
-                            // GREEN color
-                            trafficLightComponentData.isGreen = true;
-                            //rend.sharedMaterial.color = UnityEngine.Color.green;
-                            if(thisTrafficLightPanelName.Contains("Green"))
+                            var thisTrafficLightPanelName = entityManager.GetName(trafficLightPanel.Value);
+                            if (trafficLightNumber == trafficLightCrossComponentData.greenTurn.ToString())
                             {
-                                //entityManager.RemoveComponent(trafficLightPanel.Value, typeof(Disabled));
-                                PostUpdateCommands.RemoveComponent<Disabled>(trafficLightPanel.Value);
-                            }
-                            else if(thisTrafficLightPanelName.Contains("Red"))
-                            {
-                                //entityManager.AddComponent(trafficLightPanel.Value, typeof(Disabled));
-                                PostUpdateCommands.AddComponent<Disabled>(trafficLightPanel.Value);
-                            }
+                                // GREEN color
+                                trafficLightComponentData.isGreen = true;
+                                //rend.sharedMaterial.color = UnityEngine.Color.green;
+                                if (thisTrafficLightPanelName.Contains("Green"))
+                                {
+                                    //entityManager.RemoveComponent(trafficLightPanel.Value, typeof(Disabled));
+                                    PostUpdateCommands.RemoveComponent<Disabled>(trafficLightPanel.Value);
+                                }
+                                else if (thisTrafficLightPanelName.Contains("Red"))
+                                {
+                                    //entityManager.AddComponent(trafficLightPanel.Value, typeof(Disabled));
+                                    PostUpdateCommands.AddComponent<Disabled>(trafficLightPanel.Value);
+                                }
 
-                        }
-                        else
-                        {
-                            // RED color
-                            trafficLightComponentData.isGreen = false;
-                            //rend.sharedMaterial.color = UnityEngine.Color.red;
+                            }
+                            else
+                            {
+                                // RED color
+                                trafficLightComponentData.isGreen = false;
+                                //rend.sharedMaterial.color = UnityEngine.Color.red;
 
-                            if (thisTrafficLightPanelName.Contains("Green"))
-                            {
-                                //entityManager.AddComponent(trafficLightPanel.Value, typeof(Disabled));
-                                PostUpdateCommands.AddComponent<Disabled>(trafficLightPanel.Value);
-                            }
-                            else if (thisTrafficLightPanelName.Contains("Red"))
-                            {
-                                //entityManager.RemoveComponent(trafficLightPanel.Value, typeof(Disabled));
-                                PostUpdateCommands.RemoveComponent<Disabled>(trafficLightPanel.Value);
+                                if (thisTrafficLightPanelName.Contains("Green"))
+                                {
+                                    //entityManager.AddComponent(trafficLightPanel.Value, typeof(Disabled));
+                                    PostUpdateCommands.AddComponent<Disabled>(trafficLightPanel.Value);
+                                }
+                                else if (thisTrafficLightPanelName.Contains("Red"))
+                                {
+                                    //entityManager.RemoveComponent(trafficLightPanel.Value, typeof(Disabled));
+                                    PostUpdateCommands.RemoveComponent<Disabled>(trafficLightPanel.Value);
+                                }
                             }
                         }
+                    }
+                    else
+                    {
+                        LogError(trafficLight.Index + " has no child component");
+                        //entityManager.SetName(trafficLight, "ECCOMISONOIOQUELLOCHECERCAVI" + trafficLight.Index);
                     }
                 }
             }).Run();

@@ -19,6 +19,7 @@ public class TrafficLightSystem : SystemBase
     {
         float deltaTime = Time.DeltaTime;
         double elapsedTime = Time.ElapsedTime;
+        if (elapsedTime < 2) return;
 
 
         PhysicsWorld physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
@@ -38,32 +39,40 @@ public class TrafficLightSystem : SystemBase
         if (((elapsedTime/GlobalVariables.trafficLightTimeSwitch) % 1) < 0.1 || ((elapsedTime / GlobalVariables.trafficLightTimeSwitch) % 1) > 0.9)
             Entities.ForEach((Entity trafficLightCross, ref TrafficLightCrossComponentData TrafficLightCrossCompData) =>
             {
-                var nOfTrafficLightsInCross = getChildComponentDataFromEntity[trafficLightCross].Length;
-                var turn = (math.floor(elapsedTime / GlobalVariables.trafficLightTimeSwitch) % nOfTrafficLightsInCross);
-                TrafficLightCrossCompData.greenTurn = turn;
-                //LogError(TrafficLightCrossCompData.greenTurn + " is green");
-
-                /*
-                foreach (var trafficLight in getChildComponentDataFromEntity[trafficLightCross])
+                if (getChildComponentDataFromEntity.HasComponent(trafficLightCross))
                 {
-                    if (getTrafficLightComponentDataFromEntity.HasComponent(trafficLight.Value))
-                    {
-                        var trafficLightNumber = entityManager.GetName(trafficLight.Value).Substring(entityManager.GetName(trafficLight.Value).LastIndexOf('-') + 1);
-                        //LogError("trafficLightNumber: " + trafficLightNumber);
-                        //var turn = (math.floor(elapsedTime / trafficLightTimeSwitch) % nOfTrafficLightsInCross);
+                    var nOfTrafficLightsInCross = getChildComponentDataFromEntity[trafficLightCross].Length;
+                    var turn = (math.floor(elapsedTime / GlobalVariables.trafficLightTimeSwitch) % nOfTrafficLightsInCross);
+                    TrafficLightCrossCompData.greenTurn = turn;
+                    //LogError(TrafficLightCrossCompData.greenTurn + " is green");
 
-                        var trafficLightComponentData = getTrafficLightComponentDataFromEntity[trafficLight.Value];
-                        if (trafficLightNumber == turn.ToString())
+                    /*
+                    foreach (var trafficLight in getChildComponentDataFromEntity[trafficLightCross])
+                    {
+                        if (getTrafficLightComponentDataFromEntity.HasComponent(trafficLight.Value))
                         {
-                            //LogError(trafficLightNumber + " is green");
-                            trafficLightComponentData.isGreen = true;
+                            var trafficLightNumber = entityManager.GetName(trafficLight.Value).Substring(entityManager.GetName(trafficLight.Value).LastIndexOf('-') + 1);
+                            //LogError("trafficLightNumber: " + trafficLightNumber);
+                            //var turn = (math.floor(elapsedTime / trafficLightTimeSwitch) % nOfTrafficLightsInCross);
+
+                            var trafficLightComponentData = getTrafficLightComponentDataFromEntity[trafficLight.Value];
+                            if (trafficLightNumber == turn.ToString())
+                            {
+                                //LogError(trafficLightNumber + " is green");
+                                trafficLightComponentData.isGreen = true;
+                            }
+                            else
+                            {
+                                trafficLightComponentData.isGreen = false;
+                            }
                         }
-                        else
-                        {
-                            trafficLightComponentData.isGreen = false;
-                        }
-                    }
-                }*/
+                    }*/
+                }
+                else
+                {
+                    LogError(trafficLightCross.Index + " has no child component");
+                    //entityManager.SetName(trafficLightCross, "ECCOMISONOIOQUELLOCHECERCAVI" + trafficLightCross.Index);
+                }
             }).Run();
     }
 }

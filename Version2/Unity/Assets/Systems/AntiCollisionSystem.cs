@@ -464,8 +464,8 @@ public class AntiCollisionSystem : SystemBase
                     else
                         carComponentData.Speed += 0.003f * carComponentData.maxSpeed;
                 }
-                sphereHits.Dispose();
             }
+            sphereHits.Dispose();
         }).Run();
 }
 }
