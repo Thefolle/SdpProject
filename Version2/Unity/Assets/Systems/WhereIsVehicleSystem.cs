@@ -72,6 +72,31 @@ public class WhereIsVehicleSystem : SystemBase
 
                 }
 
+                if (isOnStreet && isOnCross && carComponentData.vehicleIsOn == VehicleIsOn.Cross)
+                {
+                    carComponentData.vehicleIsOn = VehicleIsOn.PassingFromCrossToStreet;
+                    carComponentData.isPathUpdated = false;
+                }
+                else if (isOnStreet && isOnCross && carComponentData.vehicleIsOn == VehicleIsOn.Street)
+                {
+                    carComponentData.vehicleIsOn = VehicleIsOn.PassingFromStreetToCross;
+                    carComponentData.isPathUpdated = false;
+                }
+                else if (isOnStreet && !isOnCross)
+                {
+                    carComponentData.vehicleIsOn = VehicleIsOn.Street;
+                }
+                else if (!isOnStreet && isOnCross)
+                {
+                    carComponentData.vehicleIsOn = VehicleIsOn.Cross;
+                } else if (isOnStreet && isOnCross && carComponentData.vehicleIsOn != VehicleIsOn.Cross && carComponentData.vehicleIsOn != VehicleIsOn.Street)
+                {
+                    /* Do nothing. Just to distinguish that this case is admissible */
+                } else if (isOnStreet && isOnCross && carComponentData.vehicleIsOn == VehicleIsOn.Cross)
+                {
+                    LogErrorFormat("Unforseen car state: isOnStreet = {0}, isOnCross = {1}", isOnStreet, isOnCross);
+                }
+
                 if (isOnStreet && isOnCross)
                 {
                     carComponentData.isOnStreetAndCross = true;
@@ -90,6 +115,8 @@ public class WhereIsVehicleSystem : SystemBase
                     carComponentData.isOnStreet = false;
                     carComponentData.isOnCross = true;
                 }
+
+                
             }
 
             sphereHits.Dispose();

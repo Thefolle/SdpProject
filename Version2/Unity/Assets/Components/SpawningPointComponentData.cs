@@ -8,7 +8,4 @@ public struct SpawningPointComponentData : IComponentData
     public Entity CarPrefab;
 
     public Entity LastSpawnedCar;
-
-    public float SpawningPeriod;
-    public float CurrentTimeOffset;
 }

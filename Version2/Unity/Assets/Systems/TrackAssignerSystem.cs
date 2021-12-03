@@ -26,44 +26,44 @@ public class TrackAssignerSystem : SystemBase
 
         Entities.ForEach((ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
-            var bottom = -math.normalize(localToWorld.Up);
-            var raycastInput = new RaycastInput
-            {
-                Start = localToWorld.Position,
-                End = localToWorld.Position + 10 * bottom,
-                Filter = CollisionFilter.Default
-            };
+            //var bottom = -math.normalize(localToWorld.Up);
+            //var raycastInput = new RaycastInput
+            //{
+            //    Start = localToWorld.Position,
+            //    End = localToWorld.Position + 10 * bottom,
+            //    Filter = CollisionFilter.Default
+            //};
 
-            var hits = new NativeList<RaycastHit>(20, Allocator.TempJob);
+            //var hits = new NativeList<RaycastHit>(20, Allocator.TempJob);
 
-            VehicleIsOn vehicleIsOn = default;
-            bool admissibleHitFound = false;
+            //VehicleIsOn vehicleIsOn = default;
+            bool admissibleHitFound = true;
 
-            if (physicsWorld.CastRay(raycastInput, ref hits) && hits.Length > 1)
-            {
-                foreach (var it in hits)
-                {
-                    if (entityManager.GetName(it.Entity).Contains("Lane"))
-                    {
-                        vehicleIsOn = VehicleIsOn.Street;
-                        admissibleHitFound = true;
-                        break;
-                    }
-                    else if (entityManager.GetName(it.Entity).Equals("Base"))
-                    {
-                        vehicleIsOn = VehicleIsOn.Cross;
-                        admissibleHitFound = true;
-                        break;
-                    }
-                    else if (entityManager.GetName(it.Entity).Equals("SpawningPoint"))
-                    {
-                        vehicleIsOn = VehicleIsOn.SpawningPoint;
-                        admissibleHitFound = true;
-                        break;
-                    }
-                }
-            }
-            hits.Dispose();
+            //if (physicsWorld.CastRay(raycastInput, ref hits) && hits.Length > 1)
+            //{
+            //    foreach (var it in hits)
+            //    {
+            //        if (entityManager.GetName(it.Entity).Contains("Lane"))
+            //        {
+            //            vehicleIsOn = VehicleIsOn.Street;
+            //            admissibleHitFound = true;
+            //            break;
+            //        }
+            //        else if (entityManager.GetName(it.Entity).Equals("Base"))
+            //        {
+            //            vehicleIsOn = VehicleIsOn.Cross;
+            //            admissibleHitFound = true;
+            //            break;
+            //        }
+            //        else if (entityManager.GetName(it.Entity).Equals("SpawningPoint"))
+            //        {
+            //            vehicleIsOn = VehicleIsOn.SpawningPoint;
+            //            admissibleHitFound = true;
+            //            break;
+            //        }
+            //    }
+            //}
+            //hits.Dispose();
 
             if (!admissibleHitFound)
             {
@@ -72,7 +72,7 @@ public class TrackAssignerSystem : SystemBase
             }
             else
             {
-                if (vehicleIsOn == VehicleIsOn.Cross && carComponentData.vehicleIsOn == VehicleIsOn.Street) // the car is passing from a street to a cross
+                if (carComponentData.vehicleIsOn == VehicleIsOn.PassingFromStreetToCross && !carComponentData.isPathUpdated) // the car is passing from a street to a cross
                 {
                     var path = getBufferFromEntity[carEntity];
                     if (path.Length == 0)
@@ -169,7 +169,7 @@ public class TrackAssignerSystem : SystemBase
                         LogErrorFormat("The cross with id {0} doesn't contain a track with name {1}", currentCross.Index, trackToAssignName);
                     }
 
-                    carComponentData.vehicleIsOn = VehicleIsOn.Cross;
+                    carComponentData.isPathUpdated = true;
                     carComponentData.TrackId = trackToAssign.Index;
 
                     var parentEntity = getParentComponentDataFromEntity[trackToAssign];
@@ -177,7 +177,7 @@ public class TrackAssignerSystem : SystemBase
 
                     //LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
                 }
-                else if (vehicleIsOn == VehicleIsOn.Street && carComponentData.vehicleIsOn == VehicleIsOn.Cross) // The car is passing from a cross to a street
+                else if (carComponentData.vehicleIsOn == VehicleIsOn.PassingFromCrossToStreet && !carComponentData.isPathUpdated) // The car is passing from a cross to a street
                 {
                     var path = getBufferFromEntity[carEntity];
 
@@ -240,7 +240,7 @@ public class TrackAssignerSystem : SystemBase
                     }
                     else
                     {
-                        carComponentData.vehicleIsOn = VehicleIsOn.Street;
+                        carComponentData.isPathUpdated = true;
                         carComponentData.TrackId = trackToFollow.Index;
 
                         var parentEntity = getParentComponentDataFromEntity[trackToFollow];
@@ -407,10 +407,6 @@ public class TrackAssignerSystem : SystemBase
                         }
                     }
                 }
-                else if (vehicleIsOn == VehicleIsOn.Street && carComponentData.vehicleIsOn == VehicleIsOn.SpawningPoint)
-                {
-                    carComponentData.vehicleIsOn = VehicleIsOn.Street;
-                }
             }
             
         }).WithoutBurst().Run();
@@ -422,5 +418,7 @@ public enum VehicleIsOn
 {
     Street,
     Cross,
-    SpawningPoint
+    SpawningPoint,
+    PassingFromCrossToStreet,
+    PassingFromStreetToCross
 }

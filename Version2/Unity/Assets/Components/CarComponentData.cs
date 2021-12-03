@@ -21,6 +21,12 @@ public struct CarComponentData : IComponentData
     /// <para>Convenience variable that stores where the car is standing on.</para>
     /// </summary>
     public VehicleIsOn vehicleIsOn;
+    /// <summary>
+    /// <para>When a car is moving from a street to a cross or viceversa, its path need to be updated.
+    /// Since this passage takes multiple frames, but the update is required once,
+    /// this flag stores whether the update has been performed or not.</para>
+    /// </summary>
+    public bool isPathUpdated;
 
     // Spawning system variables
     public bool HasJustSpawned;
