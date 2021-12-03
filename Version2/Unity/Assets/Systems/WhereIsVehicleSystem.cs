@@ -33,8 +33,6 @@ public class WhereIsVehicleSystem : SystemBase
         Entities.ForEach((Entity carEntity, LocalToWorld localToWorld, ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData) =>
         {
             var sphereHits = new NativeList<ColliderCastHit>(20, Allocator.TempJob);
-            bool isCollisionFound = false; // flag that tells whether at least one admissible hit has been found
-            ColliderCastHit coll = default;
 
             var radius = 0.5f;
             var direction = localToWorld.Forward;
@@ -80,6 +78,11 @@ public class WhereIsVehicleSystem : SystemBase
                 else if (isOnStreet && isOnCross && carComponentData.vehicleIsOn == VehicleIsOn.Street)
                 {
                     carComponentData.vehicleIsOn = VehicleIsOn.PassingFromStreetToCross;
+                    carComponentData.isPathUpdated = false;
+                }
+                else if (isOnStreet && !isOnCross && carComponentData.vehicleIsOn == VehicleIsOn.PassingFromStreetToCross) // some bends are so short that the car never hits a cross only
+                {
+                    carComponentData.vehicleIsOn = VehicleIsOn.PassingFromCrossToStreet;
                     carComponentData.isPathUpdated = false;
                 }
                 else if (isOnStreet && !isOnCross)
