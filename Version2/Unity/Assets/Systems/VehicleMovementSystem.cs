@@ -30,8 +30,6 @@ public class VehicleMovementSystem : SystemBase
     /// </summary>
     private const float NegligibleDistance = 0.2f;
 
-    private const float LaneWideness = 2.5f * EditorFactor;
-
 
     protected override void OnUpdate()
     {
@@ -173,9 +171,9 @@ public class VehicleMovementSystem : SystemBase
                     LogErrorFormat("A car reached an unforseen state.");
                 }
 
-                if (carComponentData.vehicleIsOn == VehicleIsOn.Cross && gap > math.radians(20))
+                if ((carComponentData.vehicleIsOn == VehicleIsOn.Cross || carComponentData.vehicleIsOn == VehicleIsOn.PassingFromStreetToCross || carComponentData.vehicleIsOn == VehicleIsOn.PassingFromCrossToStreet) && gap > math.cos(math.radians(60)))
                 {
-                    linearFactor = 0.35f;
+                    linearFactor = 0.2f;
                 }
 
                 //Log("Car position is: " + localToWorld.Position);

@@ -133,7 +133,7 @@ public class TrackAssignerSystem : SystemBase
                     LogErrorFormat("The cross with id {0} doesn't contain a track with name {1}", currentCross.Index, trackToAssignName);
                 }
 
-                LogFormat("minimum distance: {0}", minimumRelativeTrackDistance);
+                //LogFormat("minimum distance: {0}", minimumRelativeTrackDistance);
 
                 carComponentData.isPathUpdated = true;
                 carComponentData.TrackId = trackToAssign.Index;
