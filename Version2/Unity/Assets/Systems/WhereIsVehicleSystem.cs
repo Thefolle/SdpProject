@@ -30,7 +30,7 @@ public class WhereIsVehicleSystem : SystemBase
         var getStreetComponentDataFromEntity = GetComponentDataFromEntity<StreetComponentData>();
         var getBaseCrossComponentDataFromEntity = GetComponentDataFromEntity<BaseCrossComponentData>();
 
-        Entities.ForEach((Entity carEntity, LocalToWorld localToWorld, ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData) =>
+        Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
             var sphereHits = new NativeList<ColliderCastHit>(20, Allocator.TempJob);
 

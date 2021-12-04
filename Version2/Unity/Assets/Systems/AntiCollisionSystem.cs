@@ -51,7 +51,7 @@ public class AntiCollisionSystem : SystemBase
         var getTrafficLightCrossComponentDataFromEntity = GetComponentDataFromEntity<TrafficLightCrossComponentData>();
         var getStreetComponentDataFromEntity = GetComponentDataFromEntity<StreetComponentData>();
 
-        Entities.ForEach((Entity carEntity, LocalToWorld localToWorld, ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData) =>
+        Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
             // Anti-collision Raycasts
             /*

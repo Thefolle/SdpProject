@@ -212,7 +212,7 @@ public class TrackAssignerSystem : SystemBase
                     var parentEntity = getParentComponentDataFromEntity[trackToFollow];
                     carComponentData.TrackParent = parentEntity.Value;
 
-                    LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
+                    //LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
                 }
             }
             else if (carComponentData.HasJustSpawned && /* other checks for robustness */ carComponentData.vehicleIsOn == VehicleIsOn.SpawningPoint /*&& vehicleIsOn == VehicleIsOn.SpawningPoint this check doesn't allow arbitrary spawning on the city*/)
@@ -320,7 +320,7 @@ public class TrackAssignerSystem : SystemBase
                     var parentEntity = getParentComponentDataFromEntity[hit.Entity];
                     carComponentData.TrackParent = parentEntity.Value;
 
-                    Log("I've assigned track " + carComponentData.TrackId + " to car with id " + carEntity.Index);
+                    //Log("I've assigned track " + carComponentData.TrackId + " to car with id " + carEntity.Index);
 
                     /* Request a random path */
                     var trackedLane = getParentComponentData[hit.Entity].Value;

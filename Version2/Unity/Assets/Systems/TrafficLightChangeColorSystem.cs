@@ -34,7 +34,7 @@ public class TrafficLightChangeColorSystem : SystemBase
         //var getComponentObject = entityManager.GetComponentObject<UnityEngine.Renderer>(new Entity());
 
         if (((elapsedTime / GlobalVariables.trafficLightTimeSwitch) % 1) < 0.1 || ((elapsedTime / GlobalVariables.trafficLightTimeSwitch) % 1) > 0.9)
-            Entities.ForEach((Entity trafficLight, ref TrafficLightComponentData trafficLightComponentData) =>
+            Entities.ForEach((ref TrafficLightComponentData trafficLightComponentData, in Entity trafficLight) =>
             {
                 //rend = entityManager.GetComponentObject<UnityEngine.MeshRenderer>(trafficLight);
                 //rend.enabled = true;

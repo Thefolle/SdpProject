@@ -31,7 +31,7 @@ public class VehicleChangeLaneSystem : SystemBase
         //var currentStreetHere = currentStreet;
 
 
-        Entities.ForEach((Entity carEntity, LocalToWorld localToWorld, ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData) =>
+        Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
             if (carComponentData.tryOvertake)
             {

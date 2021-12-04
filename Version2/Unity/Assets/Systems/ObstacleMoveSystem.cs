@@ -26,7 +26,7 @@ public class ObstacleMoveSystem : SystemBase
         //var currentStreetHere = currentStreet;
 
 
-        Entities.ForEach((Entity obstacle, LocalToWorld localToWorld, ref Translation translation, in ObstaclesComponent obstaclesComponent) =>
+        Entities.ForEach((ref Translation translation, in ObstaclesComponent obstaclesComponent, in Entity obstacle, in LocalToWorld localToWorld) =>
         {
             if(UnityEngine.Input.GetKey(UnityEngine.KeyCode.K))
             {

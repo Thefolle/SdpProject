@@ -6,7 +6,7 @@ using Unity.Physics.Systems;
 using static UnityEngine.Debug;
 using Unity.Collections;
 
-[UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
+//[UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
 public class VehicleMovementSystem : SystemBase
 {
     private const int EditorFactor = 2;
@@ -168,7 +168,7 @@ public class VehicleMovementSystem : SystemBase
                     angularFactor = 1 * (isRightHit ? +1 : -1);
                 } else
                 {
-                    LogErrorFormat("A car reached an unforseen state.");
+                    LogErrorFormat("{0}", "A car reached an unforseen state.");
                 }
 
                 if ((carComponentData.vehicleIsOn == VehicleIsOn.Cross || carComponentData.vehicleIsOn == VehicleIsOn.PassingFromStreetToCross || carComponentData.vehicleIsOn == VehicleIsOn.PassingFromCrossToStreet) && gap > math.cos(math.radians(60)))

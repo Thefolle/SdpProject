@@ -37,7 +37,7 @@ public class TrafficLightSystem : SystemBase
          */
 
         if (((elapsedTime/GlobalVariables.trafficLightTimeSwitch) % 1) < 0.1 || ((elapsedTime / GlobalVariables.trafficLightTimeSwitch) % 1) > 0.9)
-            Entities.ForEach((Entity trafficLightCross, ref TrafficLightCrossComponentData TrafficLightCrossCompData) =>
+            Entities.ForEach((ref TrafficLightCrossComponentData TrafficLightCrossCompData, in Entity trafficLightCross) =>
             {
                 if (getChildComponentDataFromEntity.HasComponent(trafficLightCross))
                 {
