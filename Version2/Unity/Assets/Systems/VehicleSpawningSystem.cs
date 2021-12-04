@@ -16,17 +16,15 @@ public class VehicleSpawningSystem : SystemBase
         var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
         var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
         var getStreetComponentDataFromEntity = GetComponentDataFromEntity<StreetComponentData>();
-        var getLocalToWorldComponentDataFromEntity = GetComponentDataFromEntity<LocalToWorld>();
 
         var deltaTime = World.Time.DeltaTime;
 
         Entities.ForEach((ref SpawningPointComponentData spawningPointComponentData, in LocalToWorld localToWorld, in Rotation rotation) =>
         {
-            if (spawningPointComponentData.LastSpawnedCar == Entity.Null || math.distance(getLocalToWorldComponentDataFromEntity[spawningPointComponentData.LastSpawnedCar].Position, localToWorld.Position) > 16)
+            if (spawningPointComponentData.LastSpawnedCar == Entity.Null || math.distance(entityManager.GetComponentData<LocalToWorld>(spawningPointComponentData.LastSpawnedCar).Position, localToWorld.Position) > 16)
             {
 
                 /* Spawn a new car */
-                //entityManager.SetEnabled(spawningPointComponentData.CarPrefab, false);
                 Entity carEntity = entityManager.Instantiate(spawningPointComponentData.CarPrefab);
                 var carHeight = entityManager.GetComponentData<CompositeScale>(carEntity).Value.c1.y;
 
@@ -47,8 +45,6 @@ public class VehicleSpawningSystem : SystemBase
                 //});
 
                 spawningPointComponentData.LastSpawnedCar = carEntity;
-
-                //entityManager.SetEnabled(carEntity, true);
             }
         }).WithStructuralChanges().Run();
     
