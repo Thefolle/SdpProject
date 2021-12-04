@@ -5,8 +5,6 @@ using Unity.Physics;
 using Unity.Mathematics;
 using Unity.Transforms;
 using Unity.Physics.Systems;
-using static UnityEngine.Debug;
-using Unity.Collections;
 
 public class VehicleSpawningSystem : SystemBase
 {
@@ -26,16 +24,9 @@ public class VehicleSpawningSystem : SystemBase
         {
             if (spawningPointComponentData.LastSpawnedCar == Entity.Null || math.distance(getLocalToWorldComponentDataFromEntity[spawningPointComponentData.LastSpawnedCar].Position, localToWorld.Position) > 16)
             {
-                /* Manage spawn period*/
-                //spawningPointComponentData.CurrentTimeOffset += deltaTime;
-                //if (spawningPointComponentData.CurrentTimeOffset < spawningPointComponentData.SpawningPeriod)
-                //{
-                //    return;
-                //}
-                //spawningPointComponentData.CurrentTimeOffset -= spawningPointComponentData.SpawningPeriod;
 
                 /* Spawn a new car */
-                entityManager.SetEnabled(spawningPointComponentData.CarPrefab, false);
+                //entityManager.SetEnabled(spawningPointComponentData.CarPrefab, false);
                 Entity carEntity = entityManager.Instantiate(spawningPointComponentData.CarPrefab);
                 var carHeight = entityManager.GetComponentData<CompositeScale>(carEntity).Value.c1.y;
 
@@ -57,7 +48,7 @@ public class VehicleSpawningSystem : SystemBase
 
                 spawningPointComponentData.LastSpawnedCar = carEntity;
 
-                entityManager.SetEnabled(carEntity, true);
+                //entityManager.SetEnabled(carEntity, true);
             }
         }).WithStructuralChanges().Run();
     

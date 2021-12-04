@@ -70,35 +70,34 @@ public class WhereIsVehicleSystem : SystemBase
 
                 }
 
-                if (isOnStreet && isOnCross && carComponentData.vehicleIsOn == VehicleIsOn.Cross)
-                {
-                    carComponentData.vehicleIsOn = VehicleIsOn.PassingFromCrossToStreet;
-                    carComponentData.isPathUpdated = false;
-                }
-                else if (isOnStreet && isOnCross && carComponentData.vehicleIsOn == VehicleIsOn.Street)
+                
+                if (isOnStreet && isOnCross && carComponentData.vehicleIsOn == VehicleIsOn.Street)
                 {
                     carComponentData.vehicleIsOn = VehicleIsOn.PassingFromStreetToCross;
                     carComponentData.isPathUpdated = false;
                 }
-                else if (isOnStreet && !isOnCross && carComponentData.vehicleIsOn == VehicleIsOn.PassingFromStreetToCross) // some bends are so short that the car never hits a cross only
+                else if (!isOnStreet && isOnCross && carComponentData.vehicleIsOn == VehicleIsOn.PassingFromStreetToCross)
+                {
+                    carComponentData.vehicleIsOn = VehicleIsOn.Cross;
+                }
+                else if (isOnStreet && isOnCross && carComponentData.vehicleIsOn == VehicleIsOn.Cross)
                 {
                     carComponentData.vehicleIsOn = VehicleIsOn.PassingFromCrossToStreet;
+                }
+                else if (isOnStreet && !isOnCross && (carComponentData.vehicleIsOn == VehicleIsOn.PassingFromCrossToStreet || carComponentData.vehicleIsOn == VehicleIsOn.PassingFromStreetToCross))
+                {
+                    carComponentData.vehicleIsOn = VehicleIsOn.Street;
                     carComponentData.isPathUpdated = false;
                 }
                 else if (isOnStreet && !isOnCross)
                 {
                     carComponentData.vehicleIsOn = VehicleIsOn.Street;
                 }
-                else if (!isOnStreet && isOnCross)
+                else
                 {
-                    carComponentData.vehicleIsOn = VehicleIsOn.Cross;
-                } else if (isOnStreet && isOnCross && carComponentData.vehicleIsOn != VehicleIsOn.Cross && carComponentData.vehicleIsOn != VehicleIsOn.Street)
-                {
-                    /* Do nothing. Just to distinguish that this case is admissible */
-                } else if (isOnStreet && isOnCross && carComponentData.vehicleIsOn == VehicleIsOn.Cross)
-                {
-                    LogErrorFormat("Unforseen car state: isOnStreet = {0}, isOnCross = {1}", isOnStreet, isOnCross);
+                    //LogFormat("Non-controlled case: isOnStreet = {0}, isOnCross = {1}, vehicleIsOn = {2}", isOnStreet, isOnCross, carComponentData.vehicleIsOn);
                 }
+
 
                 if (isOnStreet && isOnCross)
                 {

@@ -5,6 +5,6 @@ using Unity.Entities;
 [GenerateAuthoringComponent]
 public struct BaseCrossComponentData : IComponentData
 {
-
+    private char Pad;
 }
 

@@ -143,7 +143,7 @@ public class TrackAssignerSystem : SystemBase
 
                 //LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
             }
-            else if (carComponentData.vehicleIsOn == VehicleIsOn.PassingFromCrossToStreet && !carComponentData.isPathUpdated) // The car is passing from a cross to a street
+            else if (carComponentData.vehicleIsOn == VehicleIsOn.Street && !carComponentData.isPathUpdated) // The car is passing from a cross to a street
             {
                 var path = getBufferFromEntity[carEntity];
 
