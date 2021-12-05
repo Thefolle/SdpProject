@@ -13,25 +13,6 @@ public class AntiCollisionSystem : SystemBase
 {
     private const int EditorFactor = 2;
 
-    /// <summary>
-    /// <para>The degree at which cars stop steering to approach toward the track. This parameter is an indicator of the convergence speed of a car to a track.
-    /// It is measured in degrees.</para>
-    /// </summary>
-    private const float steeringDegree = 60;
-
-    /// <summary>
-    /// <para>The algorithm exploits this parameter to determine the behaviour of a car w.r.t. its track.</para>
-    /// <para>Greater values imply a better convergence in straight lanes, which is worse during bends. Cars may lose their track during bends for big values. Moreover, you should take into account both the width of the car and the width of the lane.</para>
-    /// <para>Lower values imply a better convergence in bends, which is slower in straight lanes.</para>
-    /// </summary>
-    private const float thresholdDistance = 0.3f;
-
-    /// <summary>
-    /// <para>This parameter establishes the range, expressed as distance from the track, in which the car can be considered in the track.</para>
-    /// <para>Within the range, the movement algorithm is deactivated and the car proceeds forward. Outside the range, the algorithm works normally.</para>
-    /// </summary>
-    private const float NegligibleDistance = 0.1f;
-
     private const float LaneWidth = 2.5f * EditorFactor;
 
     protected override void OnUpdate()

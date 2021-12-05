@@ -10,6 +10,12 @@ using Unity.Collections;
 
 public class ObstacleMoveSystem : SystemBase
 {
+    protected override void OnCreate()
+    {
+        base.OnCreate();
+        this.Enabled = false;
+    }
+
     protected override void OnUpdate()
     {
         float deltaTime = Time.DeltaTime;

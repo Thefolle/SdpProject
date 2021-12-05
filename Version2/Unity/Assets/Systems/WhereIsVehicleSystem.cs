@@ -7,6 +7,7 @@ using Unity.Transforms;
 using Unity.Physics.Systems;
 using static UnityEngine.Debug;
 using Unity.Collections;
+using Unity.Jobs;
 
 [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
 public class WhereIsVehicleSystem : SystemBase
@@ -18,7 +19,7 @@ public class WhereIsVehicleSystem : SystemBase
         double elapsedTime = Time.ElapsedTime;
         if (elapsedTime < 2) return;
 
-        PhysicsWorld physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
+        var physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
         EntityManager entityManager = World.EntityManager;
         var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
         var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
@@ -30,10 +31,12 @@ public class WhereIsVehicleSystem : SystemBase
         var getTrafficLightCrossComponentDataFromEntity = GetComponentDataFromEntity<TrafficLightCrossComponentData>();
         var getStreetComponentDataFromEntity = GetComponentDataFromEntity<StreetComponentData>();
         var getBaseCrossComponentDataFromEntity = GetComponentDataFromEntity<BaseCrossComponentData>();
+        
 
+        Dependency =
         Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
-            var sphereHits = new NativeList<ColliderCastHit>(20, Allocator.TempJob);
+            var sphereHits = new NativeList<ColliderCastHit>(20, Allocator.Temp);
 
             var radius = 0.5f;
             var direction = localToWorld.Forward;
@@ -57,11 +60,11 @@ public class WhereIsVehicleSystem : SystemBase
 
                 foreach (var i in sphereHits)
                 {
-                    if(getLaneComponentDataFromEntity.HasComponent(i.Entity))
+                    if (getLaneComponentDataFromEntity.HasComponent(i.Entity))
                     {
                         isOnStreet = true;
                     }
-                    else if(getBaseCrossComponentDataFromEntity.HasComponent(i.Entity))
+                    else if (getBaseCrossComponentDataFromEntity.HasComponent(i.Entity))
                     {
                         isOnCross = true;
                     }
@@ -71,7 +74,7 @@ public class WhereIsVehicleSystem : SystemBase
 
                 }
 
-                
+
                 if (isOnStreet && isOnCross && carComponentData.vehicleIsOn == VehicleIsOn.Street)
                 {
                     carComponentData.vehicleIsOn = VehicleIsOn.PassingFromStreetToCross;
@@ -106,24 +109,26 @@ public class WhereIsVehicleSystem : SystemBase
                     carComponentData.isOnStreet = false;
                     carComponentData.isOnCross = false;
                 }
-                else if(isOnStreet)
+                else if (isOnStreet)
                 {
                     carComponentData.isOnStreetAndCross = false;
                     carComponentData.isOnStreet = true;
                     carComponentData.isOnCross = false;
                 }
-                else if(isOnCross)
+                else if (isOnCross)
                 {
                     carComponentData.isOnStreetAndCross = false;
                     carComponentData.isOnStreet = false;
                     carComponentData.isOnCross = true;
                 }
 
-                
             }
 
-            sphereHits.Dispose();
-        }).Run();
+        })
+            .WithReadOnly(physicsWorld)
+            .WithReadOnly(getLaneComponentDataFromEntity)
+            .WithReadOnly(getBaseCrossComponentDataFromEntity)
+            .ScheduleParallel(Dependency);
 
     }
 }
