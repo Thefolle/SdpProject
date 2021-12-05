@@ -15,23 +15,13 @@ public class WhereIsVehicleSystem : SystemBase
 
     protected override void OnUpdate()
     {
-        float deltaTime = Time.DeltaTime;
         double elapsedTime = Time.ElapsedTime;
         if (elapsedTime < 2) return;
 
         var physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
-        EntityManager entityManager = World.EntityManager;
-        var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
-        var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
         var getLaneComponentDataFromEntity = GetComponentDataFromEntity<LaneComponentData>();
-        var getCrossComponentDataFromEntity = GetComponentDataFromEntity<CrossComponentData>();
-        var getObstaclesComponentDataFromEntity = GetComponentDataFromEntity<ObstaclesComponent>();
-        var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
-        var getTrafficLightComponentDataFromEntity = GetComponentDataFromEntity<TrafficLightComponentData>();
-        var getTrafficLightCrossComponentDataFromEntity = GetComponentDataFromEntity<TrafficLightCrossComponentData>();
-        var getStreetComponentDataFromEntity = GetComponentDataFromEntity<StreetComponentData>();
         var getBaseCrossComponentDataFromEntity = GetComponentDataFromEntity<BaseCrossComponentData>();
-        
+
 
         Dependency =
         Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>

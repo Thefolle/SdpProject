@@ -11,13 +11,7 @@ public class VehicleSpawningSystem : SystemBase
 
     protected override void OnUpdate()
     {
-        PhysicsWorld physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
         EntityManager entityManager = World.EntityManager;
-        var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
-        var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
-        var getStreetComponentDataFromEntity = GetComponentDataFromEntity<StreetComponentData>();
-
-        var deltaTime = World.Time.DeltaTime;
 
         Entities.ForEach((ref SpawningPointComponentData spawningPointComponentData, in LocalToWorld localToWorld, in Rotation rotation) =>
         {

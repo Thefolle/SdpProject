@@ -16,22 +16,14 @@ public class TrafficLightChangeColorSystem : SystemBase
 
     protected override void OnUpdate()
     {
-        float deltaTime = Time.DeltaTime;
         double elapsedTime = Time.ElapsedTime;
         if (elapsedTime < 2) return;
 
-        PhysicsWorld physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
         EntityManager entityManager = World.EntityManager;
-        var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
-        var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
         var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
         var getChildComponentDataFromEntity = GetBufferFromEntity<Child>();
-        var getLaneComponentDataFromEntity = GetComponentDataFromEntity<LaneComponentData>();
-        var getLocalToWorldComponentDataFromEntity = GetComponentDataFromEntity<LocalToWorld>();
-        var getTrafficLightComponentDataFromEntity = GetComponentDataFromEntity<TrafficLightComponentData>();
         var getTrafficLightCrossComponentDataFromEntity = GetComponentDataFromEntity<TrafficLightCrossComponentData>();
         var PostUpdateCommands = new EntityCommandBuffer(Allocator.Temp);
-        //var getComponentObject = entityManager.GetComponentObject<UnityEngine.Renderer>(new Entity());
 
         if (((elapsedTime / GlobalVariables.trafficLightTimeSwitch) % 1) < 0.1 || ((elapsedTime / GlobalVariables.trafficLightTimeSwitch) % 1) > 0.9)
             Entities.ForEach((ref TrafficLightComponentData trafficLightComponentData, in Entity trafficLight) =>

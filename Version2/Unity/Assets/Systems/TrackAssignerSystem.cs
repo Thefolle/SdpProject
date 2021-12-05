@@ -19,7 +19,6 @@ public class TrackAssignerSystem : SystemBase
         var getTrackComponentData = GetComponentDataFromEntity<TrackComponentData>();
         var getParentComponentData = GetComponentDataFromEntity<Parent>();
         var getChildComponentData = GetBufferFromEntity<Child>();
-        var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
         EntityManager entityManager = World.EntityManager;
         PhysicsWorld physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
 
@@ -139,7 +138,7 @@ public class TrackAssignerSystem : SystemBase
                 carComponentData.isPathUpdated = true;
                 carComponentData.TrackId = trackToAssign.Index;
 
-                var parentEntity = getParentComponentDataFromEntity[trackToAssign];
+                var parentEntity = getParentComponentData[trackToAssign];
                 carComponentData.TrackParent = parentEntity.Value;
 
                 //LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
@@ -210,7 +209,7 @@ public class TrackAssignerSystem : SystemBase
                     carComponentData.isPathUpdated = true;
                     carComponentData.TrackId = trackToFollow.Index;
 
-                    var parentEntity = getParentComponentDataFromEntity[trackToFollow];
+                    var parentEntity = getParentComponentData[trackToFollow];
                     carComponentData.TrackParent = parentEntity.Value;
 
                     //LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
@@ -318,7 +317,7 @@ public class TrackAssignerSystem : SystemBase
                 {
                     carComponentData.TrackId = hit.Entity.Index;
 
-                    var parentEntity = getParentComponentDataFromEntity[hit.Entity];
+                    var parentEntity = getParentComponentData[hit.Entity];
                     carComponentData.TrackParent = parentEntity.Value;
 
                     //Log("I've assigned track " + carComponentData.TrackId + " to car with id " + carEntity.Index);

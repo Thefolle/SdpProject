@@ -16,7 +16,6 @@ public class VehicleChangeLaneSystem : SystemBase
 
     protected override void OnUpdate()
     {
-        float deltaTime = Time.DeltaTime;
         double elapsedTime = Time.ElapsedTime;
         //if (elapsedTime < 2) return;
 
@@ -26,9 +25,7 @@ public class VehicleChangeLaneSystem : SystemBase
         var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
         var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
         var getChildComponentDataFromEntity = GetBufferFromEntity<Child>();
-        var getLaneComponentDataFromEntity = GetComponentDataFromEntity<LaneComponentData>();
         var getLocalToWorldComponentDataFromEntity = GetComponentDataFromEntity<LocalToWorld>();
-        //var currentStreetHere = currentStreet;
 
 
         Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>

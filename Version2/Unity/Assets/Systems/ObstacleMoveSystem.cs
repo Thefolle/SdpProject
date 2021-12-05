@@ -18,19 +18,6 @@ public class ObstacleMoveSystem : SystemBase
 
     protected override void OnUpdate()
     {
-        float deltaTime = Time.DeltaTime;
-        double elapsedTime = Time.ElapsedTime;
-        //if (elapsedTime < 2) return;
-
-        PhysicsWorld physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
-        EntityManager entityManager = World.EntityManager;
-        var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
-        var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
-        var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
-        var getChildComponentDataFromEntity = GetBufferFromEntity<Child>();
-        var getLaneComponentDataFromEntity = GetComponentDataFromEntity<LaneComponentData>();
-        //var currentStreetHere = currentStreet;
-
 
         Entities.ForEach((ref Translation translation, in ObstaclesComponent obstaclesComponent, in Entity obstacle, in LocalToWorld localToWorld) =>
         {

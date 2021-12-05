@@ -17,20 +17,10 @@ public class TrafficLightSystem : SystemBase
 {
     protected override void OnUpdate()
     {
-        float deltaTime = Time.DeltaTime;
         double elapsedTime = Time.ElapsedTime;
         if (elapsedTime < 2) return;
 
-
-        PhysicsWorld physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
-        EntityManager entityManager = World.EntityManager;
-        var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
-        var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
-        var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
         var getChildComponentDataFromEntity = GetBufferFromEntity<Child>();
-        var getLaneComponentDataFromEntity = GetComponentDataFromEntity<LaneComponentData>();
-        var getLocalToWorldComponentDataFromEntity = GetComponentDataFromEntity<LocalToWorld>();
-        var getTrafficLightComponentDataFromEntity = GetComponentDataFromEntity<TrafficLightComponentData>();
 
         /* Ottimizzazione: chiamo la funzione solo quando serve aggiornare il "turn", quindi attorno ad un secondo 
          * prima fino ad un secondo dopo lo switch (2 secondi di delta per sicurezza)

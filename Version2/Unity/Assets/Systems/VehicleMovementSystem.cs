@@ -38,11 +38,7 @@ public class VehicleMovementSystem : SystemBase
         if (elapsedTime < 2) return;
 
         PhysicsWorld physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
-        EntityManager entityManager = World.EntityManager;
         var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
-        var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
-        var getLaneComponentDataFromEntity = GetComponentDataFromEntity<LaneComponentData>();
-        var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
 
         Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
