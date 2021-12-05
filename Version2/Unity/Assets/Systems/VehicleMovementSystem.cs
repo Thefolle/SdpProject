@@ -6,7 +6,7 @@ using Unity.Physics.Systems;
 using static UnityEngine.Debug;
 using Unity.Collections;
 
-//[UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
+[UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
 public class VehicleMovementSystem : SystemBase
 {
     private const int EditorFactor = 2;

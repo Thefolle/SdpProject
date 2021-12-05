@@ -8,6 +8,7 @@ using Unity.Physics.Systems;
 using static UnityEngine.Debug;
 using Unity.Collections;
 
+[UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
 public class AntiCollisionSystem : SystemBase
 {
     private const int EditorFactor = 2;

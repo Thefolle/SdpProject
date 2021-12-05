@@ -6,6 +6,7 @@ using Unity.Physics.Systems;
 using Unity.Transforms;
 using static UnityEngine.Debug;
 
+[UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
 public class TrackAssignerSystem : SystemBase
 {
     protected override void OnUpdate()
