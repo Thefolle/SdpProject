@@ -32,10 +32,6 @@ public struct CarComponentData : IComponentData
     public bool HasJustSpawned;
     public bool HasReachedDestination;
 
-    // Cross system
-    public bool myTrafficLight;
-    public double lastTimeMyTrafficLight;
-
     public bool isOnStreet;
     public bool isOnCross;
     public bool isOnStreetAndCross;
