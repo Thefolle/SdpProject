@@ -221,17 +221,23 @@ public class TrackAssignerSystem : SystemBase
 
                 carComponentData.HasJustSpawned = false;
                 /* Search for the nearest admissible track */
+                var trackFilter = new CollisionFilter
+                {
+                    BelongsTo = 1 << 0,
+                    CollidesWith = 1 << 0,
+                    GroupIndex = 0
+                };
                 var raycastInputRight = new RaycastInput
                 {
                     Start = localToWorld.Position,
                     End = localToWorld.Position + 20 * localToWorld.Right,
-                    Filter = CollisionFilter.Default
+                    Filter = trackFilter
                 };
                 var raycastInputLeft = new RaycastInput
                 {
                     Start = localToWorld.Position,
                     End = localToWorld.Position + 20 * -localToWorld.Right,
-                    Filter = CollisionFilter.Default
+                    Filter = trackFilter
                 };
                 var rightHits = new NativeList<RaycastHit>(20, Allocator.TempJob);
                 var leftHits = new NativeList<RaycastHit>(20, Allocator.TempJob);
@@ -241,7 +247,7 @@ public class TrackAssignerSystem : SystemBase
                 var forward = math.normalize(localToWorld.Forward);
                 var minimumDistance = float.MaxValue;
 
-                if (physicsWorld.CastRay(raycastInputLeft, ref leftHits) && leftHits.Length > 1)
+                if (physicsWorld.CastRay(raycastInputLeft, ref leftHits))
                 {
                     foreach (var it in leftHits)
                     {
@@ -273,7 +279,7 @@ public class TrackAssignerSystem : SystemBase
                     }
                 }
                 if (/*!isTrackHitFound && this check prevents car from being arbitrarily spawned between the center of the street
-                        and the leftmost track of the right group of lanes*/ physicsWorld.CastRay(raycastInputRight, ref rightHits) && rightHits.Length > 1)
+                        and the leftmost track of the right group of lanes*/ physicsWorld.CastRay(raycastInputRight, ref rightHits))
                 {
                     foreach (var it in rightHits)
                     {

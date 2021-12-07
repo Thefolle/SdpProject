@@ -39,6 +39,7 @@ public class VehicleMovementSystem : SystemBase
 
         PhysicsWorld physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
         var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
+        var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
 
         Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
@@ -47,11 +48,17 @@ public class VehicleMovementSystem : SystemBase
             /* Initialize data */
             float angularFactor = 0;
             float linearFactor = 1;
+            var trackFilter = new CollisionFilter
+            {
+                BelongsTo = 1 << 0,
+                CollidesWith = 1 << 0,
+                GroupIndex = 0
+            };
             var raycastInputRight = new RaycastInput
             {
                 Start = localToWorld.Position,
                 End = localToWorld.Position + 20 * localToWorld.Right,
-                Filter = CollisionFilter.Default
+                Filter = trackFilter
             };
             //DrawLine(raycastInputRight.Start, raycastInputRight.End, UnityEngine.Color.green, 0);
 
@@ -59,7 +66,7 @@ public class VehicleMovementSystem : SystemBase
             {
                 Start = localToWorld.Position,
                 End = localToWorld.Position + 20 * -localToWorld.Right,
-                Filter = CollisionFilter.Default
+                Filter = trackFilter
             };
             //DrawLine(raycastInputLeft.Start, raycastInputLeft.End, UnityEngine.Color.green, 0);
 
@@ -74,14 +81,14 @@ public class VehicleMovementSystem : SystemBase
             var forward = math.normalize(localToWorld.Forward);
 
             /* Assume that there exists only one admissible hit in the world with the given id*/
-            if (physicsWorld.CastRay(raycastInputLeft, ref leftHits) && leftHits.Length > 1)
+            if (physicsWorld.CastRay(raycastInputLeft, ref leftHits))
             {
                 foreach (var it in leftHits)
                 {
                     if (getTrackComponentDataFromEntity.HasComponent(it.Entity))
                     {
-                        var trackComponentData = getTrackComponentDataFromEntity[it.Entity];
-                        if (it.Entity.Index == carComponentData.TrackId)
+                        var trackParent = getParentComponentDataFromEntity[it.Entity].Value;
+                        if (trackParent.Index == carComponentData.TrackParent.Index)
                         {
                             hit = it;
 
@@ -96,14 +103,14 @@ public class VehicleMovementSystem : SystemBase
                     }
                 }
             }
-            if (!isTrackHitFound && physicsWorld.CastRay(raycastInputRight, ref rightHits) && rightHits.Length > 1)
+            if (!isTrackHitFound && physicsWorld.CastRay(raycastInputRight, ref rightHits))
             {
                 foreach (var it in rightHits)
                 {
                     if (getTrackComponentDataFromEntity.HasComponent(it.Entity))
                     {
-                        var trackComponentData = getTrackComponentDataFromEntity[it.Entity];
-                        if (it.Entity.Index == carComponentData.TrackId)
+                        var trackParent = getParentComponentDataFromEntity[it.Entity].Value;
+                        if (trackParent.Index == carComponentData.TrackParent.Index)
                         {
                             hit = it;
 
