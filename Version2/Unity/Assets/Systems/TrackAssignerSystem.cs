@@ -124,7 +124,6 @@ public class TrackAssignerSystem : SystemBase
                         if (currentTrackName.Contains(trackToAssignName) && currentRelativeTrackDistance < minimumRelativeTrackDistance)
                         {
                             trackToAssign = trackChild.Value;
-                            entityManager.Debug.LogEntityInfo(trackToAssign);
                             minimumRelativeTrackDistance = currentRelativeTrackDistance;
                         }
                     }
