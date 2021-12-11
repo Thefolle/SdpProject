@@ -112,6 +112,7 @@ public class TrackAssignerSystem : SystemBase
                 var buffer = getChildComponentData[currentCross];
                 var trackToAssign = Entity.Null;
                 var minimumRelativeTrackDistance = int.MaxValue;
+                var currentLane = getParentComponentData[carComponentData.Track].Value;
                 string currentTrackName;
                 int currentRelativeTrackDistance;
                 foreach (var trackChild in buffer)
@@ -119,10 +120,11 @@ public class TrackAssignerSystem : SystemBase
                     if (getTrackComponentData.HasComponent(trackChild.Value))
                     {
                         currentTrackName = entityManager.GetName(trackChild.Value);
-                        currentRelativeTrackDistance = math.abs(int.Parse(currentTrackName.Split('-')[2]) - int.Parse(entityManager.GetName(carComponentData.TrackParent).Split('-')[1]));
+                        currentRelativeTrackDistance = math.abs(int.Parse(currentTrackName.Split('-')[2]) - int.Parse(entityManager.GetName(currentLane).Split('-')[1]));
                         if (currentTrackName.Contains(trackToAssignName) && currentRelativeTrackDistance < minimumRelativeTrackDistance)
                         {
                             trackToAssign = trackChild.Value;
+                            entityManager.Debug.LogEntityInfo(trackToAssign);
                             minimumRelativeTrackDistance = currentRelativeTrackDistance;
                         }
                     }
@@ -137,9 +139,7 @@ public class TrackAssignerSystem : SystemBase
 
                 carComponentData.isPathUpdated = true;
                 carComponentData.TrackId = trackToAssign.Index;
-
-                var parentEntity = getParentComponentData[trackToAssign];
-                carComponentData.TrackParent = parentEntity.Value;
+                carComponentData.Track = trackToAssign;
 
                 //LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
             }
@@ -208,9 +208,7 @@ public class TrackAssignerSystem : SystemBase
                 {
                     carComponentData.isPathUpdated = true;
                     carComponentData.TrackId = trackToFollow.Index;
-
-                    var parentEntity = getParentComponentData[trackToFollow];
-                    carComponentData.TrackParent = parentEntity.Value;
+                    carComponentData.Track = trackToFollow;
 
                     //LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
                 }
@@ -322,9 +320,7 @@ public class TrackAssignerSystem : SystemBase
                 else
                 {
                     carComponentData.TrackId = hit.Entity.Index;
-
-                    var parentEntity = getParentComponentData[hit.Entity];
-                    carComponentData.TrackParent = parentEntity.Value;
+                    carComponentData.Track = hit.Entity;
 
                     //Log("I've assigned track " + carComponentData.TrackId + " to car with id " + carEntity.Index);
 

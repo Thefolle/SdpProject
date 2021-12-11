@@ -15,7 +15,7 @@ public struct CarComponentData : IComponentData
     public bool rightOvertakeAllowed;
 
     public int TrackId;
-    public Entity TrackParent;
+    public Entity Track;
 
     /// <summary>
     /// <para>Convenience variable that stores where the car is standing on.</para>

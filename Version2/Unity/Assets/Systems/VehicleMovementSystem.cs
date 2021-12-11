@@ -87,8 +87,7 @@ public class VehicleMovementSystem : SystemBase
                 {
                     if (getTrackComponentDataFromEntity.HasComponent(it.Entity))
                     {
-                        var trackParent = getParentComponentDataFromEntity[it.Entity].Value;
-                        if (trackParent.Index == carComponentData.TrackParent.Index)
+                        if (it.Entity.Index == carComponentData.Track.Index)
                         {
                             hit = it;
 
@@ -109,8 +108,7 @@ public class VehicleMovementSystem : SystemBase
                 {
                     if (getTrackComponentDataFromEntity.HasComponent(it.Entity))
                     {
-                        var trackParent = getParentComponentDataFromEntity[it.Entity].Value;
-                        if (trackParent.Index == carComponentData.TrackParent.Index)
+                        if (it.Entity.Index == carComponentData.Track.Index)
                         {
                             hit = it;
 
