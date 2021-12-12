@@ -66,13 +66,13 @@ public class VehicleMovementSystem : SystemBase
         var rightHits = new NativeList<RaycastHit>(20, Allocator.TempJob);
         var leftHits = new NativeList<RaycastHit>(20, Allocator.TempJob);
 
-        Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
+        Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, ref Rotation rotation, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
             if (carComponentData.HasJustSpawned) return;
 
             /* Initialize data */
-            float angularFactor = 0;
-            float linearFactor = 1;
+            int angularFactor = 0;
+            int linearFactor = 1;
             
             var raycastInputRight = new RaycastInput
             {
@@ -91,7 +91,7 @@ public class VehicleMovementSystem : SystemBase
 
             /* now pick the hit with the closest track whose id equals the car's assigned track id*/
             bool isRightHit = false; // the hit can be rightwards or leftwards
-            float distance = 0;
+            int distance = 0;
             bool isTrackHitFound = false; // flag that tells whether at least one admissible hit has been found
             RaycastHit hit = default;
             var forward = math.normalize(localToWorld.Forward);
@@ -109,7 +109,7 @@ public class VehicleMovementSystem : SystemBase
 
                             isRightHit = false;
                             // Don't compute the distance with math.distance, since only the projection along the surface normal is relevant
-                            distance = math.abs(math.dot(localToWorld.Position, hit.SurfaceNormal) - math.dot(hit.Position, hit.SurfaceNormal));
+                            distance = (int)(100 * math.abs(math.dot(localToWorld.Position, hit.SurfaceNormal) - math.dot(hit.Position, hit.SurfaceNormal)));
                             isTrackHitFound = true;
 
                             // hit found, no need to proceed
@@ -128,7 +128,7 @@ public class VehicleMovementSystem : SystemBase
                         {
                             hit = it;
 
-                            distance = math.abs(math.dot(localToWorld.Position, hit.SurfaceNormal) - math.dot(hit.Position, hit.SurfaceNormal));
+                            distance = (int)(100 * math.abs(math.dot(localToWorld.Position, hit.SurfaceNormal) - math.dot(hit.Position, hit.SurfaceNormal)));
                             isRightHit = true;
                             isTrackHitFound = true;
 
@@ -155,42 +155,56 @@ public class VehicleMovementSystem : SystemBase
                 linearFactor = 1;
             } else
             {
-                var gap = math.dot(forward, hit.SurfaceNormal);
-                if (5 * distance < NegligibleDistance && 100 * math.abs(gap) < cos80)
+                int gap = (int) (100 * math.dot(forward, hit.SurfaceNormal));
+
+                if (distance < 20 * NegligibleDistance && math.abs(gap) < cos80 && carComponentData.vehicleIsOn == VehicleIsOn.Street)
                 {
                     // The car's distance from the track is negligible
+                    LogFormat("1 ({0}), distance: {1}, gap: {2}, surface normal: {3}", carEntity.Index, distance, gap, hit.SurfaceNormal);
+                    int angle = 0;
+                    if (hit.SurfaceNormal.x > 0.9) angle = 0;
+                    else if (hit.SurfaceNormal.z > 0.9) angle = 90;
+                    else if (hit.SurfaceNormal.x < -0.9) angle = 180;
+                    else if (hit.SurfaceNormal.z < -0.9) angle = 270;
+                    rotation.Value = quaternion.AxisAngle(math.up(), math.radians(angle));
                     angularFactor = 0;
                 }
-                else if (gap < 0 && 2 * distance < thresholdDistance)
+                else if (gap < 0 && distance < 50 * thresholdDistance)
                 {
                     /* The car is approaching and is near to the track */
                     /* Here soften the car trajectory so that it is a softened synusoid: the effect is achieved by
                      * using a lowered angular factor w.r.t. the scenario where the car is near but it is leaving
                      */
-                    angularFactor = 1 * (!isRightHit ? +1 : -1) / 2;
+                    LogFormat("2 ({0}), distance: {1}, gap: {2}", carEntity.Index, distance, gap);
+                    angularFactor = 1 * (!isRightHit ? +1 : -1);
                 }
-                else if (100 * gap < -steeringDegree && 2 * distance >= thresholdDistance)
+                else if (gap < -steeringDegree && distance >= 50 * thresholdDistance)
                 {
                     /* The car is approaching but is distant from the track */
+                    LogFormat("3 ({0}), distance: {1}, gap: {2}", carEntity.Index, distance, gap);
                     angularFactor = 0;
                 }
-                else if (100 * gap > -steeringDegree && 2 * distance >= thresholdDistance)
+                else if (gap >= -steeringDegree && distance >= 50 * thresholdDistance)
                 {
                     /* The car is going away and it is distant from the track */
-                    angularFactor = 1 * (isRightHit ? +1 : -1);
+                    LogFormat("4 ({0}), distance: {1}, gap: {2}", carEntity.Index, distance, gap);
+                    angularFactor = 3 * (isRightHit ? +1 : -1);
                 }
-                else if (gap >= 0 && 2 * distance < thresholdDistance)
+                else if (gap >= 0 && distance < 50 * thresholdDistance)
                 {
+                    LogFormat("5 ({0}), distance: {1}, gap: {2}", carEntity.Index, distance, gap);
                     /* The car is near and is going straight or it is leaving; let's turn it */
-                    angularFactor = 1 * (isRightHit ? +1 : -1);
+                    angularFactor = 3 * (isRightHit ? +1 : -1);
                 } else
                 {
-                    LogErrorFormat("{0}", "A car reached an unforseen state.");
+                    angularFactor = 0;
+                    linearFactor = 1;
+                    LogErrorFormat("The car with id {0} reached an unpredicted state (gap: {1}, distance: {2})", carEntity.Index, gap, distance);
                 }
 
                 if ((carComponentData.vehicleIsOn == VehicleIsOn.Cross || carComponentData.vehicleIsOn == VehicleIsOn.PassingFromStreetToCross || carComponentData.vehicleIsOn == VehicleIsOn.PassingFromCrossToStreet) && gap > cos60)
                 {
-                    linearFactor = 0.2f;
+                    linearFactor = 0;
                 }
 
                 //Log("Car position is: " + localToWorld.Position);
