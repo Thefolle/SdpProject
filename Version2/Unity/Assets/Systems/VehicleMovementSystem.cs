@@ -162,11 +162,11 @@ public class VehicleMovementSystem : SystemBase
                     // The car's distance from the track is negligible
                     LogFormat("1 ({0}), distance: {1}, gap: {2}, surface normal: {3}", carEntity.Index, distance, gap, hit.SurfaceNormal);
                     int angle = 0;
-                    if (hit.SurfaceNormal.x > 0.9) angle = 0;
-                    else if (hit.SurfaceNormal.z > 0.9) angle = 90;
-                    else if (hit.SurfaceNormal.x < -0.9) angle = 180;
-                    else if (hit.SurfaceNormal.z < -0.9) angle = 270;
-                    rotation.Value = quaternion.AxisAngle(math.up(), math.radians(angle));
+                    if (hit.SurfaceNormal.x > 0.9 && !isRightHit || hit.SurfaceNormal.x < -0.9 && isRightHit) angle = 0;
+                    else if (hit.SurfaceNormal.z > 0.9 && isRightHit || hit.SurfaceNormal.z < -0.9 && !isRightHit) angle = 90;
+                    else if (hit.SurfaceNormal.x < -0.9 && !isRightHit || hit.SurfaceNormal.x > 0.9 && isRightHit) angle = 180;
+                    else if (hit.SurfaceNormal.z < -0.9 && isRightHit || hit.SurfaceNormal.z > 0.9 && !isRightHit) angle = 270;
+                    rotation.Value = quaternion.RotateY(math.radians(angle));
                     angularFactor = 0;
                 }
                 else if (gap < 0 && distance < 50 * thresholdDistance)
