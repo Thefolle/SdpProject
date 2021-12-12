@@ -5,6 +5,8 @@ using Unity.Transforms;
 using static UnityEngine.Debug;
 using System;
 
+[UpdateInGroup(typeof(InitializationSystemGroup))]
+[UpdateAfter(typeof(ConvertToEntitySystem))]
 public class GraphGeneratorSystem : SystemBase
 {
     /// <summary>
@@ -13,7 +15,7 @@ public class GraphGeneratorSystem : SystemBase
     public Graph District;
     
 
-    protected override void OnStartRunning()
+    protected override void OnStartRunning() // cannot use OnCreate because entities does not exist yet at that phase
     {
         base.OnStartRunning();
 
@@ -36,7 +38,7 @@ public class GraphGeneratorSystem : SystemBase
         }
 
         var now = DateTime.Now;
-        LogFormat("The current time is {0} ({1})", now, now.Millisecond);
+        //LogFormat("The current time is {0} ({1})", now, now.Millisecond);
         var district = new Graph((int)now.Millisecond); // Don't set a static number here: streets and crosses have randomly-generated ids as well
 
         foreach (Entity street in streets)
@@ -63,10 +65,13 @@ public class GraphGeneratorSystem : SystemBase
         //Log(district.ToString());
 
         entities.Dispose();
+
+        this.Enabled = false; // Disable the system to prevent multiple onStartRunning
     }
 
     protected override void OnUpdate()
     {
+        //LogFormat("{0}", this.ShouldRunSystem());
         // Must remain empty
     }
 }

@@ -89,8 +89,6 @@ public class VehicleMovementSystem : SystemBase
             };
             //DrawLine(raycastInputLeft.Start, raycastInputLeft.End, UnityEngine.Color.green, 0);
 
-            
-
             /* now pick the hit with the closest track whose id equals the car's assigned track id*/
             bool isRightHit = false; // the hit can be rightwards or leftwards
             float distance = 0;
