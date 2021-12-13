@@ -22,8 +22,6 @@ public class WhereIsVehicleSystem : SystemBase
         var getLaneComponentDataFromEntity = GetComponentDataFromEntity<LaneComponentData>();
         var getBaseCrossComponentDataFromEntity = GetComponentDataFromEntity<BaseCrossComponentData>();
 
-
-        Dependency =
         Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
             var sphereHits = new NativeList<ColliderCastHit>(20, Allocator.Temp);
@@ -118,7 +116,7 @@ public class WhereIsVehicleSystem : SystemBase
             .WithReadOnly(physicsWorld)
             .WithReadOnly(getLaneComponentDataFromEntity)
             .WithReadOnly(getBaseCrossComponentDataFromEntity)
-            .ScheduleParallel(Dependency);
+            .Run();
 
     }
 }
