@@ -16,6 +16,7 @@ public struct CarComponentData : IComponentData
 
     public int TrackId;
     public Entity Track;
+    public bool IsTracked;
 
     /// <summary>
     /// <para>Convenience variable that stores where the car is standing on.</para>
