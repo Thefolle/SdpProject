@@ -183,12 +183,11 @@ public class VehicleMovementSystem : SystemBase
                 {
                     // The car's distance from the track is negligible
                     //LogFormat("1 ({0}), distance: {1}, gap: {2}, surface normal: {3}", carEntity.Index, distance, gap, hit.SurfaceNormal);
-                    int angle = 0;
-                    if (hit.SurfaceNormal.x > 0.9 && !isRightHit || hit.SurfaceNormal.x < -0.9 && isRightHit) angle = 0;
-                    else if (hit.SurfaceNormal.z > 0.9 && isRightHit || hit.SurfaceNormal.z < -0.9 && !isRightHit) angle = 90;
-                    else if (hit.SurfaceNormal.x < -0.9 && !isRightHit || hit.SurfaceNormal.x > 0.9 && isRightHit) angle = 180;
-                    else if (hit.SurfaceNormal.z < -0.9 && isRightHit || hit.SurfaceNormal.z > 0.9 && !isRightHit) angle = 270;
-                    rotation.Value = quaternion.RotateY(math.radians(angle));
+
+                    // First point the car's forward direction toward hit.SurfaceNormal, then rotate it of 90°. Remember that the application
+                    // of cascaded rotations represented by quaternions are performed through a multiplication.
+                    rotation.Value = math.mul(quaternion.LookRotation(hit.SurfaceNormal, math.up()), quaternion.RotateY(math.radians((isRightHit ? 1 : -1) * 90)));
+                    
                     carComponentData.IsTracked = true;
                     angularFactor = 0;
                 }
@@ -230,11 +229,6 @@ public class VehicleMovementSystem : SystemBase
                     linearFactor = 0;
                 }
 
-                //Log("Car position is: " + localToWorld.Position);
-                //Log("Track position is: " + hit.Position);
-                //Log("Hit distance is: " + distance);
-                //Log(math.dot(forward, hit.SurfaceNormal));
-                //Log("The current track for the car has id " + hit.Entity.Index);
             }
 
             physicsVelocity.Angular.y = carComponentData.AngularSpeed * angularFactor * deltaTime;
