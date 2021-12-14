@@ -305,13 +305,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 0
-  AngularSpeed: 50
+  AngularSpeed: 120
   maxSpeed: 800
   tryOvertake: 0
   lastTimeTried: -1
   rightOvertakeAllowed: 0
   TrackId: 0
   Track: {fileID: 0}
+  IsTracked: 0
   vehicleIsOn: 2
   isPathUpdated: 1
   HasJustSpawned: 1
