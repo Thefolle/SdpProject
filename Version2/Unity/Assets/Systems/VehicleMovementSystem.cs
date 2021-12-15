@@ -45,6 +45,7 @@ public class VehicleMovementSystem : SystemBase
     {
         float deltaTime = Time.fixedDeltaTime;
         double elapsedTime = Time.ElapsedTime;
+        float fixedDeltaTime = UnityEngine.Time.fixedDeltaTime;
         if (elapsedTime < 2) return;
 
         PhysicsWorld physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
@@ -70,7 +71,7 @@ public class VehicleMovementSystem : SystemBase
             if (carComponentData.HasJustSpawned) return;
             if (carComponentData.IsTracked && carComponentData.vehicleIsOn == VehicleIsOn.Street)
             {
-                physicsVelocity.Linear = math.normalize(localToWorld.Forward) * carComponentData.Speed * deltaTime;
+                physicsVelocity.Linear = math.normalize(localToWorld.Forward) * carComponentData.Speed / fixedDeltaTime;
                 return;
             }
             else
@@ -231,10 +232,10 @@ public class VehicleMovementSystem : SystemBase
 
             }
 
-            physicsVelocity.Angular.y = carComponentData.AngularSpeed * angularFactor * deltaTime;
+            physicsVelocity.Angular.y = carComponentData.AngularSpeed * angularFactor / fixedDeltaTime;
 
             var tmp = physicsVelocity.Linear.y;
-            physicsVelocity.Linear = forward * carComponentData.Speed * linearFactor * deltaTime;
+            physicsVelocity.Linear = forward * carComponentData.Speed * linearFactor / fixedDeltaTime;
             // Neglect the y speed
             physicsVelocity.Linear.y = tmp;
         }).Run();

@@ -305,8 +305,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 0
-  AngularSpeed: 120
-  maxSpeed: 800
+  AngularSpeed: 0.05
+  maxSpeed: 0.25
   tryOvertake: 0
   lastTimeTried: -1
   rightOvertakeAllowed: 0

@@ -17,19 +17,15 @@ public class AntiCollisionSystem : SystemBase
 
     protected override void OnUpdate()
     {
-        float deltaTime = Time.DeltaTime;
         double elapsedTime = Time.ElapsedTime;
         if (elapsedTime < 2) return;
 
         PhysicsWorld physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
-        EntityManager entityManager = World.EntityManager;
-        var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
         var getObstaclesComponentDataFromEntity = GetComponentDataFromEntity<ObstaclesComponent>();
         var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
         var getTrafficLightComponentDataFromEntity = GetComponentDataFromEntity<TrafficLightComponentData>();
-        var getStreetComponentDataFromEntity = GetComponentDataFromEntity<StreetComponentData>();
 
-        Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
+        Entities.ForEach((ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
             float speedFactor;                   // This factor is for regulating the spherecast wrt the car velocity
 
