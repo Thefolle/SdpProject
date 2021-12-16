@@ -21,19 +21,22 @@ public class WhereIsVehicleSystem : SystemBase
         var physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
         var getLaneComponentDataFromEntity = GetComponentDataFromEntity<LaneComponentData>();
         var getBaseCrossComponentDataFromEntity = GetComponentDataFromEntity<BaseCrossComponentData>();
+        var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
 
         Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
             var sphereHits = new NativeList<ColliderCastHit>(20, Allocator.Temp);
 
-            var radius = 0.5f;
+            var radius = 1.75f;
             var direction = localToWorld.Forward;
-            var maxDistance = 3.5f;
+            var maxDistance = 3f;
 
             var isOnStreet = false;
             var isOnCross = false;
 
-            var StartR = localToWorld.Position - 5f * math.normalize(localToWorld.Forward) - 1.5f * math.normalize(localToWorld.Up);
+            var hittingAnotherCar = false;
+
+            var StartR = localToWorld.Position - 3.5f * math.normalize(localToWorld.Forward) - 1.5f * math.normalize(localToWorld.Up);
             if (physicsWorld.SphereCastAll(StartR, radius, direction, maxDistance, ref sphereHits, CollisionFilter.Default) && sphereHits.Length >= 1)
             {
                 var EndR = new float3();
@@ -56,10 +59,13 @@ public class WhereIsVehicleSystem : SystemBase
                     {
                         isOnCross = true;
                     }
+                    else if (!hittingAnotherCar && getCarComponentDataFromEntity.HasComponent(i.Entity) && carEntity.Index != i.Entity.Index)
+                    {
+                        hittingAnotherCar = true;
+                    }
 
-                    if (isOnStreet && isOnCross)
+                    if (hittingAnotherCar && isOnCross && isOnStreet)
                         break;
-
                 }
 
 
@@ -110,12 +116,18 @@ public class WhereIsVehicleSystem : SystemBase
                     carComponentData.isOnCross = true;
                 }
 
+                if (hittingAnotherCar)
+                    carComponentData.emergencyBrakeActivated = true;
+                else
+                    carComponentData.emergencyBrakeActivated = false;
+
             }
 
         })
             .WithReadOnly(physicsWorld)
             .WithReadOnly(getLaneComponentDataFromEntity)
             .WithReadOnly(getBaseCrossComponentDataFromEntity)
+            .WithNativeDisableContainerSafetyRestriction(getCarComponentDataFromEntity)
             .Run();
 
     }

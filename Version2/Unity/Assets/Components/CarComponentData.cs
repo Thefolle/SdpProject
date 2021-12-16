@@ -14,6 +14,8 @@ public struct CarComponentData : IComponentData
     public double lastTimeTried;
     public bool rightOvertakeAllowed;
 
+    public bool emergencyBrakeActivated;
+
     public int TrackId;
     public Entity Track;
     public bool IsTracked;
