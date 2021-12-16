@@ -56,12 +56,12 @@ public class VehicleChangeLaneSystem : SystemBase
                 var direction = localToWorld.Forward;
                 var maxDistance = 5f;
 
-                if (carComponentData.Speed <= 20)
+                if (carComponentData.Speed <= 0.2f * carComponentData.maxSpeed)
                 {
                     direction = -localToWorld.Forward;
                     maxDistance = 13f; // max value
                 }
-                else if (carComponentData.Speed >= 180)
+                else if (carComponentData.Speed >= 0.95f * carComponentData.maxSpeed)
                 {
                     direction = -localToWorld.Forward;
                     maxDistance = 0.1f; //min value
@@ -69,7 +69,7 @@ public class VehicleChangeLaneSystem : SystemBase
                 else
                 {
                     direction = -localToWorld.Forward;
-                    maxDistance = -13f / 160f * (carComponentData.Speed - 180f);
+                    maxDistance = -13f / (carComponentData.maxSpeed*0.8f) * (carComponentData.Speed - carComponentData.maxSpeed);
                 }
 
 

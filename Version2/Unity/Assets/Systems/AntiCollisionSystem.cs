@@ -29,30 +29,20 @@ public class AntiCollisionSystem : SystemBase
         {
             float speedFactor;                   // This factor is for regulating the spherecast wrt the car velocity
 
+            var alpha = 3200f;
+
             var radius = LaneWidth * 0.5f;
-            if (carComponentData.Speed >= 100)
+            if (carComponentData.Speed >= 0.005)
             {
-                if (carComponentData.Speed > 800)
-                    speedFactor = 0.2f + 0.01f * 800; // Max cap
+                if (carComponentData.Speed > 0.25)
+                    speedFactor = 0.2f + 0.25f * 20f; // Max cap
                 else
-                    speedFactor = 0.2f + 0.01f * carComponentData.Speed;
+                    speedFactor = 0.2f + carComponentData.Speed * 20f;
             }
             else
             {
                 speedFactor = 0.2f;
             }
-
-            //var radius = LaneWidth * 1f;
-            /*var radius = new float();
-            if (carComponentData.Speed >= 200)
-            {
-                radius = LaneWidth * 1f;
-            }
-            else
-            {
-                radius = LaneWidth * 0.5f;
-            }*/
-
 
             var sphereHits = new NativeList<ColliderCastHit>(20, Allocator.TempJob);
             bool isCollisionFound = false; // flag that tells whether at least one admissible hit has been found
@@ -230,7 +220,7 @@ public class AntiCollisionSystem : SystemBase
                 if (slowDownTo0)
                 {
                     //Log("sto rallentando");
-                    if (carComponentData.Speed < 10)
+                    if (carComponentData.Speed < 0.01 * carComponentData.maxSpeed)
                         carComponentData.Speed = 0;
                     else
                         carComponentData.Speed -= 0.03f * carComponentData.maxSpeed;        // that 0.10 is the braking factor. It reduces the car speed of 10% of the initial speed (it is just an example, we may change it to a proper value)
