@@ -39,7 +39,7 @@ public class TrackAssignerSystem : SystemBase
                 {
                     /* Destination reached: indeed, the path only contains the previous street and the current cross
                         */
-                    LogFormat("The car with id {0} has reached its destination", carEntity.Index);
+                    //LogFormat("The car with id {0} has reached its destination", carEntity.Index);
                     /* The despawn will be carried out by another system */
                     carComponentData.HasReachedDestination = true;
                     return;
@@ -156,7 +156,7 @@ public class TrackAssignerSystem : SystemBase
                     /* Destination reached: indeed, it is not possible to infer which track to assign since the next cross
                         * is not in the path to follow
                         */
-                    LogFormat("The car with id {0} has reached its destination.", carEntity.Index);
+                    //LogFormat("The car with id {0} has reached its destination.", carEntity.Index);
                     /* The despawn will be carried out by another system */
                     carComponentData.HasReachedDestination = true;
                     return;
