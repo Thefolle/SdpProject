@@ -21,6 +21,7 @@ public class WhereIsVehicleSystem : SystemBase
         var physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
         var getLaneComponentDataFromEntity = GetComponentDataFromEntity<LaneComponentData>();
         var getBaseCrossComponentDataFromEntity = GetComponentDataFromEntity<BaseCrossComponentData>();
+        var getSpawningPointComponentDataFromEntity = GetComponentDataFromEntity<SpawningPointComponentData>();
 
         Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
@@ -34,7 +35,7 @@ public class WhereIsVehicleSystem : SystemBase
             var isOnCross = false;
 
             var StartR = localToWorld.Position - 5f * math.normalize(localToWorld.Forward) - 1.5f * math.normalize(localToWorld.Up);
-            if (physicsWorld.SphereCastAll(StartR, radius, direction, maxDistance, ref sphereHits, CollisionFilter.Default) && sphereHits.Length >= 1)
+            if (physicsWorld.SphereCastAll(StartR, radius, direction, maxDistance, ref sphereHits, CollisionFilter.Default) && sphereHits.Length > 1)
             {
                 var EndR = new float3();
                 EndR = StartR + radius * math.normalize(localToWorld.Forward) + maxDistance * localToWorld.Forward;
@@ -48,7 +49,7 @@ public class WhereIsVehicleSystem : SystemBase
 
                 foreach (var i in sphereHits)
                 {
-                    if (getLaneComponentDataFromEntity.HasComponent(i.Entity))
+                    if (getLaneComponentDataFromEntity.HasComponent(i.Entity) || getSpawningPointComponentDataFromEntity.HasComponent(i.Entity))
                     {
                         isOnStreet = true;
                     }
@@ -108,11 +109,16 @@ public class WhereIsVehicleSystem : SystemBase
                     carComponentData.isOnStreet = false;
                     carComponentData.isOnCross = true;
                 }
+                else if (carComponentData.vehicleIsOn != VehicleIsOn.SpawningPoint)
+                {
+                    carComponentData.broken = true;
+                }
             }
             sphereHits.Dispose();
         })
             .WithReadOnly(physicsWorld)
             .WithReadOnly(getLaneComponentDataFromEntity)
+            .WithReadOnly(getSpawningPointComponentDataFromEntity)
             .WithReadOnly(getBaseCrossComponentDataFromEntity)
             .Run();
     }

@@ -202,7 +202,7 @@ MonoBehaviour:
     m_Friction:
       m_Override: 0
       m_Value:
-        Value: 0.5
+        Value: 0
         CombineMode: 0
     m_Restitution:
       m_Override: 0
@@ -310,6 +310,7 @@ MonoBehaviour:
   tryOvertake: 0
   lastTimeTried: -1
   rightOvertakeAllowed: 0
+  emergencyBrakeActivated: 0
   TrackId: 0
   Track: {fileID: 0}
   IsTracked: 0
@@ -320,6 +321,7 @@ MonoBehaviour:
   isOnStreet: 0
   isOnCross: 0
   isOnStreetAndCross: 0
+  broken: 0
 --- !u!114 &5093662526584122206
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -43,6 +43,7 @@ public class VehicleMovementSystem : SystemBase
 
     protected override void OnUpdate()
     {
+
         float deltaTime = Time.fixedDeltaTime;
         double elapsedTime = Time.ElapsedTime;
         float fixedDeltaTime = UnityEngine.Time.fixedDeltaTime;
@@ -69,6 +70,12 @@ public class VehicleMovementSystem : SystemBase
         Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, ref Rotation rotation, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
             if (carComponentData.HasJustSpawned) return;
+            if (localToWorld.Position.y < -5)
+            {
+                carComponentData.broken = true;
+                return;
+            }
+
             if (carComponentData.IsTracked && carComponentData.vehicleIsOn == VehicleIsOn.Street)
             {
                 physicsVelocity.Linear = math.normalize(localToWorld.Forward) * carComponentData.Speed / fixedDeltaTime;

@@ -15,7 +15,7 @@ public class VehicleSpawningSystem : SystemBase
 
         Entities.ForEach((ref SpawningPointComponentData spawningPointComponentData, in LocalToWorld localToWorld, in Rotation rotation) =>
         {
-            if (spawningPointComponentData.LastSpawnedCar == Entity.Null || math.distance(entityManager.GetComponentData<LocalToWorld>(spawningPointComponentData.LastSpawnedCar).Position, localToWorld.Position) > 32)
+            if (spawningPointComponentData.LastSpawnedCar == Entity.Null || !entityManager.Exists(spawningPointComponentData.LastSpawnedCar) || math.distance(entityManager.GetComponentData<LocalToWorld>(spawningPointComponentData.LastSpawnedCar).Position, localToWorld.Position) > 32)
             {
 
                 /* Spawn a new car */
