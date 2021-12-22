@@ -9,6 +9,11 @@ using Unity.Collections;
 [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
 public class VehicleMovementSystem : SystemBase
 {
+    protected override void OnCreate()
+    {
+        base.OnCreate();
+        this.Enabled = false;
+    }
 
     /// <summary>
     /// <para>The degree at which cars stop steering to approach toward the track. This parameter is an indicator of the convergence speed of a car to a track.

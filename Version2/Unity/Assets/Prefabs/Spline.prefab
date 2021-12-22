@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &9067497099830669789
+--- !u!1 &7893671485395592138
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8547243023220271975}
-  - component: {fileID: 4697874174221608130}
-  - component: {fileID: 7410326712428597256}
-  - component: {fileID: -8840114221201541378}
-  - component: {fileID: -2236307534124778825}
-  - component: {fileID: 5093662526584122206}
+  - component: {fileID: 7893671485395592137}
+  - component: {fileID: 7893671485395592134}
+  - component: {fileID: 7893671485395592135}
+  - component: {fileID: 7485058574494450675}
+  - component: {fileID: 1750012325511199059}
   m_Layer: 0
-  m_Name: Car
+  m_Name: Spline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8547243023220271975
+--- !u!4 &7893671485395592137
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9067497099830669789}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 261.76733, y: 3.9414225, z: 78.01489}
-  m_LocalScale: {x: 1.8, y: 1.5, z: 4}
+  m_GameObject: {fileID: 7893671485395592138}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &4697874174221608130
+--- !u!33 &7893671485395592134
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9067497099830669789}
-  m_Mesh: {fileID: -5495902117074765545, guid: 3231f752ac0dec2478eb4bb90bdc5dc8, type: 3}
---- !u!23 &7410326712428597256
+  m_GameObject: {fileID: 7893671485395592138}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &7893671485395592135
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9067497099830669789}
+  m_GameObject: {fileID: 7893671485395592138}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -62,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: 3231f752ac0dec2478eb4bb90bdc5dc8, type: 3}
+  - {fileID: 2100000, guid: c6ad494bd60c2bc47abb0f66e6461a38, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,58 +83,31 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-8840114221201541378
+--- !u!114 &7485058574494450675
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9067497099830669789}
+  m_GameObject: {fileID: 7893671485395592138}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ConversionMode: 0
---- !u!114 &-2236307534124778825
+--- !u!114 &1750012325511199059
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9067497099830669789}
+  m_GameObject: {fileID: 7893671485395592138}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f991f876e7549245b246e948dbee612, type: 3}
+  m_Script: {fileID: 11500000, guid: 037fd2850456f0e49a5e2a2e2bae2266, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 0
-  AngularSpeed: 0.05
-  maxSpeed: 0.25
-  tryOvertake: 0
-  lastTimeTried: -1
-  rightOvertakeAllowed: 0
-  emergencyBrakeActivated: 0
-  TrackId: 0
+  speed: -1
+  isOccupied: 0
   Track: {fileID: 0}
-  IsTracked: 0
-  vehicleIsOn: 2
-  isPathUpdated: 1
-  HasJustSpawned: 1
-  HasReachedDestination: 0
-  isOnStreet: 0
-  isOnCross: 0
-  isOnStreetAndCross: 0
-  broken: 0
---- !u!114 &5093662526584122206
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9067497099830669789}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 416d3ef1a89eabb4bb8ba1dd52496b7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
