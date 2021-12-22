@@ -7,37 +7,6 @@ using Unity.Collections;
 [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
 public class SplineVehicleMovementSystem : SystemBase
 {
-    /// <summary>
-    /// <para>The degree at which cars stop steering to approach toward the track. This parameter is an indicator of the convergence speed of a car to a track.
-    /// It is measured in degrees.</para>
-    /// </summary>
-    private readonly int SteeringDegree = (int)(math.cos(math.radians(75)) * 100);
-
-    /// <summary>
-    /// <para>The algorithm exploits this parameter to determine the behaviour of a car w.r.t. its track.</para>
-    /// <para>Greater values imply a better convergence in straight lanes, which is worse during bends. Cars may lose their track during bends for big values. Moreover, you should take into account both the width of the car and the width of the lane.</para>
-    /// <para>Lower values imply a better convergence in bends, which is slower in straight lanes.</para>
-    /// </summary>
-    private const int ThresholdDistance = 50;
-
-    /// <summary>
-    /// <para>This parameter establishes the range, expressed as distance from the track, in which the car can be considered in the track.</para>
-    /// <para>Within the range, the movement algorithm is deactivated and the car proceeds forward. Outside the range, the algorithm works normally.</para>
-    /// </summary>
-    private const int NegligibleDistance = 20;
-
-    /// <summary>
-    /// <para>The constant is equal to cos(80) * 100</para>
-    /// </summary>
-    private readonly int Cos80 = (int)(math.cos(math.radians(80)) * 100);
-
-    /// <summary>
-    /// <para>The constant is equal to cos(60) * 100</para>
-    /// </summary>
-    private readonly int Cos60 = (int)(math.cos(math.radians(60)) * 100);
-
-
-
     protected override void OnUpdate()
     {
         float deltaTime = Time.fixedDeltaTime;
@@ -45,18 +14,117 @@ public class SplineVehicleMovementSystem : SystemBase
         float fixedDeltaTime = UnityEngine.Time.fixedDeltaTime;
         if (elapsedTime < 2) return;
 
+        var getSplineComponentDataFromEntity = GetComponentDataFromEntity<SplineComponentData>();
         var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
         var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
+        var getChildComponentData = GetBufferFromEntity<Child>();
         var getPositionComponentDataFromEntity = GetComponentDataFromEntity<Translation>();
+        var getLocalToWorldComponentDataFromEntity = GetComponentDataFromEntity<LocalToWorld>();
 
-        /* capture local variables */
-        var steeringDegree = SteeringDegree;
-        var cos60 = Cos60;
-        var cos80 = Cos80;
+        EntityManager entityManager = World.EntityManager;
 
-        Entities.ForEach((ref Translation translation, ref SplineCarComponentData splineCarComponentData, ref Rotation rotation, in Entity carEntity, in LocalToWorld localToWorld) =>
+        Entities.ForEach((ref Translation translation, ref CarComponentData carComponentData,
+            in Entity carEntity, in LocalToWorld localToWorld) =>
         {
-            
+            var mySplineStart = new Entity();
+            var mySplineStartComponentData = new SplineComponentData();
+            var mySplineEnd = new Entity();
+            bool arrived = false;
+
+            if (getChildComponentData.HasComponent(carComponentData.Track))
+            {
+                var splines = getChildComponentData[carComponentData.Track];
+                foreach (var spline in splines)
+                {
+                    var splineComponentData = getSplineComponentDataFromEntity[spline.Value];
+                    if (!getSplineComponentDataFromEntity[spline.Value].isLast)
+                    {
+                        if (getSplineComponentDataFromEntity[spline.Value].id == carComponentData.SplineId)
+                        {
+                            mySplineStart = spline.Value;
+                            mySplineStartComponentData = splineComponentData;
+                            entityManager.SetComponentData(spline.Value, new SplineComponentData
+                            {
+                                id = splineComponentData.id,
+                                isLast = splineComponentData.isLast,
+                                Track = splineComponentData.Track,
+                                isOccupied = true
+                            });
+                        }
+                        if (getSplineComponentDataFromEntity[spline.Value].id == (carComponentData.SplineId + 1))
+                        {
+                            mySplineEnd = spline.Value;
+                        }
+                    }
+                    else
+                    {
+                        if (getSplineComponentDataFromEntity[spline.Value].id == (carComponentData.SplineId + 1))
+                        {
+                            mySplineEnd = spline.Value;
+                            arrived = true;
+                            break;
+                        }
+                        
+                    }
+                    /*
+                    var splineComponentData = getSplineComponentDataFromEntity[spline.Value];
+                        if (getSplineComponentDataFromEntity[spline.Value].id == carComponentData.SplineId)
+                        {
+                            if (!getSplineComponentDataFromEntity[spline.Value].isLast)
+                            {
+                                // start and end
+                                if (getSplineComponentDataFromEntity[spline.Value].id == carComponentData.SplineId)
+                                {
+                                    mySplineStart = spline.Value;
+                                    mySplineStartComponentData = splineComponentData;
+                                    entityManager.SetComponentData(spline.Value, new SplineComponentData
+                                    {
+                                        id = splineComponentData.id,
+                                        isLast = splineComponentData.isLast,
+                                        Track = splineComponentData.Track,
+                                        isOccupied = true
+                                    });
+                                }
+                                else if (getSplineComponentDataFromEntity[spline.Value].id == (carComponentData.SplineId + 1))
+                                {
+                                    mySplineEnd = spline.Value;
+                                }
+                            }
+                            else
+                            {
+                                // start and NOT end
+                                mySplineStart = spline.Value;
+                                arrived = true;
+                                break;
+                            }
+                        }*/
+                }
+              
+            }
+            if (getSplineComponentDataFromEntity.HasComponent(mySplineStart))
+            if (arrived || !getSplineComponentDataFromEntity[mySplineEnd].isOccupied)
+            {
+                var localToWorldSplineStart = getLocalToWorldComponentDataFromEntity[mySplineStart];
+                var localToWorldSplineEnd = getLocalToWorldComponentDataFromEntity[mySplineEnd];
+                var journeyLength = UnityEngine.Vector3.Distance(localToWorldSplineStart.Position, localToWorldSplineEnd.Position);
+                var distCovered = (elapsedTime - carComponentData.splineReachedAtTime) * carComponentData.maxSpeed * 100;
+                var fractionOfJourney = (float)distCovered / journeyLength;
+                translation.Value = UnityEngine.Vector3.Lerp(localToWorldSplineStart.Position, localToWorldSplineEnd.Position, fractionOfJourney);
+                entityManager.SetComponentData(mySplineStart, new SplineComponentData
+                {
+                    id = mySplineStartComponentData.id,
+                    isLast = mySplineStartComponentData.isLast,
+                    Track = mySplineStartComponentData.Track,
+                    isOccupied = false
+                });
+                if (math.all(localToWorldSplineEnd.Position == localToWorld.Position))
+                {
+                    carComponentData.SplineId = carComponentData.SplineId + 1;
+                    carComponentData.splineReachedAtTime = elapsedTime;
+                }
+            }
+            // physicsVelocity.Linear = math.normalize(localToWorld.Forward) * carComponentData.Speed / fixedDeltaTime;
+
         }).Run();
 
     }

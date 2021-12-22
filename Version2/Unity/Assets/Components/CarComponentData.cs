@@ -17,6 +17,7 @@ public struct CarComponentData : IComponentData
     public bool emergencyBrakeActivated;
 
     public int SplineId;
+    public double splineReachedAtTime;
     public int TrackId;
     public Entity Track;
     public bool IsTracked;

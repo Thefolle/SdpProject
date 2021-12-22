@@ -72,7 +72,8 @@ public class VehicleMovementSystem : SystemBase
         var rightHits = new NativeList<RaycastHit>(20, Allocator.TempJob);
         var leftHits = new NativeList<RaycastHit>(20, Allocator.TempJob);
 
-        Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, ref Rotation rotation, in Entity carEntity, in LocalToWorld localToWorld) =>
+        Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, ref Rotation rotation, 
+            in Entity carEntity, in LocalToWorld localToWorld) =>
         {
             if (carComponentData.HasJustSpawned) return;
             if (localToWorld.Position.y < -5)
