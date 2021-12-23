@@ -647,6 +647,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1862745674311570557, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2087407193239988782, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -663,7 +667,15 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3397353659582418214, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3638271227851981674, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960049318302243405, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
@@ -729,6 +741,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6848889043378361975, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7430866066340858127, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1095,7 +1111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 0
   AngularSpeed: 0
-  maxSpeed: 0.25
+  maxSpeed: 0.5
   tryOvertake: 0
   lastTimeTried: 0
   rightOvertakeAllowed: 0
