@@ -125,7 +125,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ForwardLane-0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6616265885232918008, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+    - {fileID: 4875117039354486247, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+    - {fileID: 9951252942708452, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+    - {fileID: 7137006319199125722, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
 --- !u!4 &4378684416808634737 stripped
 Transform:
@@ -191,7 +195,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ForwardLane-1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4875117039354486247, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+    - {fileID: 6616265885232918008, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+    - {fileID: 9951252942708452, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+    - {fileID: 7137006319199125722, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
 --- !u!4 &8430272521997258072 stripped
 Transform:
@@ -257,7 +265,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BackwardLane-0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6616265885232918008, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+    - {fileID: 4875117039354486247, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+    - {fileID: 9951252942708452, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+    - {fileID: 7137006319199125722, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
 --- !u!4 &7867613492873026099 stripped
 Transform:
@@ -323,7 +335,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BackwardLane-1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6616265885232918008, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+    - {fileID: 4875117039354486247, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+    - {fileID: 7137006319199125722, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+    - {fileID: 9951252942708452, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
 --- !u!4 &4756441416183714819 stripped
 Transform:

@@ -133,6 +133,8 @@ public class SplineVehicleMovementSystem : SystemBase
                             });
                         }
                     }
+                    else
+                        carComponentData.splineReachedAtTime = elapsedTime;
             }
             // physicsVelocity.Linear = math.normalize(localToWorld.Forward) * carComponentData.Speed / fixedDeltaTime;
 
