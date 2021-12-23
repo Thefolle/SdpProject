@@ -24,6 +24,7 @@ public class AntiCollisionSystem : SystemBase
         var getObstaclesComponentDataFromEntity = GetComponentDataFromEntity<ObstaclesComponent>();
         var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
         var getTrafficLightComponentDataFromEntity = GetComponentDataFromEntity<TrafficLightComponentData>();
+        var sphereHits = new NativeList<ColliderCastHit>(20, Allocator.TempJob);
 
         Entities.ForEach((ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
@@ -44,7 +45,6 @@ public class AntiCollisionSystem : SystemBase
                 speedFactor = 0.2f;
             }
 
-            var sphereHits = new NativeList<ColliderCastHit>(20, Allocator.TempJob);
             bool isCollisionFound = false; // flag that tells whether at least one admissible hit has been found
             ColliderCastHit coll = default;
             
@@ -56,7 +56,7 @@ public class AntiCollisionSystem : SystemBase
             {
                 if (physicsWorld.SphereCastAll(StartR, radius, direction, maxDistance, ref sphereHits, CollisionFilter.Default) && sphereHits.Length >= 1)
                 {
-                    var EndR = new float3();
+                    /*var EndR = new float3();
                     EndR = StartR + radius * math.normalize(localToWorld.Forward) + maxDistance * localToWorld.Forward;
                     UnityEngine.Debug.DrawLine(StartR, EndR, UnityEngine.Color.blue, 0);
                     EndR = StartR + radius * math.normalize(-localToWorld.Forward);
@@ -65,6 +65,7 @@ public class AntiCollisionSystem : SystemBase
                     UnityEngine.Debug.DrawLine(StartR, EndR, UnityEngine.Color.blue, 0);
                     EndR = StartR + radius * math.normalize(-localToWorld.Right);
                     UnityEngine.Debug.DrawLine(StartR, EndR, UnityEngine.Color.blue, 0);
+                    */
 
                     foreach (var i in sphereHits)
                     {
@@ -137,35 +138,8 @@ public class AntiCollisionSystem : SystemBase
                         else if (getTrafficLightComponentDataFromEntity.HasComponent(coll.Entity))
                         {
                             var trafficLight = getTrafficLightComponentDataFromEntity[coll.Entity];
-                            //if (carComponentData.vehicleIsOn == VehicleIsOn.Street) // If you are already on the cross: free the cross
-                            if (carComponentData.isOnStreet)
+                            if (carComponentData.isOnStreet) // If you are already on the cross: free the cross
                             {
-                                /*var trafficLightCross = getParentComponentDataFromEntity[coll.Entity];
-                                if (getTrafficLightCrossComponentDataFromEntity.HasComponent(trafficLightCross.Value))
-                                {
-                                    var trafficLightNumber = entityManager.GetName(coll.Entity).Substring(entityManager.GetName(coll.Entity).LastIndexOf('-') + 1);
-                                    var trafficLightCrossComponentData = getTrafficLightCrossComponentDataFromEntity[trafficLightCross.Value];
-
-                                    //LogError("trafficLightNumber: " + trafficLightNumber + ", isTurnOf: " + trafficLightCrossComponentData.greenTurn);
-                                    if (trafficLightNumber != trafficLightCrossComponentData.greenTurn.ToString())
-                                    {
-                                        slowDownTo0 = true;
-                                    }
-                                    else
-                                    {
-                                        slowDownTo0 = false;
-                                    }
-                                }*/
-
-                                /* OLD
-                                 * vedo lane sulla quale mi trovo, può essere:
-                                 * a) Forward
-                                 * b) Backward
-                                 * 
-                                 * Se a) allora devo rispettare il semaforo solo se appartiene al cross Ending della mia strada
-                                 * Se b) allora devo rispettare il semaforo solo se appartiene al cross Starting della mia strada
-                                 */
-
                                 if (trafficLight.isGreen)
                                 {
                                     slowDownTo0 = false;
@@ -174,49 +148,7 @@ public class AntiCollisionSystem : SystemBase
                                 {
                                     slowDownTo0 = true;
                                 }
-
-                                /*var laneName = entityManager.GetName(carComponentData.TrackParent).ToString();
-                                if (laneName.Contains("Lane"))
-                                {
-                                    var CrossToListen = new Entity();
-                                    var street = getParentComponentDataFromEntity[carComponentData.TrackParent];
-                                    var trafficLightCrossApproaching = getParentComponentDataFromEntity[coll.Entity];
-                                    var crossApproaching = getParentComponentDataFromEntity[trafficLightCrossApproaching.Value];
-
-
-                                    if(getStreetComponentDataFromEntity.HasComponent(street.Value))
-                                    {
-                                        var streetComponentData = getStreetComponentDataFromEntity[street.Value];
-                                        var laneDirection = laneName.Substring(0, laneName.IndexOf('-'));
-                                        if (laneDirection.Contains("Forward"))
-                                        {
-                                            CrossToListen = streetComponentData.endingCross;
-                                        }
-                                        else if (laneDirection.Contains("Backward"))
-                                        {
-                                            CrossToListen = streetComponentData.startingCross;
-                                        }
-
-                                        if (CrossToListen.Index == crossApproaching.Value.Index)
-                                        {
-                                            /* Additional check, if VehicleIsOn.Street but actually is half on the cross
-                                             * Check if the lane the vehicle is staing on c
-                                             */
-
-
-                                /*if (trafficLight.isGreen)
-                                {
-                                    /*slowDownTo0 = false;
-                                }
-                                else
-                                {
-                                    slowDownTo0 = true;
-                                }
                             }
-                        }
-                    }*/
-                            }
-                            //LogError("Traffic Light is green: " + trafficLight.isGreen);
                         }
                     }
                     if (slowDownTo0)
@@ -243,7 +175,8 @@ public class AntiCollisionSystem : SystemBase
                 else
                     carComponentData.Speed -= 0.3f * carComponentData.maxSpeed;
             }
-            sphereHits.Dispose();
+            sphereHits.Clear();
         }).Run();
-}
+        sphereHits.Dispose();
+    }
 }

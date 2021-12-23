@@ -20,9 +20,10 @@ public class VehicleProximitySystem : SystemBase
         var physicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld;
         var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
 
+        var sphereHits = new NativeList<ColliderCastHit>(20, Allocator.Temp);
+
         Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
-            var sphereHits = new NativeList<ColliderCastHit>(20, Allocator.Temp);
 
             var radius = 1.75f;
             var direction = localToWorld.Forward;
@@ -56,9 +57,10 @@ public class VehicleProximitySystem : SystemBase
                 if(!hittingAnotherCar)
                     carComponentData.emergencyBrakeActivated = false;
             }
-            sphereHits.Dispose();
+            sphereHits.Clear();
         })
         .WithNativeDisableContainerSafetyRestriction(getCarComponentDataFromEntity)
         .Run();
+        sphereHits.Dispose();
     }
 }

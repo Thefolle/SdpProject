@@ -83,21 +83,21 @@ public class VehicleChangeLaneSystem : SystemBase
                         EndR = localToWorld.Position + radius * math.normalize(localToWorld.Forward) + maxDistance * localToWorld.Forward;
                     else
                         EndR = localToWorld.Position + radius * math.normalize(localToWorld.Forward);
-                    UnityEngine.Debug.DrawLine(StartR, EndR, UnityEngine.Color.red, 0);
+                    //UnityEngine.Debug.DrawLine(StartR, EndR, UnityEngine.Color.red, 0);
 
                     //EndR = localToWorld.Position + new float3(0, 0, -radius);
                     if (math.all(direction == -localToWorld.Forward))
                         EndR = localToWorld.Position + radius * math.normalize(-localToWorld.Forward) + maxDistance * -localToWorld.Forward;
                     else
                         EndR = localToWorld.Position + radius * math.normalize(-localToWorld.Forward);
-                    UnityEngine.Debug.DrawLine(StartR, EndR, UnityEngine.Color.red, 0);
+                    //UnityEngine.Debug.DrawLine(StartR, EndR, UnityEngine.Color.red, 0);
 
                     //EndR = localToWorld.Position + new float3(radius, 0, 0);
                     EndR = localToWorld.Position + radius * math.normalize(localToWorld.Right);
-                    UnityEngine.Debug.DrawLine(StartR, EndR, UnityEngine.Color.red, 0);
+                    //UnityEngine.Debug.DrawLine(StartR, EndR, UnityEngine.Color.red, 0);
                     //EndR = localToWorld.Position + new float3(-radius, 0, 0);
                     EndR = localToWorld.Position + radius * math.normalize(-localToWorld.Right);
-                    UnityEngine.Debug.DrawLine(StartR, EndR, UnityEngine.Color.red, 0);
+                    //UnityEngine.Debug.DrawLine(StartR, EndR, UnityEngine.Color.red, 0);
                     foreach (var sphIt in sphereHits)
                     {
                         //LogError(sphIt.Entity.ToString());
@@ -116,7 +116,7 @@ public class VehicleChangeLaneSystem : SystemBase
                             //LogError("myLocal: " + math.normalize(localToWorld.Forward) + ", other: " + math.normalize(localToWorldSphIt.Forward));
 
                             EndR = localToWorldSphIt.Position;
-                            UnityEngine.Debug.DrawLine(StartR, EndR, UnityEngine.Color.blue, 0);
+                            //UnityEngine.Debug.DrawLine(StartR, EndR, UnityEngine.Color.blue, 0);
                             if (!occupiedTrackIds.Contains(getCarComponentDataFromEntity[sphIt.Entity].TrackId) && getCarComponentDataFromEntity[sphIt.Entity].TrackId != carComponentData.TrackId)
                                 occupiedTrackIds.Add(getCarComponentDataFromEntity[sphIt.Entity].TrackId);
                         }

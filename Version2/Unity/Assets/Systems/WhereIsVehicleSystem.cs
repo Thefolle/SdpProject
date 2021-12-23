@@ -23,9 +23,10 @@ public class WhereIsVehicleSystem : SystemBase
         var getBaseCrossComponentDataFromEntity = GetComponentDataFromEntity<BaseCrossComponentData>();
         var getSpawningPointComponentDataFromEntity = GetComponentDataFromEntity<SpawningPointComponentData>();
 
+        var sphereHits = new NativeList<ColliderCastHit>(20, Allocator.Temp);
+
         Entities.ForEach((ref PhysicsVelocity physicsVelocity, ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
-            var sphereHits = new NativeList<ColliderCastHit>(20, Allocator.Temp);
 
             var radius = 0.5f;
             var direction = localToWorld.Forward;
@@ -37,7 +38,7 @@ public class WhereIsVehicleSystem : SystemBase
             var StartR = localToWorld.Position - 5f * math.normalize(localToWorld.Forward) - 1.5f * math.normalize(localToWorld.Up);
             if (physicsWorld.SphereCastAll(StartR, radius, direction, maxDistance, ref sphereHits, CollisionFilter.Default) && sphereHits.Length > 1)
             {
-                var EndR = new float3();
+                /*var EndR = new float3();
                 EndR = StartR + radius * math.normalize(localToWorld.Forward) + maxDistance * localToWorld.Forward;
                 UnityEngine.Debug.DrawLine(StartR, EndR, UnityEngine.Color.green, 0);
                 EndR = StartR + radius * math.normalize(-localToWorld.Forward);
@@ -46,6 +47,7 @@ public class WhereIsVehicleSystem : SystemBase
                 UnityEngine.Debug.DrawLine(StartR, EndR, UnityEngine.Color.green, 0);
                 EndR = StartR + radius * math.normalize(-localToWorld.Right);
                 UnityEngine.Debug.DrawLine(StartR, EndR, UnityEngine.Color.green, 0);
+                */
 
                 foreach (var i in sphereHits)
                 {
@@ -85,10 +87,10 @@ public class WhereIsVehicleSystem : SystemBase
                 {
                     carComponentData.vehicleIsOn = VehicleIsOn.Street;
                 }
-                else
+                /*else
                 {
-                    //LogFormat("Non-controlled case: isOnStreet = {0}, isOnCross = {1}, vehicleIsOn = {2}", isOnStreet, isOnCross, carComponentData.vehicleIsOn);
-                }
+                    LogFormat("Non-controlled case: isOnStreet = {0}, isOnCross = {1}, vehicleIsOn = {2}", isOnStreet, isOnCross, carComponentData.vehicleIsOn);
+                }*/
 
 
                 if (isOnStreet && isOnCross)
@@ -114,13 +116,14 @@ public class WhereIsVehicleSystem : SystemBase
                     carComponentData.broken = true;
                 }
             }
-            sphereHits.Dispose();
+            sphereHits.Clear();
         })
             .WithReadOnly(physicsWorld)
             .WithReadOnly(getLaneComponentDataFromEntity)
             .WithReadOnly(getSpawningPointComponentDataFromEntity)
             .WithReadOnly(getBaseCrossComponentDataFromEntity)
             .Run();
+        sphereHits.Dispose();
     }
 }
 

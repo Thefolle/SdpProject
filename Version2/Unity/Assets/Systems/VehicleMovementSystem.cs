@@ -97,14 +97,14 @@ public class VehicleMovementSystem : SystemBase
                 End = localToWorld.Position + 20 * localToWorld.Right,
                 Filter = trackFilter
             };
-            DrawLine(raycastInputRight.Start, raycastInputRight.End, UnityEngine.Color.green, 0f);
+            //DrawLine(raycastInputRight.Start, raycastInputRight.End, UnityEngine.Color.green, 0f);
             var raycastInputLeft = new RaycastInput
             {
                 Start = localToWorld.Position,
                 End = localToWorld.Position + 20 * -localToWorld.Right,
                 Filter = trackFilter
             };
-            DrawLine(raycastInputLeft.Start, raycastInputLeft.End, UnityEngine.Color.green, 0f);
+            //DrawLine(raycastInputLeft.Start, raycastInputLeft.End, UnityEngine.Color.green, 0f);
 
             /* now pick the hit with the closest track whose id equals the car's assigned track id*/
             bool isRightHit = false; // the hit can be rightwards or leftwards
