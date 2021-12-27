@@ -39,8 +39,8 @@ public class StreetSplinePlacerSystem : SystemBase
 
                     var rotation = getRotationFromEntity[street.Value];
 
-                    /*var aaa = localToWorld.Rotation.value.y;
-                    var bbb = quaternion.EulerXYZ(localToWorld.Rotation.value.y).value.y;
+                    //var aaa = localToWorld.Rotation.value.y;
+                    /*var bbb = quaternion.EulerXYZ(localToWorld.Rotation.value.y).value.y;
                     var ccc = rotation.Value.value.y;
                     var rot = quaternion.LookRotationSafe(localToWorld.Forward, localToWorld.Up);*/
 
@@ -96,13 +96,13 @@ public class StreetSplinePlacerSystem : SystemBase
                         //var currentQuaternon = getLocalToWorldComponentDataFromEntity[spline].Rotation; // Da errore:
                         // Attempted to access ComponentDataFromEntity<Unity.Transforms.LocalToWorld> which has been invalidated by a structural change.
 
-                        /*var currentQuaternon = localToWorld.Rotation.value; //in realtà questo è il current quaternon del track, non dello spline
+                        var currentQuaternon = localToWorld.Rotation.value; //in realtà questo è il current quaternon del track, non dello spline
 
                         var newRotation = new Rotation
                         {
-                            Value = math.mul(currentQuaternon, quaternion.RotateY(math.radians(aaa)))
+                            Value = quaternion.RotateZ(math.radians(-degree))
                         };
-                        ecb.AddComponent(spline, newRotation);*/
+                        ecb.AddComponent(spline, newRotation);
 
                         if (nSplinePlaced == nSplinesToBePlaced - 1)
                         {
@@ -111,6 +111,7 @@ public class StreetSplinePlacerSystem : SystemBase
                                 id = isForward ? nSplinePlaced : (nSplinesToBePlaced - nSplinePlaced - 1),
                                 Track = trackEntity,
                                 isLast = isForward ? true : false,
+                                isForward = isForward,
                                 carEntity = trackComponentData.carEntity
                             };
                             ecb.AddComponent(spline, newSplineComponentData);
@@ -122,6 +123,7 @@ public class StreetSplinePlacerSystem : SystemBase
                                 id = isForward ? nSplinePlaced : (nSplinesToBePlaced - nSplinePlaced - 1),
                                 Track = trackEntity,
                                 isSpawner = true,
+                                isForward = isForward,
                                 carEntity = trackComponentData.carEntity
                             };
                             ecb.AddComponent(spline, newSplineComponentData);
@@ -133,6 +135,7 @@ public class StreetSplinePlacerSystem : SystemBase
                                 id = nSplinesToBePlaced - nSplinePlaced - 1,
                                 Track = trackEntity,
                                 isLast = true,
+                                isForward = isForward,
                                 carEntity = trackComponentData.carEntity
                             };
                             ecb.AddComponent(spline, newSplineComponentData);
@@ -143,6 +146,7 @@ public class StreetSplinePlacerSystem : SystemBase
                             {
                                 id = isForward ? nSplinePlaced : (nSplinesToBePlaced - nSplinePlaced - 1),
                                 Track = trackEntity,
+                                isForward = isForward,
                                 carEntity = trackComponentData.carEntity
                             };
                             ecb.AddComponent(spline, newSplineComponentData);

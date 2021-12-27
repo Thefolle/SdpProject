@@ -23,7 +23,7 @@ public class SplineVehicleMovementSystem : SystemBase
 
         EntityManager entityManager = World.EntityManager;
 
-        Entities.ForEach((ref Translation translation, ref CarComponentData carComponentData,
+        Entities.ForEach((ref Translation translation, ref CarComponentData carComponentData, ref Rotation rotation,
             in Entity carEntity, in LocalToWorld localToWorld) =>
         {
             var mySplineStart = new Entity();
@@ -84,6 +84,7 @@ public class SplineVehicleMovementSystem : SystemBase
                                     carEntity = splineComponentData.carEntity,
                                     lastSpawnedCar = splineComponentData.lastSpawnedCar,
                                     lastTimeSpawned = splineComponentData.lastTimeSpawned,
+                                    isForward = splineComponentData.isForward,
                                     isOccupied = true
                                 });
                                 mySplineStart = spline.Value;
@@ -102,6 +103,7 @@ public class SplineVehicleMovementSystem : SystemBase
                                 carEntity = splineComponentData.carEntity,
                                 lastSpawnedCar = splineComponentData.lastSpawnedCar,
                                 lastTimeSpawned = splineComponentData.lastTimeSpawned,
+                                isForward = splineComponentData.isForward,
                                 isOccupied = true
                             });
                             mySplineStart = spline.Value;
@@ -128,6 +130,7 @@ public class SplineVehicleMovementSystem : SystemBase
                         var distCovered = (elapsedTime - carComponentData.splineReachedAtTime) * carComponentData.maxSpeed * 100;
                         var fractionOfJourney = (float)distCovered / journeyLength;
                         translation.Value = UnityEngine.Vector3.Lerp(localToWorldSplineStart.Position, localToWorldSplineEnd.Position, fractionOfJourney);
+                        //rotation.Value = UnityEngine.Quaternion.Lerp(localToWorldSplineStart.Rotation, localToWorldSplineEnd.Rotation, fractionOfJourney);
                         if (math.all(localToWorldSplineEnd.Position == localToWorld.Position))
                         {
                             carComponentData.SplineId = carComponentData.SplineId + 1;
@@ -141,6 +144,7 @@ public class SplineVehicleMovementSystem : SystemBase
                                 carEntity = mySplineStartComponentData.carEntity,
                                 lastSpawnedCar = mySplineStartComponentData.lastSpawnedCar,
                                 lastTimeSpawned = mySplineStartComponentData.lastTimeSpawned,
+                                isForward = mySplineStartComponentData.isForward,
                                 isOccupied = false
                             });
                         }

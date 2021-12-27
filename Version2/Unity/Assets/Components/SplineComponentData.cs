@@ -10,6 +10,8 @@ public struct SplineComponentData : IComponentData
     public bool isLast;
     public bool isOccupied;
 
+    public bool isForward;
+
     public Entity Track;
     public Entity carEntity;
     public Entity lastSpawnedCar;
