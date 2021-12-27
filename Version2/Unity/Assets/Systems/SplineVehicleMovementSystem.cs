@@ -12,7 +12,7 @@ public class SplineVehicleMovementSystem : SystemBase
         float deltaTime = Time.fixedDeltaTime;
         double elapsedTime = Time.ElapsedTime;
         float fixedDeltaTime = UnityEngine.Time.fixedDeltaTime;
-        if (elapsedTime < 2) return;
+        if (elapsedTime < 5) return;
 
         var getSplineComponentDataFromEntity = GetComponentDataFromEntity<SplineComponentData>();
         var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
@@ -66,52 +66,60 @@ public class SplineVehicleMovementSystem : SystemBase
                             }
 
                         } */
-                    
+
                     var splineComponentData = getSplineComponentDataFromEntity[spline.Value];
-                        if (getSplineComponentDataFromEntity[spline.Value].id == carComponentData.SplineId)
+                    if (getSplineComponentDataFromEntity[spline.Value].id == carComponentData.SplineId)
+                    {
+                        if (!getSplineComponentDataFromEntity[spline.Value].isLast)
                         {
-                            if (!getSplineComponentDataFromEntity[spline.Value].isLast)
+                            // start and end
+                            if (getSplineComponentDataFromEntity[spline.Value].id == carComponentData.SplineId)
                             {
-                                // start and end
-                                if (getSplineComponentDataFromEntity[spline.Value].id == carComponentData.SplineId)
+                                entityManager.SetComponentData(spline.Value, new SplineComponentData
                                 {
-                                    entityManager.SetComponentData(spline.Value, new SplineComponentData
-                                    {
-                                        id = splineComponentData.id,
-                                        isLast = splineComponentData.isLast,
-                                        Track = splineComponentData.Track,
-                                        isOccupied = true
-                                    });
+                                    id = splineComponentData.id,
+                                    isLast = splineComponentData.isLast,
+                                    Track = splineComponentData.Track,
+                                    isSpawner = splineComponentData.isSpawner,
+                                    carEntity = splineComponentData.carEntity,
+                                    lastSpawnedCar = splineComponentData.lastSpawnedCar,
+                                    lastTimeSpawned = splineComponentData.lastTimeSpawned,
+                                    isOccupied = true
+                                });
                                 mySplineStart = spline.Value;
                                 mySplineStartComponentData = splineComponentData;
                             }
-                            }
-                            else
-                            {
+                        }
+                        else
+                        {
                             // start and NOT end
                             entityManager.SetComponentData(spline.Value, new SplineComponentData
                             {
                                 id = splineComponentData.id,
                                 isLast = splineComponentData.isLast,
                                 Track = splineComponentData.Track,
+                                isSpawner = splineComponentData.isSpawner,
+                                carEntity = splineComponentData.carEntity,
+                                lastSpawnedCar = splineComponentData.lastSpawnedCar,
+                                lastTimeSpawned = splineComponentData.lastTimeSpawned,
                                 isOccupied = true
                             });
                             mySplineStart = spline.Value;
                             mySplineStartComponentData = splineComponentData;
                             arrived = true;
-                                break;
-                            }
+                            break;
                         }
-                            else if (getSplineComponentDataFromEntity[spline.Value].id == (carComponentData.SplineId + 1))
-                                {
-                                    mySplineEnd = spline.Value;
-                                }
+                    }
+                    else if (getSplineComponentDataFromEntity[spline.Value].id == (carComponentData.SplineId + 1))
+                    {
+                        mySplineEnd = spline.Value;
+                    }
                 }
 
             }
             if (getSplineComponentDataFromEntity.HasComponent(mySplineStart) && getSplineComponentDataFromEntity.HasComponent(mySplineEnd))
-            if (!arrived)
-            {
+                if (!arrived)
+                {
                     if (!getSplineComponentDataFromEntity[mySplineEnd].isOccupied)
                     {
                         var localToWorldSplineStart = getLocalToWorldComponentDataFromEntity[mySplineStart];
@@ -129,13 +137,17 @@ public class SplineVehicleMovementSystem : SystemBase
                                 id = mySplineStartComponentData.id,
                                 isLast = mySplineStartComponentData.isLast,
                                 Track = mySplineStartComponentData.Track,
+                                isSpawner = mySplineStartComponentData.isSpawner,
+                                carEntity = mySplineStartComponentData.carEntity,
+                                lastSpawnedCar = mySplineStartComponentData.lastSpawnedCar,
+                                lastTimeSpawned = mySplineStartComponentData.lastTimeSpawned,
                                 isOccupied = false
                             });
                         }
                     }
                     else
                         carComponentData.splineReachedAtTime = elapsedTime;
-            }
+                }
             // physicsVelocity.Linear = math.normalize(localToWorld.Forward) * carComponentData.Speed / fixedDeltaTime;
 
         }).Run();

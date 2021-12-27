@@ -14,6 +14,10 @@ public struct StreetComponentData : IComponentData
     /// <para>This field is a topological hint that allows dynamic linking of districts at runtime.</para>
     /// </summary>
     public bool IsBorder;
+
+    public bool allSplinesPlaced;
+    public Entity splineEntity;
+
     public Side Side;
 }
 

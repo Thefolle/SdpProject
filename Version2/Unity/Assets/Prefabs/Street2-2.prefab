@@ -65,6 +65,8 @@ MonoBehaviour:
   startingCross: {fileID: 0}
   endingCross: {fileID: 0}
   IsBorder: 0
+  allSplinesPlaced: 0
+  splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   Side: 0
 --- !u!1001 &1088790816504480767
 PrefabInstance:
@@ -125,6 +127,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: ForwardLane-0
       objectReference: {fileID: 0}
+    - target: {fileID: 6458289747969312102, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+      propertyPath: carEntity
+      value: 
+      objectReference: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+    - target: {fileID: 6458289747969312102, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+      propertyPath: splineEntity
+      value: 
+      objectReference: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
     m_RemovedComponents:
     - {fileID: 6616265885232918008, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
     - {fileID: 4875117039354486247, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
@@ -195,6 +205,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: ForwardLane-1
       objectReference: {fileID: 0}
+    - target: {fileID: 6458289747969312102, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+      propertyPath: carEntity
+      value: 
+      objectReference: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+    - target: {fileID: 6458289747969312102, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+      propertyPath: splineEntity
+      value: 
+      objectReference: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
     m_RemovedComponents:
     - {fileID: 4875117039354486247, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
     - {fileID: 6616265885232918008, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
@@ -265,6 +283,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: BackwardLane-0
       objectReference: {fileID: 0}
+    - target: {fileID: 6458289747969312102, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+      propertyPath: carEntity
+      value: 
+      objectReference: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+    - target: {fileID: 6458289747969312102, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+      propertyPath: splineEntity
+      value: 
+      objectReference: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
     m_RemovedComponents:
     - {fileID: 6616265885232918008, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
     - {fileID: 4875117039354486247, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
@@ -335,6 +361,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: BackwardLane-1
       objectReference: {fileID: 0}
+    - target: {fileID: 6458289747969312102, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+      propertyPath: carEntity
+      value: 
+      objectReference: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+    - target: {fileID: 6458289747969312102, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
+      propertyPath: splineEntity
+      value: 
+      objectReference: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
     m_RemovedComponents:
     - {fileID: 6616265885232918008, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}
     - {fileID: 4875117039354486247, guid: 1f533776f8d2cec41b2e41072cd514b2, type: 3}

@@ -18,6 +18,8 @@ public struct CarComponentData : IComponentData
 
     public int SplineId;
     public double splineReachedAtTime;
+    public int elapsedFramesMovement;
+
     public int TrackId;
     public Entity Track;
     public bool IsTracked;

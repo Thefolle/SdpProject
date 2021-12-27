@@ -6,5 +6,7 @@ using Unity.Entities;
 [GenerateAuthoringComponent]
 public struct TrackComponentData : IComponentData
 {
-    private char Pad;
+    public bool allSplinesPlaced;
+    public Entity splineEntity;
+    public Entity carEntity;
 }

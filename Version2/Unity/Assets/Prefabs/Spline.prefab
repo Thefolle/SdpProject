@@ -108,6 +108,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037fd2850456f0e49a5e2a2e2bae2266, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: -1
+  id: 0
+  isLast: 0
   isOccupied: 0
   Track: {fileID: 0}
+  carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  lastSpawnedCar: {fileID: 0}
+  lastTimeSpawned: 0
+  isSpawner: 0

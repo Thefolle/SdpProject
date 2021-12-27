@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &9067497099830669789
+--- !u!1 &5155378393386513286
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8547243023220271975}
-  - component: {fileID: 4697874174221608130}
-  - component: {fileID: 7410326712428597256}
-  - component: {fileID: -8840114221201541378}
-  - component: {fileID: -2236307534124778825}
-  - component: {fileID: 5093662526584122206}
+  - component: {fileID: 5155378393386513282}
+  - component: {fileID: 5155378393386513283}
+  - component: {fileID: 5155378393386513280}
+  - component: {fileID: 5155378393386513281}
+  - component: {fileID: 5155378393386513277}
   m_Layer: 0
-  m_Name: Car
+  m_Name: SphereCar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8547243023220271975
+--- !u!4 &5155378393386513282
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9067497099830669789}
+  m_GameObject: {fileID: 5155378393386513286}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 261.76733, y: 3.9414225, z: 78.01489}
-  m_LocalScale: {x: 1.8, y: 1.5, z: 2}
+  m_LocalPosition: {x: 14.47, y: 2.06, z: -59.7}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &4697874174221608130
+--- !u!33 &5155378393386513283
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9067497099830669789}
-  m_Mesh: {fileID: -5495902117074765545, guid: 3231f752ac0dec2478eb4bb90bdc5dc8, type: 3}
---- !u!23 &7410326712428597256
+  m_GameObject: {fileID: 5155378393386513286}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &5155378393386513280
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9067497099830669789}
+  m_GameObject: {fileID: 5155378393386513286}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -62,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: 3231f752ac0dec2478eb4bb90bdc5dc8, type: 3}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,60 +83,48 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-8840114221201541378
+--- !u!114 &5155378393386513281
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9067497099830669789}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ConversionMode: 0
---- !u!114 &-2236307534124778825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9067497099830669789}
+  m_GameObject: {fileID: 5155378393386513286}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3f991f876e7549245b246e948dbee612, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 0
-  AngularSpeed: 0.05
+  AngularSpeed: 0
   maxSpeed: 0.25
   tryOvertake: 0
-  lastTimeTried: -1
+  lastTimeTried: 0
   rightOvertakeAllowed: 0
   emergencyBrakeActivated: 0
   SplineId: 0
-  splineReachedAtTime: 0
+  splineReachedAtTime: 2
   elapsedFramesMovement: 0
   TrackId: 0
   Track: {fileID: 0}
-  IsTracked: 0
+  IsTracked: 1
   isPathUpdated: 1
-  HasJustSpawned: 1
+  HasJustSpawned: 0
   HasReachedDestination: 0
   isOnStreet: 0
   isOnCross: 0
   isOnStreetAndCross: 0
   broken: 0
---- !u!114 &5093662526584122206
+--- !u!114 &5155378393386513277
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9067497099830669789}
+  m_GameObject: {fileID: 5155378393386513286}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 416d3ef1a89eabb4bb8ba1dd52496b7a, type: 3}
+  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ConversionMode: 0
