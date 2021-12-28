@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1074435296030177254}
   - component: {fileID: 7769227467083369105}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -193,6 +193,7 @@ MonoBehaviour:
   id: 0
   isLast: 0
   isOccupied: 0
+  isForward: 0
   Track: {fileID: 0}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
   lastSpawnedCar: {fileID: 0}
