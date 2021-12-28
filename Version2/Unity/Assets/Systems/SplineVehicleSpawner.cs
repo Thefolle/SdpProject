@@ -8,11 +8,15 @@ public class SplineVehicleSpawner : SystemBase
     protected override void OnUpdate()
     {
         double elapsedTime = Time.ElapsedTime;
-        if (elapsedTime < 5 ) return;
+        if (elapsedTime < 10) return;
 
         EntityManager entityManager = World.EntityManager;
         var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
+        var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
+        var getLocalToWorldComponentDataFromEntity = GetComponentDataFromEntity<LocalToWorld>();
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
+        bool fuck = false;
+        var streetLocalToWorld = new LocalToWorld { };
 
         Entities.ForEach((ref SplineComponentData splineComponentData, in LocalToWorld localToWorld, in Entity spline) =>
         {
@@ -23,13 +27,38 @@ public class SplineVehicleSpawner : SystemBase
             getCarComponentDataFromEntity.HasComponent(splineComponentData.lastSpawnedCar) &&
             getCarComponentDataFromEntity[splineComponentData.lastSpawnedCar].SplineId > splineComponentData.id + 1)))*/
             {
-                Entity carEntity = entityManager.Instantiate(splineComponentData.carEntity);
-                entityManager.SetComponentData(carEntity, new Translation { Value = localToWorld.Position + 0.5f * math.normalize(localToWorld.Up) });
+                var ltwForward = math.normalize(localToWorld.Forward);
+                int degree = 0;
+                if (math.abs(ltwForward.x - 1f) < 0.00001 || math.abs(ltwForward.x - (-1f)) < 0.00001)
+                {
+                    if (math.abs(ltwForward.x - 1f) < 0.00001)
+                        degree = 90;
+                    else
+                        degree = -90;
+                }
+                else if (math.abs(ltwForward.z - 1f) < 0.00001 || math.abs(ltwForward.z - (-1f)) < 0.00001)
+                {
+                    if (ltwForward.z == 1f)
+                        degree = 0;
+                    else
+                        degree = 180;
+                }
+                else if (math.abs(ltwForward.x - 0.7071067) < 0.00001 && math.abs(ltwForward.z - 0.7071067) < 0.00001 ||
+                math.abs(ltwForward.x - (-0.7071067)) < 0.00001 && math.abs(ltwForward.z - 0.7071067) < 0.00001)
+                {
+                    if (math.abs(ltwForward.x - 0.7071067) < 0.00001 && math.abs(ltwForward.z - 0.7071067) < 0.00001)
+                        degree = 45;
+                    else
+                        degree = -45;
+                }
 
                 splineComponentData.isOccupied = true;
 
                 var splineId = splineComponentData.id;
                 var TrackEntity = splineComponentData.Track;
+
+                if (!splineComponentData.isForward)
+                    degree += 180;
 
                 var newCarComponentData = new CarComponentData
                 {
@@ -39,7 +68,16 @@ public class SplineVehicleSpawner : SystemBase
                     Track = TrackEntity
                 };
 
+                /*var newRotation = new Rotation
+                {
+                    Value = new quaternion(0, localToWorld.Rotation.value.y, 0, localToWorld.Rotation.value.w)
+                };*/
+
+                Entity carEntity = entityManager.Instantiate(splineComponentData.carEntity);
+                entityManager.SetComponentData(carEntity, new Translation { Value = localToWorld.Position + 0.5f * math.normalize(localToWorld.Up) });
+                entityManager.SetComponentData(carEntity, new Rotation { Value = quaternion.RotateY(math.radians(degree))});
                 ecb.AddComponent(carEntity, newCarComponentData);
+                //ecb.AddComponent(carEntity, newRotation);
 
                 /*var carComponentData = getCarComponentDataFromEntity[carEntity];
                 entityManager.SetComponentData(carEntity, new CarComponentData
