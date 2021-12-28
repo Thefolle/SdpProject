@@ -8,14 +8,13 @@ public class SplineVehicleSpawner : SystemBase
     protected override void OnUpdate()
     {
         double elapsedTime = Time.ElapsedTime;
-        if (elapsedTime < 10) return;
+        if (elapsedTime < 4 || World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled) return;
 
         EntityManager entityManager = World.EntityManager;
         var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
         var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
         var getLocalToWorldComponentDataFromEntity = GetComponentDataFromEntity<LocalToWorld>();
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
-        bool fuck = false;
         var streetLocalToWorld = new LocalToWorld { };
 
         Entities.ForEach((ref SplineComponentData splineComponentData, in LocalToWorld localToWorld, in Entity spline) =>
@@ -65,7 +64,10 @@ public class SplineVehicleSpawner : SystemBase
                     maxSpeed = 0.25f,
                     splineReachedAtTime = 2f,
                     SplineId = splineId,
-                    Track = TrackEntity
+                    Track = TrackEntity,
+                    isOnStreet = true,
+                    isPathUpdated = true,
+                    HasJustSpawned = true
                 };
 
                 /*var newRotation = new Rotation

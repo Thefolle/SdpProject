@@ -42,7 +42,8 @@ public class StreetSplinePlacerSystem : SystemBase
                     //var aaa = localToWorld.Rotation.value.y;
                     /*var bbb = quaternion.EulerXYZ(localToWorld.Rotation.value.y).value.y;
                     var ccc = rotation.Value.value.y;
-                    var rot = quaternion.LookRotationSafe(localToWorld.Forward, localToWorld.Up);*/
+                    var rot = quaternion.LookRotationSafe(localToWorld.Forward, localToWorld.Up);
+                    Debug.LogError(rot.value + " , " + ccc);*/
 
                     var ltwForward = math.normalize(localToWorld.Forward);
                     int degree = 0;
@@ -172,5 +173,6 @@ public class StreetSplinePlacerSystem : SystemBase
             }
         }).WithStructuralChanges().Run();
         this.Enabled = false;
+        Debug.LogError("StreetSplinePlacerSystem - FINISHED PLACING");
     }
 }

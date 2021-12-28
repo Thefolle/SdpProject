@@ -36,8 +36,6 @@ public struct CarComponentData : IComponentData
     public bool HasReachedDestination;
 
     public bool isOnStreet;
-    public bool isOnCross;
-    public bool isOnStreetAndCross;
 
     public bool broken;
 }
