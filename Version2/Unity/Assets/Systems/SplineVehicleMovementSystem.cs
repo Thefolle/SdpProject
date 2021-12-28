@@ -12,7 +12,7 @@ public class SplineVehicleMovementSystem : SystemBase
         float deltaTime = Time.fixedDeltaTime;
         double elapsedTime = Time.ElapsedTime;
         float fixedDeltaTime = UnityEngine.Time.fixedDeltaTime;
-        if (elapsedTime < 5) return;
+        if (elapsedTime < 4 || World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled) return;
 
         var getSplineComponentDataFromEntity = GetComponentDataFromEntity<SplineComponentData>();
         var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
@@ -73,8 +73,6 @@ public class SplineVehicleMovementSystem : SystemBase
                         if (!getSplineComponentDataFromEntity[spline.Value].isLast)
                         {
                             // start and end
-                            if (getSplineComponentDataFromEntity[spline.Value].id == carComponentData.SplineId)
-                            {
                                 entityManager.SetComponentData(spline.Value, new SplineComponentData
                                 {
                                     id = splineComponentData.id,
@@ -89,7 +87,6 @@ public class SplineVehicleMovementSystem : SystemBase
                                 });
                                 mySplineStart = spline.Value;
                                 mySplineStartComponentData = splineComponentData;
-                            }
                         }
                         else
                         {
@@ -109,6 +106,12 @@ public class SplineVehicleMovementSystem : SystemBase
                             mySplineStart = spline.Value;
                             mySplineStartComponentData = splineComponentData;
                             arrived = true;
+
+                            // TOGGLE AND UPDATE TRACK
+                            carComponentData.isOnStreet = !carComponentData.isOnStreet;
+                            carComponentData.isPathUpdated = false;
+
+
                             break;
                         }
                     }
@@ -119,6 +122,7 @@ public class SplineVehicleMovementSystem : SystemBase
                 }
 
             }
+
             if (getSplineComponentDataFromEntity.HasComponent(mySplineStart) && getSplineComponentDataFromEntity.HasComponent(mySplineEnd))
                 if (!arrived)
                 {
