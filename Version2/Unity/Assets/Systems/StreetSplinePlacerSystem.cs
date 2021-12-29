@@ -134,7 +134,7 @@ public class StreetSplinePlacerSystem : SystemBase
                             {
                                 id = isForward ? nSplinePlaced : (nSplinesToBePlaced - nSplinePlaced - 1),
                                 Track = trackEntity,
-                                isSpawner = true,
+                                isSpawner = streetComponentData.IsBorder? false : true,
                                 isForward = isForward,
                                 carEntity = trackComponentData.carEntity
                             };

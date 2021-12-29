@@ -30,6 +30,8 @@ public struct CarComponentData : IComponentData
     /// this flag stores whether the update has been performed or not.</para>
     /// </summary>
     public bool isPathUpdated;
+    public bool needToUpdatedPath;
+    public Entity splineStart;
 
     // Spawning system variables
     public bool HasJustSpawned;

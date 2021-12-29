@@ -19,8 +19,8 @@ public class SplineVehicleSpawner : SystemBase
 
         Entities.ForEach((ref SplineComponentData splineComponentData, in LocalToWorld localToWorld, in Entity spline) =>
         {
-            if(splineComponentData.isSpawner &&
-            splineComponentData.isOccupied == false && (elapsedTime - splineComponentData.lastTimeSpawned) > 3) 
+            if (splineComponentData.isSpawner &&
+            splineComponentData.isOccupied == false && (elapsedTime - splineComponentData.lastTimeSpawned) > 3)
             /*((splineComponentData.lastSpawnedCar == Entity.Null || !entityManager.Exists(splineComponentData.lastSpawnedCar)
             || entityManager.Exists(splineComponentData.lastSpawnedCar) && 
             getCarComponentDataFromEntity.HasComponent(splineComponentData.lastSpawnedCar) &&
@@ -64,6 +64,7 @@ public class SplineVehicleSpawner : SystemBase
                     maxSpeed = 0.25f,
                     splineReachedAtTime = 2f,
                     SplineId = splineId,
+                    splineStart = spline,
                     Track = TrackEntity,
                     isOnStreet = true,
                     isPathUpdated = true,
