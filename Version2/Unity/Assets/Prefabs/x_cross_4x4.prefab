@@ -584,7 +584,7 @@ GameObject:
   - component: {fileID: 5670679040772819854}
   - component: {fileID: 6735956884532108526}
   m_Layer: 0
-  m_Name: trafficLightBorder-0
+  m_Name: trafficLightBorderBottom-0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -683,6 +683,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGreen: 0
+  ruledStreet: {fileID: 0}
 --- !u!1 &855755839632729688
 GameObject:
   m_ObjectHideFlags: 0
@@ -1910,7 +1911,7 @@ GameObject:
   - component: {fileID: 1567170493803248375}
   - component: {fileID: 5392123577556021644}
   m_Layer: 0
-  m_Name: trafficLightBorder-3
+  m_Name: trafficLightBorderLeft-3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2009,6 +2010,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGreen: 0
+  ruledStreet: {fileID: 0}
 --- !u!1 &4680993698363856586
 GameObject:
   m_ObjectHideFlags: 0
@@ -2838,7 +2840,7 @@ GameObject:
   - component: {fileID: 3317820922134753116}
   - component: {fileID: 270610754508292962}
   m_Layer: 0
-  m_Name: trafficLightBorder-2
+  m_Name: trafficLightBorderTop-2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2937,6 +2939,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGreen: 0
+  ruledStreet: {fileID: 0}
 --- !u!1 &7322014575448251094
 GameObject:
   m_ObjectHideFlags: 0
@@ -3292,7 +3295,7 @@ GameObject:
   - component: {fileID: 6636953481238417656}
   - component: {fileID: 8589980396440462985}
   m_Layer: 0
-  m_Name: trafficLightBorder-1
+  m_Name: trafficLightBorderRight-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3391,6 +3394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGreen: 0
+  ruledStreet: {fileID: 0}
 --- !u!1 &8512048965058110828
 GameObject:
   m_ObjectHideFlags: 0

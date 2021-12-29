@@ -10867,6 +10867,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 92724136028641328}
     m_Modifications:
+    - target: {fileID: 1125192672640887129, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
+      propertyPath: m_Name
+      value: trafficLightBorderTop-3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1619543445293589054, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
+      propertyPath: m_Name
+      value: trafficLightBorderRight-2
+      objectReference: {fileID: 0}
     - target: {fileID: 1841914728232088534, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
       propertyPath: m_RootOrder
       value: 41
@@ -10902,6 +10910,18 @@ PrefabInstance:
     - target: {fileID: 2163261446277363731, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
       propertyPath: m_Material.m_CollisionResponse.m_Value
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4392831822987362000, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
+      propertyPath: m_Name
+      value: trafficLightBorderBottom-1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7254700462836295048, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
+      propertyPath: m_Name
+      value: trafficLightBorderCorner-4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527222912505116195, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
+      propertyPath: m_Name
+      value: trafficLightBorderLeft-0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2163261446277363730, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}

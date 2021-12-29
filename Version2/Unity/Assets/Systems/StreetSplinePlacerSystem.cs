@@ -10,15 +10,16 @@ public class StreetSplinePlacerSystem : SystemBase
     protected override void OnUpdate()
     {
         double elapsedTime = Time.ElapsedTime;
-        if (elapsedTime < 2) return;
+        if (elapsedTime < 2 || World.GetExistingSystem<GraphGeneratorSystem>().Enabled) return;
 
         EntityManager entityManager = World.EntityManager;
-        var getChildComponentDataFromEntity = GetBufferFromEntity<Child>();
+        /*var getChildComponentDataFromEntity = GetBufferFromEntity<Child>();
         var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
         var getLocalToWorldComponentDataFromEntity = GetComponentDataFromEntity<LocalToWorld>();
         var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
         var getNonUniformScaleFromEntity = GetComponentDataFromEntity<NonUniformScale>();
         var getRotationFromEntity = GetComponentDataFromEntity<Rotation>();
+        var getStreetComponentData = GetComponentDataFromEntity<StreetComponentData>();*/
 
 
         Entities.ForEach((ref TrackComponentData trackComponentData, in Entity trackEntity, in LocalToWorld localToWorld, in Translation translation) =>
@@ -28,16 +29,25 @@ public class StreetSplinePlacerSystem : SystemBase
                 /*Entity splineEntity = entityManager.Instantiate(streetComponentData.splineEntity);
                 entityManager.SetComponentData(splineEntity, new Translation { Value = localToWorld.Position + 0.5f * math.normalize(localToWorld.Up) });*/
                 // Calculating the number of splines to be placed, one each 10f, (example if lenght = 60, 2*60/10 + 1 = 13 is the number of splines)
-                var lane = getParentComponentDataFromEntity[trackEntity];
-                if (getParentComponentDataFromEntity.HasComponent(lane.Value))
+                var lane = entityManager.GetComponentData<Parent>(trackEntity);
+                
+                //var lane = getParentComponentDataFromEntity[trackEntity];
+                if (entityManager.HasComponent<Parent>(lane.Value))
                 {
                     var ecb = new EntityCommandBuffer(Allocator.TempJob);
                     var ecb2 = new EntityCommandBuffer(Allocator.TempJob);
-                    var street = getParentComponentDataFromEntity[lane.Value];
+                    
+                    //var street = getParentComponentDataFromEntity[lane.Value];
+                    var street = entityManager.GetComponentData<Parent>(lane.Value);
+                    
+                    //var streetComponentData = getStreetComponentData[street.Value];
+                    var streetComponentData = entityManager.GetComponentData<StreetComponentData>(street.Value);
 
-                    var streetLoc = getLocalToWorldComponentDataFromEntity[street.Value];
 
-                    var rotation = getRotationFromEntity[street.Value];
+                    //var streetLoc = getLocalToWorldComponentDataFromEntity[street.Value];
+                    var streetLoc = entityManager.GetComponentData<LocalToWorld>(street.Value);
+
+                    //var rotation = getRotationFromEntity[street.Value];
 
                     //var aaa = localToWorld.Rotation.value.y;
                     /*var bbb = quaternion.EulerXYZ(localToWorld.Rotation.value.y).value.y;
@@ -75,8 +85,9 @@ public class StreetSplinePlacerSystem : SystemBase
                     bool isForward = false;
                     if (laneName.Contains("Forward")) isForward = true;
 
-                    var streetNonUniformScale = getNonUniformScaleFromEntity[street.Value];
-                    //Debug.LogError(streetNonUniformScale.Value.z.ToString());
+                    //var streetNonUniformScale = getNonUniformScaleFromEntity[street.Value];
+                    var streetNonUniformScale = entityManager.GetComponentData<NonUniformScale>(street.Value);
+
 
                     var streetLenght = streetNonUniformScale.Value.z;
 
@@ -164,12 +175,13 @@ public class StreetSplinePlacerSystem : SystemBase
                     }
                     ecb.Playback(EntityManager);
                     ecb2.Playback(EntityManager);
-                    trackComponentData.allSplinesPlaced = true;
+                    
                     ecb.Dispose();
                     ecb2.Dispose();
 
                     //Debug.LogError(street.Value.Index + " : " + localToWorld.Forward.ToString() + " : " + math.normalize(localToWorld.Forward).ToString() + " : " + bbb.ToString());
                 }
+                trackComponentData.allSplinesPlaced = true;
             }
         }).WithStructuralChanges().Run();
         this.Enabled = false;

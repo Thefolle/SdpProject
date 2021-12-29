@@ -2331,11 +2331,11 @@ PrefabInstance:
     - target: {fileID: 3354528050580370986, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
       propertyPath: endingCross
       value: 
-      objectReference: {fileID: 303541739}
+      objectReference: {fileID: 470169671}
     - target: {fileID: 3354528050580370986, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
       propertyPath: startingCross
       value: 
-      objectReference: {fileID: 470169671}
+      objectReference: {fileID: 303541739}
     - target: {fileID: 6848889043378361972, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
       propertyPath: m_Name
       value: Street2-2-1.2

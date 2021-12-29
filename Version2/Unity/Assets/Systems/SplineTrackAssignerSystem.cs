@@ -24,7 +24,6 @@ public class SplineTrackAssignerSystem : SystemBase
         {
             if (carComponentData.HasJustSpawned)
             {
-
                 carComponentData.HasJustSpawned = false;
 
                 /* Request a random path */
@@ -32,6 +31,7 @@ public class SplineTrackAssignerSystem : SystemBase
                 var trackedLaneName = entityManager.GetName(trackedLane);
                 var street = getParentComponentData[trackedLane].Value;
                 var streetComponentData = getStreetComponentData[street];
+                if (streetComponentData.IsBorder) return;
                 int edgeInitialNode;
                 int edgeEndingNode;
                 /* Exploit the track name to infer which are the starting and the ending crosses. That's why 
@@ -55,17 +55,22 @@ public class SplineTrackAssignerSystem : SystemBase
                     edgeEndingNode = 0;
                 }
 
-                var graph = World.GetExistingSystem<GraphGeneratorSystem>().District;
+                LogError(trackedLaneName + "#" + trackedLane.Index +  " | " + edgeInitialNode + " | " + edgeEndingNode);
+
+                //var graph = World.GetExistingSystem<GraphGeneratorSystem>().District;
                 var carPath = GetBufferFromEntity<PathComponentData>()[carEntity];
                 var randomPath = graph.RandomPath(edgeInitialNode, edgeEndingNode);
 
                 var isFirst = true;
                 var lastStep = -1;
+
+                //LogError(randomPath.Count + " | " + carPath.IsCreated.ToString() + " | " + graph.ToString());
+
                 foreach (var node in randomPath)
-                {
+                {   
                     if (isFirst)
                     {
-                        // carPath.Add(new PathComponentData { CrossOrStreet = node.Cross }); //neglect the first node when a car is spawned in a street
+                        //carPath.Add(new PathComponentData { CrossOrStreet = node.Cross }); //neglect the first node when a car is spawned in a street
                         lastStep = node.Cross.Index;
                         isFirst = false;
                     }

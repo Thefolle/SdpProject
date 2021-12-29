@@ -26,6 +26,7 @@ public class SplineVehicleMovementSystem : SystemBase
         Entities.ForEach((ref Translation translation, ref CarComponentData carComponentData, ref Rotation rotation,
             in Entity carEntity, in LocalToWorld localToWorld) =>
         {
+            if (!carComponentData.isPathUpdated) return;
             var mySplineStart = new Entity();
             var mySplineStartComponentData = new SplineComponentData();
             var mySplineEnd = new Entity();
@@ -85,6 +86,7 @@ public class SplineVehicleMovementSystem : SystemBase
                                     isForward = splineComponentData.isForward,
                                     isOccupied = true
                                 });
+
                                 mySplineStart = spline.Value;
                                 mySplineStartComponentData = splineComponentData;
                         }
