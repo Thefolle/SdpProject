@@ -128,25 +128,25 @@ public class StreetSplinePlacerSystem : SystemBase
                             };
                             ecb.AddComponent(spline, newSplineComponentData);
                         }
-                        else if (nSplinePlaced == 3 && nSplinesToBePlaced >= 10 && isForward || (!isForward && nSplinePlaced == nSplinesToBePlaced - 3 - 1 && nSplinesToBePlaced >= 10))
+                        else if(nSplinePlaced == 0)
+                        {
+                            var newSplineComponentData = new SplineComponentData
+                            {
+                                id = isForward ? nSplinePlaced : (nSplinesToBePlaced - nSplinePlaced - 1),
+                                Track = trackEntity,
+                                isLast = isForward ? false : true,
+                                isForward = isForward,
+                                carEntity = trackComponentData.carEntity
+                            };
+                            ecb.AddComponent(spline, newSplineComponentData);
+                        }
+                        else if ((nSplinePlaced == 3 && nSplinesToBePlaced >= 10 && isForward) || (!isForward && nSplinePlaced == (nSplinesToBePlaced - 3 - 1) && nSplinesToBePlaced >= 10))
                         {
                             var newSplineComponentData = new SplineComponentData
                             {
                                 id = isForward ? nSplinePlaced : (nSplinesToBePlaced - nSplinePlaced - 1),
                                 Track = trackEntity,
                                 isSpawner = streetComponentData.IsBorder? false : true,
-                                isForward = isForward,
-                                carEntity = trackComponentData.carEntity
-                            };
-                            ecb.AddComponent(spline, newSplineComponentData);
-                        }
-                        else if (nSplinePlaced == 0 && !isForward)
-                        {
-                            var newSplineComponentData = new SplineComponentData
-                            {
-                                id = nSplinesToBePlaced - nSplinePlaced - 1,
-                                Track = trackEntity,
-                                isLast = true,
                                 isForward = isForward,
                                 carEntity = trackComponentData.carEntity
                             };

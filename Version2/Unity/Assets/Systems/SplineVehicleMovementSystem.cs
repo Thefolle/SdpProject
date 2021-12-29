@@ -26,7 +26,15 @@ public class SplineVehicleMovementSystem : SystemBase
         Entities.ForEach((ref Translation translation, ref CarComponentData carComponentData, ref Rotation rotation,
             in Entity carEntity, in LocalToWorld localToWorld) =>
         {
-            if (carComponentData.needToUpdatedPath && !carComponentData.isPathUpdated) return;
+            bool theCross = false;
+            var laneName = entityManager.GetName(carComponentData.Track);
+            if (laneName.Equals("Bottom-Right-1")) theCross = true;
+
+            if (carComponentData.needToUpdatedPath && !carComponentData.isPathUpdated)
+            {
+                carComponentData.splineReachedAtTime = elapsedTime;
+                return;
+            }
 
             var mySplineStart = new Entity();
             var mySplineStartComponentData = getSplineComponentDataFromEntity[carComponentData.splineStart];
@@ -100,6 +108,7 @@ public class SplineVehicleMovementSystem : SystemBase
                     {
                         mySplineEnd = spline.Value;
                     } */
+
                     if (carComponentData.needToUpdatedPath)
                     {
                         carComponentData.SplineId = 0;
@@ -214,6 +223,10 @@ public class SplineVehicleMovementSystem : SystemBase
                     carComponentData.splineStart = mySplineEnd;
                     if(mySplineEndComponentData.isLast)
                     {
+                        if (theCross)
+                        {
+                            LogErrorFormat("{0}, {1}", carEntity.Index, carComponentData.splineStart.ToString());
+                        }
                         //LogError("Reached last: " + carEntity.Index);
                         // TOGGLE AND UPDATE TRACK
                         carComponentData.isOnStreet = !carComponentData.isOnStreet;
