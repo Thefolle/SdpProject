@@ -85,7 +85,8 @@ public class StreetSplinePlacerSystem : SystemBase
                     bool isForward = false;
                     bool canContainSpawner = false;
                     if (laneName.Contains("Forward")) isForward = true;
-                    if (laneName.Contains("1")) canContainSpawner = true;
+                    //if (laneName.Contains("1")) canContainSpawner = true;
+                    canContainSpawner = true;
 
                     //var streetNonUniformScale = getNonUniformScaleFromEntity[street.Value];
                     var streetNonUniformScale = entityManager.GetComponentData<NonUniformScale>(street.Value);
