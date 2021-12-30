@@ -18,6 +18,7 @@ public class SplineTrackAssignerSystem : SystemBase
         var getCrossComponentData = GetComponentDataFromEntity<CrossComponentData>();
         var getChildComponentData = GetBufferFromEntity<Child>();
         var getTrackComponentData = GetComponentDataFromEntity<TrackComponentData>();
+        var getLaneComponentData = GetComponentDataFromEntity<LaneComponentData>();
         EntityManager entityManager = World.EntityManager;
 
         Entities.ForEach((ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
@@ -67,7 +68,7 @@ public class SplineTrackAssignerSystem : SystemBase
                 //LogError(randomPath.Count + " | " + carPath.IsCreated.ToString() + " | " + graph.ToString());
 
                 foreach (var node in randomPath)
-                {   
+                {
                     if (isFirst)
                     {
                         //carPath.Add(new PathComponentData { CrossOrStreet = node.Cross }); //neglect the first node when a car is spawned in a street
@@ -237,35 +238,36 @@ public class SplineTrackAssignerSystem : SystemBase
                 }
 
                 var lanes = getChildComponentData[street];
-                var trackToFollow = Entity.Null;
-                foreach (var laneChild in lanes)
+                var trackToAssign = Entity.Null;
+                var minimumRelativeTrackDistance = int.MaxValue;
+                var currentTrack = carComponentData.Track;
+                string currentLaneName;
+                int currentRelativeTrackDistance;
+                foreach (var lane in lanes)
                 {
-                    if (entityManager.GetName(laneChild.Value).Contains(trackCandidatesName))
+                    if (getLaneComponentData.HasComponent(lane.Value))
                     {
-                        /* Just take the first admissible track for now */
-                        var trackChild = getChildComponentData[laneChild.Value];
-                        if (trackChild.Length > 1)
+                        currentLaneName = entityManager.GetName(lane.Value);
+                        currentRelativeTrackDistance = math.abs(int.Parse(currentLaneName.Split('-')[1]) - int.Parse(entityManager.GetName(currentTrack).Split('-')[2]));
+                        if (entityManager.GetName(lane.Value).Contains(trackCandidatesName) && currentRelativeTrackDistance < minimumRelativeTrackDistance)
                         {
-                            LogErrorFormat("A lane has multiple track children");
-                            return;
+                            trackToAssign = getChildComponentData[lane.Value][0].Value;
+                            minimumRelativeTrackDistance = currentRelativeTrackDistance;
                         }
-                        trackToFollow = trackChild.ElementAt(0).Value;
-                        break;
                     }
                 }
 
-                if (trackToFollow == Entity.Null)
+                if (trackToAssign == Entity.Null)
                 {
                     LogErrorFormat("No admissible tracks in a street are available for a car.");
                 }
-                else
-                {
-                    carComponentData.isPathUpdated = true;
-                    //carComponentData.TrackId = trackToFollow.Index;
-                    carComponentData.Track = trackToFollow;
+                //entityManager.SetName(trackToAssign, "AAAAAAOOOOOOOOOOOOOOOOOOOO");
+                carComponentData.isPathUpdated = true;
+                //carComponentData.TrackId = trackToFollow.Index;
+                carComponentData.Track = trackToAssign;
 
-                    //LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
-                }
+                //LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
+
             }
 
         }).WithStructuralChanges().Run();
