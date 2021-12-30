@@ -83,7 +83,9 @@ public class StreetSplinePlacerSystem : SystemBase
                     var laneName = entityManager.GetName(lane.Value).ToString();
                     var laneDirection = laneName.Substring(0, laneName.IndexOf('-'));
                     bool isForward = false;
+                    bool canContainSpawner = false;
                     if (laneName.Contains("Forward")) isForward = true;
+                    if (laneName.Contains("1")) canContainSpawner = true;
 
                     //var streetNonUniformScale = getNonUniformScaleFromEntity[street.Value];
                     var streetNonUniformScale = entityManager.GetComponentData<NonUniformScale>(street.Value);
@@ -140,7 +142,7 @@ public class StreetSplinePlacerSystem : SystemBase
                             };
                             ecb.AddComponent(spline, newSplineComponentData);
                         }
-                        else if ((nSplinePlaced == 3 && nSplinesToBePlaced >= 10 && isForward) || (!isForward && nSplinePlaced == (nSplinesToBePlaced - 3 - 1) && nSplinesToBePlaced >= 10))
+                        else if (canContainSpawner && ((nSplinePlaced == 3 && nSplinesToBePlaced >= 10 && isForward) || (!isForward && nSplinePlaced == (nSplinesToBePlaced - 3 - 1) && nSplinesToBePlaced >= 10)))
                         {
                             var newSplineComponentData = new SplineComponentData
                             {

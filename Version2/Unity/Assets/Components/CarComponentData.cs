@@ -17,6 +17,8 @@ public struct CarComponentData : IComponentData
     public bool emergencyBrakeActivated;
 
     public int SplineId;
+    public bool isOccuping;
+    public bool askToDespawn;
     public double splineReachedAtTime;
     public int elapsedFramesMovement;
 

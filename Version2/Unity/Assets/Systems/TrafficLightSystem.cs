@@ -8,7 +8,7 @@ public class TrafficLightSystem : SystemBase
     protected override void OnUpdate()
     {
         double elapsedTime = Time.ElapsedTime;
-        if (elapsedTime < 2) return;
+        if (elapsedTime < 0.5) return;
 
         float trafficLightTimeSwitch = 10f;
 

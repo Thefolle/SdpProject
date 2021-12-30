@@ -13,7 +13,7 @@ public class VehicleDespawningSystem : SystemBase
 
         Entities.ForEach((in Entity carEntity, in CarComponentData carComponentData) =>
         {
-            if (carComponentData.HasReachedDestination)
+            if (carComponentData.askToDespawn)
             {
                 entityManager.DestroyEntity(carEntity);
             }

@@ -3164,6 +3164,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: -640
       objectReference: {fileID: 0}
+    - target: {fileID: 1387156774876002414, guid: f38016ad559e19641b56d0470b2ce41d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1387156774876002414, guid: f38016ad559e19641b56d0470b2ce41d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3475166304995755495, guid: f38016ad559e19641b56d0470b2ce41d, type: 3}
       propertyPath: LeftStreet
       value: 

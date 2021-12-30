@@ -19,6 +19,15 @@ public class SplineVehicleSpawner : SystemBase
 
         Entities.ForEach((ref SplineComponentData splineComponentData, in LocalToWorld localToWorld, in Entity spline) =>
         {
+            /*if (entityManager.GetName(splineComponentData.Track).Equals("Left-Bottom-1") && entityManager.GetName(getParentComponentDataFromEntity[splineComponentData.Track].Value).Equals("x_cross_4x4"))
+            {
+                if (splineComponentData.id == 0)
+                {
+                    UnityEngine.Debug.LogErrorFormat("index: {0}, occupied: {1}", spline.Index, splineComponentData.isOccupied);
+                    //EntityManager.SetName(spline, "EASIER TO FIND NOW MAYBE? ...oooooOOOO0000OOOOooooo...");
+                }
+            }
+            return;*/
             if (splineComponentData.isSpawner &&
             splineComponentData.isOccupied == false && (elapsedTime - splineComponentData.lastTimeSpawned) > 3)
             /*((splineComponentData.lastSpawnedCar == Entity.Null || !entityManager.Exists(splineComponentData.lastSpawnedCar)
@@ -62,7 +71,7 @@ public class SplineVehicleSpawner : SystemBase
                 var newCarComponentData = new CarComponentData
                 {
                     maxSpeed = 0.25f,
-                    splineReachedAtTime = 2f,
+                    splineReachedAtTime = elapsedTime,
                     SplineId = splineId,
                     splineStart = spline,
                     Track = TrackEntity,
