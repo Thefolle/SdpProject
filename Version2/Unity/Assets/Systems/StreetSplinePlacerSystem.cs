@@ -11,9 +11,8 @@ public class StreetSplinePlacerSystem : SystemBase
     {
         double elapsedTime = Time.ElapsedTime;
         if (elapsedTime < 2 || World.GetExistingSystem<GraphGeneratorSystem>().Enabled) return;
-
         EntityManager entityManager = World.EntityManager;
-        /*var getChildComponentDataFromEntity = GetBufferFromEntity<Child>();
+        /*
         var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
         var getLocalToWorldComponentDataFromEntity = GetComponentDataFromEntity<LocalToWorld>();
         var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
@@ -30,23 +29,86 @@ public class StreetSplinePlacerSystem : SystemBase
                 entityManager.SetComponentData(splineEntity, new Translation { Value = localToWorld.Position + 0.5f * math.normalize(localToWorld.Up) });*/
                 // Calculating the number of splines to be placed, one each 10f, (example if lenght = 60, 2*60/10 + 1 = 13 is the number of splines)
                 var lane = entityManager.GetComponentData<Parent>(trackEntity);
-                
                 //var lane = getParentComponentDataFromEntity[trackEntity];
                 if (entityManager.HasComponent<Parent>(lane.Value))
                 {
                     var ecb = new EntityCommandBuffer(Allocator.TempJob);
                     var ecb2 = new EntityCommandBuffer(Allocator.TempJob);
-                    
+
                     //var street = getParentComponentDataFromEntity[lane.Value];
                     var street = entityManager.GetComponentData<Parent>(lane.Value);
-                    
+
                     //var streetComponentData = getStreetComponentData[street.Value];
                     var streetComponentData = entityManager.GetComponentData<StreetComponentData>(street.Value);
+                    var endingCross = streetComponentData.endingCross;
+                    bool bottomOfEnding = false;
+                    bool rightOfEnding = false;
+                    bool topOfEnding = false;
+                    bool leftOfEnding = false;
+                    bool cornerOfEnding = false;
+                    if (endingCross != Entity.Null)
+                    {
+                        var endingCrossComponentData = entityManager.GetComponentData<CrossComponentData>(endingCross);
+                        if (endingCrossComponentData.BottomStreet == street.Value)
+                        {
+                            bottomOfEnding = true;
+                        }
+                        else if (endingCrossComponentData.RightStreet == street.Value)
+                        {
+                            rightOfEnding = true;
+                        }
+                        else if (endingCrossComponentData.TopStreet == street.Value)
+                        {
+                            topOfEnding = true;
+                        }
+                        else if (endingCrossComponentData.LeftStreet == street.Value)
+                        {
+                            leftOfEnding = true;
+                        }
+                        else if (endingCrossComponentData.CornerStreet == street.Value)
+                        {
+                            cornerOfEnding = true;
+                        }
+                    }
 
+                    var startingCross = streetComponentData.startingCross;
+                    bool bottomOfStarting = false;
+                    bool rightOfStarting = false;
+                    bool topOfStarting = false;
+                    bool leftOfStarting = false;
+                    bool cornerOfStarting = false;
+                    if (startingCross != Entity.Null)
+                    {
+                        var startingCrossComponentData = entityManager.GetComponentData<CrossComponentData>(startingCross);
+                        if (startingCrossComponentData.BottomStreet == street.Value)
+                        {
+                            bottomOfStarting = true;
+                        }
+                        else if (startingCrossComponentData.RightStreet == street.Value)
+                        {
+                            rightOfStarting = true;
+                        }
+                        else if (startingCrossComponentData.TopStreet == street.Value)
+                        {
+                            topOfStarting = true;
+                        }
+                        else if (startingCrossComponentData.LeftStreet == street.Value)
+                        {
+                            leftOfStarting = true;
+                        }
+                        else if (startingCrossComponentData.CornerStreet == street.Value)
+                        {
+                            cornerOfStarting = true;
+                        }
+                    }
+                    //else
+                    //{
+                    //    Debug.LogErrorFormat("figlio di puttana: {0}", startingCross.Index);
+                    //    entityManager.Debug.LogEntityInfo(startingCross);
+                    //}
 
                     //var streetLoc = getLocalToWorldComponentDataFromEntity[street.Value];
                     var streetLoc = entityManager.GetComponentData<LocalToWorld>(street.Value);
-
                     //var rotation = getRotationFromEntity[street.Value];
 
                     //var aaa = localToWorld.Rotation.value.y;
@@ -131,7 +193,7 @@ public class StreetSplinePlacerSystem : SystemBase
                             };
                             ecb.AddComponent(spline, newSplineComponentData);
                         }
-                        else if(nSplinePlaced == 0)
+                        else if (nSplinePlaced == 0)
                         {
                             var newSplineComponentData = new SplineComponentData
                             {
@@ -149,7 +211,7 @@ public class StreetSplinePlacerSystem : SystemBase
                             {
                                 id = isForward ? nSplinePlaced : (nSplinesToBePlaced - nSplinePlaced - 1),
                                 Track = trackEntity,
-                                isSpawner = streetComponentData.IsBorder? false : true,
+                                isSpawner = streetComponentData.IsBorder ? false : true,
                                 isForward = isForward,
                                 carEntity = trackComponentData.carEntity
                             };
@@ -168,17 +230,113 @@ public class StreetSplinePlacerSystem : SystemBase
                         }
 
                         //var splineLocalBeforeParenting = getLocalToWorldComponentDataFromEntity[spline];
-                        var a = EntityManager.GetComponentData<LocalToWorld>(spline);
+                        var a = entityManager.GetComponentData<LocalToWorld>(spline);
                         ecb2.AddComponent(spline, new Parent { Value = trackEntity });
                         ecb2.AddComponent(spline, new LocalToParent { });
+
+                        if (endingCross != Entity.Null)
+                        {
+                            if ((nSplinePlaced == nSplinesToBePlaced - 1 && isForward) || (nSplinePlaced == 0 && !isForward)) // this spline is the last
+                            {
+                                var theCross = isForward ? endingCross : startingCross;
+                                bool bottom = isForward ? bottomOfEnding : bottomOfStarting;
+                                bool right = isForward ? rightOfEnding : rightOfStarting;
+                                bool top = isForward ? topOfEnding : topOfStarting;
+                                bool left = isForward ? leftOfEnding : leftOfStarting;
+                                bool corner = isForward ? cornerOfEnding : cornerOfStarting;
+                                if (entityManager.HasComponent<Child>(theCross))
+                                {
+                                    foreach (var child in entityManager.GetBuffer<Child>(theCross))
+                                    {
+                                        if (entityManager.HasComponent<TrafficLightCrossComponentData>(child.Value))
+                                        {
+                                            if (entityManager.HasComponent<Child>(child.Value))
+                                            {
+                                                foreach (var trafficLigthBorder in entityManager.GetBuffer<Child>(child.Value))
+                                                {
+                                                    if (bottom)
+                                                    {
+                                                        if (entityManager.GetName(trafficLigthBorder.Value).Contains("Bottom"))
+                                                        {
+                                                            var trafficLightComponentData = entityManager.GetComponentData<TrafficLightComponentData>(trafficLigthBorder.Value);
+                                                            entityManager.SetComponentData(trafficLigthBorder.Value, new TrafficLightComponentData
+                                                            {
+                                                                isGreen = trafficLightComponentData.isGreen,
+                                                                Spline1 = entityManager.GetName(lane.Value).Contains("0") ? spline : trafficLightComponentData.Spline1,
+                                                                Spline2 = entityManager.GetName(lane.Value).Contains("1") ? spline : trafficLightComponentData.Spline2,
+                                                            });
+                                                        }
+                                                    }
+                                                    else if (right)
+                                                    {
+                                                        if (entityManager.GetName(trafficLigthBorder.Value).Contains("Right"))
+                                                        {
+                                                            var trafficLightComponentData = entityManager.GetComponentData<TrafficLightComponentData>(trafficLigthBorder.Value);
+                                                            entityManager.SetComponentData(trafficLigthBorder.Value, new TrafficLightComponentData
+                                                            {
+                                                                isGreen = trafficLightComponentData.isGreen,
+                                                                Spline1 = entityManager.GetName(lane.Value).Contains("0") ? spline : trafficLightComponentData.Spline1,
+                                                                Spline2 = entityManager.GetName(lane.Value).Contains("1") ? spline : trafficLightComponentData.Spline2,
+                                                            });
+                                                        }
+                                                    }
+                                                    else if (top)
+                                                    {
+                                                        if (entityManager.GetName(trafficLigthBorder.Value).Contains("Top"))
+                                                        {
+                                                            var trafficLightComponentData = entityManager.GetComponentData<TrafficLightComponentData>(trafficLigthBorder.Value);
+                                                            entityManager.SetComponentData(trafficLigthBorder.Value, new TrafficLightComponentData
+                                                            {
+                                                                isGreen = trafficLightComponentData.isGreen,
+                                                                Spline1 = entityManager.GetName(lane.Value).Contains("0") ? spline : trafficLightComponentData.Spline1,
+                                                                Spline2 = entityManager.GetName(lane.Value).Contains("1") ? spline : trafficLightComponentData.Spline2,
+                                                            });
+                                                        }
+                                                    }
+                                                    else if (left)
+                                                    {
+                                                        if (entityManager.GetName(trafficLigthBorder.Value).Contains("Left"))
+                                                        {
+                                                            var trafficLightComponentData = entityManager.GetComponentData<TrafficLightComponentData>(trafficLigthBorder.Value);
+                                                            entityManager.SetComponentData(trafficLigthBorder.Value, new TrafficLightComponentData
+                                                            {
+                                                                isGreen = trafficLightComponentData.isGreen,
+                                                                Spline1 = entityManager.GetName(lane.Value).Contains("0") ? spline : trafficLightComponentData.Spline1,
+                                                                Spline2 = entityManager.GetName(lane.Value).Contains("1") ? spline : trafficLightComponentData.Spline2,
+                                                            });
+                                                        }
+                                                    }
+                                                    else if (corner)
+                                                    {
+                                                        if (entityManager.GetName(trafficLigthBorder.Value).Contains("Corner"))
+                                                        {
+                                                            var trafficLightComponentData = entityManager.GetComponentData<TrafficLightComponentData>(trafficLigthBorder.Value);
+                                                            entityManager.SetComponentData(trafficLigthBorder.Value, new TrafficLightComponentData
+                                                            {
+                                                                isGreen = trafficLightComponentData.isGreen,
+                                                                Spline1 = entityManager.GetName(lane.Value).Contains("0") ? spline : trafficLightComponentData.Spline1,
+                                                                Spline2 = entityManager.GetName(lane.Value).Contains("1") ? spline : trafficLightComponentData.Spline2,
+                                                            });
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+
                         //ecb2.AddComponent(spline, new LocalToWorld {Value =  localToWorld.Value });
                         //ecb2.SetComponent(spline, new LocalToWorld { Value = quaternion.Euler(newTranslation.Value).value });
                         //entityManager.GetComponentData<Transform>(spline).SetParent(transform, false);
 
                     }
+
                     ecb.Playback(EntityManager);
                     ecb2.Playback(EntityManager);
-                    
+
                     ecb.Dispose();
                     ecb2.Dispose();
 
@@ -188,6 +346,6 @@ public class StreetSplinePlacerSystem : SystemBase
             }
         }).WithStructuralChanges().Run();
         this.Enabled = false;
-        Debug.LogError("StreetSplinePlacerSystem - FINISHED PLACING");
+        Debug.LogFormat("StreetSplinePlacerSystem - FINISHED PLACING");
     }
 }

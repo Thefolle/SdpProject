@@ -5,11 +5,15 @@ using static UnityEngine.Debug;
 
 public class TrafficLightSystem : SystemBase
 {
+    double simStart = 0;
     protected override void OnUpdate()
     {
         double elapsedTime = Time.ElapsedTime;
-        if (elapsedTime < 0.5) return;
-
+        if (elapsedTime < 0.5 || World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled) {
+            simStart = elapsedTime;    
+            return; 
+        }
+        
         float trafficLightTimeSwitch = 10f;
 
         var getChildComponentDataFromEntity = GetBufferFromEntity<Child>();
@@ -17,7 +21,7 @@ public class TrafficLightSystem : SystemBase
         /* Ottimizzazione: chiamo la funzione solo quando serve aggiornare il "turn", quindi attorno ad un secondo 
          * prima fino ad un secondo dopo lo switch (2 secondi di delta per sicurezza)
          */
-
+        elapsedTime -= simStart;
         if (((elapsedTime / trafficLightTimeSwitch) % 1) < 0.1 || ((elapsedTime / trafficLightTimeSwitch) % 1) > 0.9)
             Entities.ForEach((ref TrafficLightCrossComponentData TrafficLightCrossCompData, in Entity trafficLightCross) =>
             {
@@ -29,7 +33,7 @@ public class TrafficLightSystem : SystemBase
                 }
                 else
                 {
-                    LogError(trafficLightCross.Index + " has no child component");
+                    LogErrorFormat("{0} has no child component", trafficLightCross.Index);
                     //entityManager.SetName(trafficLightCross, "ECCOMISONOIOQUELLOCHECERCAVI" + trafficLightCross.Index);
                 }
             }).Run();
