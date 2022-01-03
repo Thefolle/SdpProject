@@ -9,7 +9,7 @@ public class SplineTrackAssignerSystem : SystemBase
 {
     protected override void OnUpdate()
     {
-        if (World.Time.ElapsedTime < 4 || World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled) return;
+        if (World.Time.ElapsedTime < 4 || World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled || World.GetExistingSystem<GraphGeneratorSystem>().Enabled) return;
 
         var graph = World.GetExistingSystem<GraphGeneratorSystem>().District;
         var getParentComponentData = GetComponentDataFromEntity<Parent>();

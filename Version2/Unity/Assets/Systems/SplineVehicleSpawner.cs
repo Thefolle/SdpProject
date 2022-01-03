@@ -8,7 +8,7 @@ public class SplineVehicleSpawner : SystemBase
     protected override void OnUpdate()
     {
         double elapsedTime = Time.ElapsedTime;
-        if (elapsedTime < 4 || World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled) return;
+        if (elapsedTime < 4 || World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled || World.GetExistingSystem<GraphGeneratorSystem>().Enabled) return;
 
         EntityManager entityManager = World.EntityManager;
         var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();

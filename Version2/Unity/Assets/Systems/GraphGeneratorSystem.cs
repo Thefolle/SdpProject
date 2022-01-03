@@ -15,7 +15,7 @@ public class GraphGeneratorSystem : SystemBase
     public Graph District;
     
 
-    protected override void OnStartRunning() // cannot use OnCreate because entities does not exist yet at that phase
+    /*protected override void OnStartRunning() // cannot use OnCreate because entities does not exist yet at that phase
     {
         base.OnStartRunning();
 
@@ -67,12 +67,60 @@ public class GraphGeneratorSystem : SystemBase
         entities.Dispose();
 
         this.Enabled = false; // Disable the system to prevent multiple onStartRunning
-    }
+    }*/
 
     protected override void OnUpdate()
     {
-        //LogFormat("{0}", this.ShouldRunSystem());
-        // Must remain empty
+        if (World.GetExistingSystem<DistrictPlacerSystem>().Enabled) return;
+
+        EntityManager entityManager = World.EntityManager;
+
+        var entities = entityManager.GetAllEntities();
+        //Log(entities.Length);
+        var streets = new List<Entity>();
+        var crosses = new List<Entity>();
+        foreach (Entity entity in entities)
+        {
+            if (entityManager.HasComponent<StreetComponentData>(entity))
+            {
+                streets.Add(entity);
+            }
+            else if (entityManager.HasComponent<CrossComponentData>(entity))
+            {
+                crosses.Add(entity);
+            }
+        }
+
+        var now = DateTime.Now;
+        //LogFormat("The current time is {0} ({1})", now, now.Millisecond);
+        var district = new Graph((int)now.Millisecond); // Don't set a static number here: streets and crosses have randomly-generated ids as well
+
+        foreach (Entity street in streets)
+        {
+            var streetComponentData = entityManager.GetComponentData<StreetComponentData>(street);
+            if (streetComponentData.IsBorder) continue; // TODO
+            district.AddEdge(streetComponentData.startingCross.Index, streetComponentData.endingCross.Index, new Edge(street));
+            if (!streetComponentData.IsOneWay)
+            {
+                district.AddEdge(streetComponentData.endingCross.Index, streetComponentData.startingCross.Index, new Edge(street));
+            }
+        }
+
+        foreach (Entity cross in crosses)
+        {
+            var crossComponentData = entityManager.GetComponentData<CrossComponentData>(cross);
+            if (crossComponentData.TopStreet == Entity.Null && crossComponentData.RightStreet == Entity.Null && crossComponentData.BottomStreet == Entity.Null && crossComponentData.LeftStreet == Entity.Null) continue;
+
+            district.AddNode(cross.Index, new Node(cross));
+        }
+
+        District = district;
+
+        //Log(district.ToString());
+
+        entities.Dispose();
+
+        this.Enabled = false; // Disable the system to prevent multiple onStartRunning
     }
 }
 

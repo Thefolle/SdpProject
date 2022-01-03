@@ -9,7 +9,7 @@ public class TrafficLightSystem : SystemBase
     protected override void OnUpdate()
     {
         double elapsedTime = Time.ElapsedTime;
-        if (elapsedTime < 0.5 || World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled) {
+        if (elapsedTime < 0.5 || World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled || World.GetExistingSystem<GraphGeneratorSystem>().Enabled) {
             simStart = elapsedTime;    
             return; 
         }

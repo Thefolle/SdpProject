@@ -10,6 +10,8 @@ public class VehicleSpawningSystem : SystemBase
 
     protected override void OnUpdate()
     {
+        if (World.GetExistingSystem<GraphGeneratorSystem>().Enabled) return;
+
         EntityManager entityManager = World.EntityManager;
 
         Entities.ForEach((ref SpawningPointComponentData spawningPointComponentData, in LocalToWorld localToWorld, in Rotation rotation) =>
