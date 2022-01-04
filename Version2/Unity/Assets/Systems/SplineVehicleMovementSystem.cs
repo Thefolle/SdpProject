@@ -12,7 +12,7 @@ public class SplineVehicleMovementSystem : SystemBase
         float deltaTime = Time.fixedDeltaTime;
         double elapsedTime = Time.ElapsedTime;
         float fixedDeltaTime = UnityEngine.Time.fixedDeltaTime;
-        if (elapsedTime < 4 || World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled) return;
+        if (elapsedTime < 4 || World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled || World.GetExistingSystem<GraphGeneratorSystem>().Enabled) return;
 
         var getSplineComponentDataFromEntity = GetComponentDataFromEntity<SplineComponentData>();
         var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
@@ -41,7 +41,8 @@ public class SplineVehicleMovementSystem : SystemBase
                     isForward = mySplineStartComponentData.isForward,
                     isOccupied = false
                 });
-                carComponentData.askToDespawn = true;
+                entityManager.SetComponentData<AskToDespawnComponentData>(carEntity, new AskToDespawnComponentData { Asked = true });
+                //carComponentData.askToDespawn = true;
                 return;
             }
             if (carComponentData.needToUpdatedPath && !carComponentData.isPathUpdated)

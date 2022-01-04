@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -8840114221201541378}
   - component: {fileID: -2236307534124778825}
   - component: {fileID: 5093662526584122206}
+  - component: {fileID: 8383318306903107174}
   m_Layer: 0
   m_Name: Car
   m_TagString: Untagged
@@ -117,17 +118,19 @@ MonoBehaviour:
   rightOvertakeAllowed: 0
   emergencyBrakeActivated: 0
   SplineId: 0
+  isOccuping: 0
+  askToDespawn: 0
   splineReachedAtTime: 0
   elapsedFramesMovement: 0
   TrackId: 0
   Track: {fileID: 0}
   IsTracked: 0
   isPathUpdated: 1
+  needToUpdatedPath: 0
+  splineStart: {fileID: 0}
   HasJustSpawned: 1
   HasReachedDestination: 0
   isOnStreet: 0
-  isOnCross: 0
-  isOnStreetAndCross: 0
   broken: 0
 --- !u!114 &5093662526584122206
 MonoBehaviour:
@@ -139,5 +142,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 416d3ef1a89eabb4bb8ba1dd52496b7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8383318306903107174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9067497099830669789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b137b83ed0b0ac4588240057fa80482, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

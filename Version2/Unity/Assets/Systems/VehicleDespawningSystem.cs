@@ -9,14 +9,14 @@ public class VehicleDespawningSystem : SystemBase
 {
     protected override void OnUpdate()
     {
+        if (World.GetExistingSystem<GraphGeneratorSystem>().Enabled) return;
+
         var entityManager = World.EntityManager;
 
-        Entities.ForEach((in Entity carEntity, in CarComponentData carComponentData) =>
+        Entities.ForEach((in Entity entity, in AskToDespawnComponentData askToDespawnComponentData) =>
         {
-            if (carComponentData.askToDespawn)
-            {
-                entityManager.DestroyEntity(carEntity);
-            }
+            if(askToDespawnComponentData.Asked)
+                entityManager.DestroyEntity(entity);
         }).WithStructuralChanges().Run();
     }
 }
