@@ -24,7 +24,7 @@ public class DistrictPlacerSystem : SystemBase
             };
             entityManager.SetComponentData<Translation>(district, translation);
 
-            var district2 = entityManager.Instantiate(prefabComponentData.District);
+            var district2 = entityManager.Instantiate(prefabComponentData.District2);
             translation = new Translation
             {
                 Value = translation.Value + new float3(0, 0, -1000)
@@ -75,7 +75,7 @@ public class DistrictPlacerSystem : SystemBase
             // Save starting OR ending cross of street of border 1
             foreach (var bottomBorderStreet in bottomBorderStreets)
             {
-                entityManager.Debug.LogEntityInfo(bottomBorderStreet);
+                //entityManager.Debug.LogEntityInfo(bottomBorderStreet);
                 Entity crossToConnect = new Entity();
                 var streetComponentData = entityManager.GetComponentData<StreetComponentData>(bottomBorderStreet);
                 if (streetComponentData.startingCross != Entity.Null)

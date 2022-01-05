@@ -89,13 +89,13 @@ public class TrafficLightChangeColorSystem : SystemBase
                     if (trafficLightComponentData.Spline1 != Entity.Null)
                     {
                         var spline1 = getSplineComponentDataFromEntity[trafficLightComponentData.Spline1];
-                        entityManager.SetComponentData(trafficLightComponentData.Spline1, new SplineComponentData { id = spline1.id, isLast = spline1.isLast, Track = spline1.Track, isSpawner = spline1.isSpawner, carEntity = spline1.carEntity, lastSpawnedCar = spline1.lastSpawnedCar, lastTimeSpawned = spline1.lastTimeSpawned, isForward = spline1.isForward, isOccupied = !trafficLightComponentData.isGreen });
+                        entityManager.SetComponentData(trafficLightComponentData.Spline1, new SplineComponentData { id = spline1.id, isLast = spline1.isLast, Track = spline1.Track, isSpawner = spline1.isSpawner, carEntity = spline1.carEntity, lastSpawnedCar = spline1.lastSpawnedCar, lastTimeTriedToSpawn = spline1.lastTimeTriedToSpawn, isForward = spline1.isForward, isOccupied = !trafficLightComponentData.isGreen });
                     }
 
                     if (trafficLightComponentData.Spline2 != Entity.Null)
                     {
                         var spline2 = getSplineComponentDataFromEntity[trafficLightComponentData.Spline2];
-                        entityManager.SetComponentData(trafficLightComponentData.Spline2, new SplineComponentData { id = spline2.id, isLast = spline2.isLast, Track = spline2.Track, isSpawner = spline2.isSpawner, carEntity = spline2.carEntity, lastSpawnedCar = spline2.lastSpawnedCar, lastTimeSpawned = spline2.lastTimeSpawned, isForward = spline2.isForward, isOccupied = !trafficLightComponentData.isGreen });
+                        entityManager.SetComponentData(trafficLightComponentData.Spline2, new SplineComponentData { id = spline2.id, isLast = spline2.isLast, Track = spline2.Track, isSpawner = spline2.isSpawner, carEntity = spline2.carEntity, lastSpawnedCar = spline2.lastSpawnedCar, lastTimeTriedToSpawn = spline2.lastTimeTriedToSpawn, isForward = spline2.isForward, isOccupied = !trafficLightComponentData.isGreen });
                     }
                 }
             }).Run();

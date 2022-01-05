@@ -37,7 +37,7 @@ public class SplineVehicleMovementSystem : SystemBase
                     isSpawner = mySplineStartComponentData.isSpawner,
                     carEntity = mySplineStartComponentData.carEntity,
                     lastSpawnedCar = mySplineStartComponentData.lastSpawnedCar,
-                    lastTimeSpawned = mySplineStartComponentData.lastTimeSpawned,
+                    lastTimeTriedToSpawn = mySplineStartComponentData.lastTimeTriedToSpawn,
                     isForward = mySplineStartComponentData.isForward,
                     isOccupied = false
                 });
@@ -86,7 +86,7 @@ public class SplineVehicleMovementSystem : SystemBase
                                     isSpawner = splineComponentData.isSpawner,
                                     carEntity = splineComponentData.carEntity,
                                     lastSpawnedCar = splineComponentData.lastSpawnedCar,
-                                    lastTimeSpawned = splineComponentData.lastTimeSpawned,
+                                    lastTimeTriedToSpawn = splineComponentData.lastTimeTriedToSpawn,
                                     isForward = splineComponentData.isForward,
                                     isOccupied = true
                                 });
@@ -105,7 +105,7 @@ public class SplineVehicleMovementSystem : SystemBase
                                 isSpawner = splineComponentData.isSpawner,
                                 carEntity = splineComponentData.carEntity,
                                 lastSpawnedCar = splineComponentData.lastSpawnedCar,
-                                lastTimeSpawned = splineComponentData.lastTimeSpawned,
+                                lastTimeTriedToSpawn = splineComponentData.lastTimeTriedToSpawn,
                                 isForward = splineComponentData.isForward,
                                 isOccupied = true
                             });
@@ -163,7 +163,7 @@ public class SplineVehicleMovementSystem : SystemBase
                             isSpawner = mySplineStartComponentData.isSpawner,
                             carEntity = mySplineStartComponentData.carEntity,
                             lastSpawnedCar = mySplineStartComponentData.lastSpawnedCar,
-                            lastTimeSpawned = mySplineStartComponentData.lastTimeSpawned,
+                            lastTimeTriedToSpawn = mySplineStartComponentData.lastTimeTriedToSpawn,
                             isForward = mySplineStartComponentData.isForward,
                             isOccupied = false
                         });
@@ -194,7 +194,7 @@ public class SplineVehicleMovementSystem : SystemBase
                                 isSpawner = mySplineStartComponentData.isSpawner,
                                 carEntity = mySplineStartComponentData.carEntity,
                                 lastSpawnedCar = mySplineStartComponentData.lastSpawnedCar,
-                                lastTimeSpawned = mySplineStartComponentData.lastTimeSpawned,
+                                lastTimeTriedToSpawn = mySplineStartComponentData.lastTimeTriedToSpawn,
                                 isForward = mySplineStartComponentData.isForward,
                                 isOccupied = false
                             });
@@ -229,7 +229,7 @@ public class SplineVehicleMovementSystem : SystemBase
                         isSpawner = mySplineEndComponentData.isSpawner,
                         carEntity = mySplineEndComponentData.carEntity,
                         lastSpawnedCar = mySplineEndComponentData.lastSpawnedCar,
-                        lastTimeSpawned = mySplineEndComponentData.lastTimeSpawned,
+                        lastTimeTriedToSpawn = mySplineEndComponentData.lastTimeTriedToSpawn,
                         isForward = mySplineEndComponentData.isForward,
                         isOccupied = true
                     });
@@ -241,7 +241,7 @@ public class SplineVehicleMovementSystem : SystemBase
                         isSpawner = mySplineStartComponentData.isSpawner,
                         carEntity = mySplineStartComponentData.carEntity,
                         lastSpawnedCar = mySplineStartComponentData.lastSpawnedCar,
-                        lastTimeSpawned = mySplineStartComponentData.lastTimeSpawned,
+                        lastTimeTriedToSpawn = mySplineStartComponentData.lastTimeTriedToSpawn,
                         isForward = mySplineStartComponentData.isForward,
                         isOccupied = false
                     });

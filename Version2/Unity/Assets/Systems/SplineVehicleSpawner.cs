@@ -29,7 +29,7 @@ public class SplineVehicleSpawner : SystemBase
             }
             return;*/
             if (splineComponentData.isSpawner &&
-            splineComponentData.isOccupied == false && (elapsedTime - splineComponentData.lastTimeSpawned) > 3)
+            splineComponentData.isOccupied == false && (elapsedTime - splineComponentData.lastTimeTriedToSpawn) > 3)
             /*((splineComponentData.lastSpawnedCar == Entity.Null || !entityManager.Exists(splineComponentData.lastSpawnedCar)
             || entityManager.Exists(splineComponentData.lastSpawnedCar) && 
             getCarComponentDataFromEntity.HasComponent(splineComponentData.lastSpawnedCar) &&
@@ -99,8 +99,12 @@ public class SplineVehicleSpawner : SystemBase
                     Track = getParentComponentDataFromEntity[spline].Value
                 });*/
 
-                splineComponentData.lastTimeSpawned = elapsedTime;
+                splineComponentData.lastTimeTriedToSpawn = elapsedTime;
                 splineComponentData.lastSpawnedCar = carEntity;
+            }
+            else if(splineComponentData.isSpawner && splineComponentData.isOccupied == true)
+            {
+                splineComponentData.lastTimeTriedToSpawn = elapsedTime;
             }
         }).WithStructuralChanges().Run();
 

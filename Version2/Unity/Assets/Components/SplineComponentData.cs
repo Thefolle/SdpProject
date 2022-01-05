@@ -15,7 +15,7 @@ public struct SplineComponentData : IComponentData
     public Entity Track;
     public Entity carEntity;
     public Entity lastSpawnedCar;
-    public double lastTimeSpawned;
+    public double lastTimeTriedToSpawn;
 
     public bool isSpawner;
 }
