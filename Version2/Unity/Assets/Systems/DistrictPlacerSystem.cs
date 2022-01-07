@@ -38,7 +38,7 @@ public class DistrictPlacerSystem : SystemBase
             };
             entityManager.SetComponentData<Translation>(district2, translation);
 
-            var district3 = entityManager.Instantiate(prefabComponentData.District);
+            var district3 = entityManager.Instantiate(prefabComponentData.District2);
             translation = new Translation
             {
                 Value = tmpTranslation.Value + new float3(900, 0, 0)
