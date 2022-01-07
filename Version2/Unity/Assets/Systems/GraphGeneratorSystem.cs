@@ -220,7 +220,7 @@ public class Graph
         {
             var possibleNextCrossIds = Edges[currentNode].Keys;
             int j = 0;
-            int randomJ = RandomGenerator.Next(0, possibleNextCrossIds.Count - 1);
+            int randomJ = RandomGenerator.Next(0, possibleNextCrossIds.Count);
             foreach(var nextCrossId in possibleNextCrossIds)
             {
                 if (j == randomJ && !pathInt.Contains(nextCrossId))
