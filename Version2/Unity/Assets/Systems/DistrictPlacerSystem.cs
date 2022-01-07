@@ -17,6 +17,7 @@ public class DistrictPlacerSystem : SystemBase
         //var rightBorderStreets = new List<Entity>();
         //var leftBorderStreets = new List<Entity>();
         City city;
+        List<Entity> upperDistrictRow = new List<Entity>();
 
         Entities.ForEach((PrefabComponentData prefabComponentData) =>
         {
@@ -27,36 +28,107 @@ public class DistrictPlacerSystem : SystemBase
             string cityString = ((UnityEngine.TextAsset)UnityEngine.Resources.Load("City", typeof(UnityEngine.TextAsset))).text;
             // deserialize the string to City
             city = City.FromJson(cityString);
-            LogErrorFormat("{0}", city.ToJson());
+            var districts = city.Districts;
 
-
-            //entityManager.Debug.LogEntityInfo(prefabComponentData.District);
-            var district = entityManager.Instantiate(prefabComponentData.District);
             var translation = new Translation
             {
                 Value = new float3(100, 0, 100)
             };
-            entityManager.SetComponentData<Translation>(district, translation);
 
-            var tmpTranslation = translation;
+            int k = 0;
 
-            var district2 = entityManager.Instantiate(prefabComponentData.District);
-            translation = new Translation
+            for (var i = 0; i < districts.Count; i++)
             {
-                Value = translation.Value + new float3(0, 0, -900)
-            };
-            entityManager.SetComponentData<Translation>(district2, translation);
+                Entity thisDistrict;
+                var row = districts[i];
+                switch (row[0])
+                {
+                    case District.Sm1:
+                        thisDistrict = entityManager.Instantiate(prefabComponentData.District);
+                        break;
 
-            LinkDistrictsTopBottom(entityManager, district, district2);
+                    case District.Sm2:
+                        thisDistrict = entityManager.Instantiate(prefabComponentData.District2);
+                        break;
 
-            var district3 = entityManager.Instantiate(prefabComponentData.District2);
-            translation = new Translation
-            {
-                Value = tmpTranslation.Value + new float3(900, 0, 0)
-            };
-            entityManager.SetComponentData<Translation>(district3, translation);
+                    default:
+                        thisDistrict = Entity.Null;
+                        LogError("Incorrect enum case, check the city.json file");
+                        return;
+                }
+                entityManager.SetComponentData<Translation>(thisDistrict, translation);
+                var tmpTranslation = translation;
 
-            LinkDistrictsLeftRight(entityManager, district, district3);
+                for (var j = 0; j < row.Count; j++)
+                {
+                    Entity rightDistrict;
+                    if (i > 0) // You're not in the first row of district. You need to connect to your upper district too
+                    {
+                        LinkDistrictsTopBottom(entityManager, upperDistrictRow[j], thisDistrict);
+                        upperDistrictRow[j] = thisDistrict;
+                    }
+                    else
+                    {
+                        upperDistrictRow.Add(thisDistrict);
+                    }
+                    if (j < row.Count - 1) // Spawn the district on your right if you are not the last district in the row
+                    {
+                        switch (row[j + 1])
+                        {
+                            case District.Sm1:
+                                rightDistrict = entityManager.Instantiate(prefabComponentData.District);
+                                break;
+
+                            case District.Sm2:
+                                rightDistrict = entityManager.Instantiate(prefabComponentData.District2);
+                                break;
+
+                            default:
+                                LogError("Incorrect enum case, check the city.json file");
+                                return;
+                        }
+
+                        tmpTranslation = new Translation
+                        {
+                            Value = tmpTranslation.Value + new float3(0, 0, -900)
+                        };
+                        entityManager.SetComponentData<Translation>(rightDistrict, tmpTranslation);
+                        LinkDistrictsLeftRight(entityManager, thisDistrict, rightDistrict);
+                        thisDistrict = rightDistrict;
+                    }
+                }
+
+                translation.Value += new float3(-900, 0, 0);
+            }
+
+
+            ////entityManager.Debug.LogEntityInfo(prefabComponentData.District);
+            //var district = entityManager.Instantiate(prefabComponentData.District);
+            ////var translation = new Translation
+            ////{
+            ////    Value = new float3(100, 0, 100)
+            ////};
+            //entityManager.SetComponentData<Translation>(district, translation);
+
+            ////var tmpTranslation = translation;
+
+            //var district2 = entityManager.Instantiate(prefabComponentData.District);
+            //translation = new Translation
+            //{
+            //    Value = translation.Value + new float3(0, 0, -900)
+            //};
+            //entityManager.SetComponentData<Translation>(district2, translation);
+
+            //LinkDistrictsTopBottom(entityManager, district, district2);
+
+            //var district3 = entityManager.Instantiate(prefabComponentData.District2);
+            //translation = new Translation
+            //{
+            //    Value = tmpTranslation.Value + new float3(900, 0, 0)
+            //};
+            //entityManager.SetComponentData<Translation>(district3, translation);
+
+            //LinkDistrictsLeftRight(entityManager, district, district3);
 
             //var entities = entityManager.GetAllEntities();
             //foreach (var entity in entities)
