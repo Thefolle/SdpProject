@@ -34,7 +34,6 @@ public class TrafficLightSystem : SystemBase
                 else
                 {
                     LogErrorFormat("{0} has no child component", trafficLightCross.Index);
-                    //entityManager.SetName(trafficLightCross, "ECCOMISONOIOQUELLOCHECERCAVI" + trafficLightCross.Index);
                 }
             }).Run();
     }

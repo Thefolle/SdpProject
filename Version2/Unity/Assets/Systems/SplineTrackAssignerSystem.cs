@@ -56,16 +56,11 @@ public class SplineTrackAssignerSystem : SystemBase
                     edgeEndingNode = 0;
                 }
 
-                //LogError(trackedLaneName + "#" + trackedLane.Index +  " | " + edgeInitialNode + " | " + edgeEndingNode);
-
-                //var graph = World.GetExistingSystem<GraphGeneratorSystem>().District;
                 var carPath = GetBufferFromEntity<PathComponentData>()[carEntity];
                 var randomPath = graph.RandomPath(edgeInitialNode, edgeEndingNode);
 
                 var isFirst = true;
                 var lastStep = -1;
-
-                //LogError(randomPath.Count + " | " + carPath.IsCreated.ToString() + " | " + graph.ToString());
 
                 foreach (var node in randomPath)
                 {
@@ -163,8 +158,6 @@ public class SplineTrackAssignerSystem : SystemBase
                     LogErrorFormat("Cannot find the outgoing street of a track to assign to a car.");
                 }
 
-                //LogFormat("The track name is: {0}", trackToAssignName);
-
                 var buffer = getChildComponentData[currentCross];
                 var trackToAssign = Entity.Null;
                 var minimumRelativeTrackDistance = int.MaxValue;
@@ -190,13 +183,8 @@ public class SplineTrackAssignerSystem : SystemBase
                     LogErrorFormat("The cross with id {0} doesn't contain a track with name {1}", currentCross.Index, trackToAssignName);
                 }
 
-                //LogFormat("minimum distance: {0}", minimumRelativeTrackDistance);
-
                 carComponentData.isPathUpdated = true;
-                //carComponentData.TrackId = trackToAssign.Index;
                 carComponentData.Track = trackToAssign;
-
-                //LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
             }
             else if (carComponentData.isOnStreet && !carComponentData.isPathUpdated) // The car is passing from a cross to a street
             {
@@ -261,12 +249,8 @@ public class SplineTrackAssignerSystem : SystemBase
                 {
                     LogErrorFormat("No admissible tracks in a street are available for a car.");
                 }
-                //entityManager.SetName(trackToAssign, "AAAAAAOOOOOOOOOOOOOOOOOOOO");
                 carComponentData.isPathUpdated = true;
-                //carComponentData.TrackId = trackToFollow.Index;
                 carComponentData.Track = trackToAssign;
-
-                //LogFormat("I've assigned track {0} to car with id {1}", carComponentData.TrackId, carEntity.Index);
 
             }
 

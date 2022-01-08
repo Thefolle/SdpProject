@@ -30,9 +30,6 @@ public class TrafficLightChangeColorSystem : SystemBase
         if (((elapsedTime / trafficLightTimeSwitch) % 1) < 0.1 || ((elapsedTime / trafficLightTimeSwitch) % 1) > 0.9)
             Entities.ForEach((ref TrafficLightComponentData trafficLightComponentData, in Entity trafficLight) =>
             {
-                //rend = entityManager.GetComponentObject<UnityEngine.MeshRenderer>(trafficLight);
-                //rend.enabled = true;
-
                 var trafficLightNumber = entityManager.GetName(trafficLight).Substring(entityManager.GetName(trafficLight).LastIndexOf('-') + 1);
                 var trafficLightCross = getParentComponentDataFromEntity[trafficLight];
                 if (getTrafficLightCrossComponentDataFromEntity.HasComponent(trafficLightCross.Value))
@@ -47,15 +44,12 @@ public class TrafficLightChangeColorSystem : SystemBase
                             {
                                 // GREEN color
                                 trafficLightComponentData.isGreen = true;
-                                //rend.sharedMaterial.color = UnityEngine.Color.green;
                                 if (thisTrafficLightPanelName.Contains("Green"))
                                 {
-                                    //entityManager.RemoveComponent(trafficLightPanel.Value, typeof(Disabled));
                                     PostUpdateCommands.RemoveComponent<Disabled>(trafficLightPanel.Value);
                                 }
                                 else if (thisTrafficLightPanelName.Contains("Red"))
                                 {
-                                    //entityManager.AddComponent(trafficLightPanel.Value, typeof(Disabled));
                                     PostUpdateCommands.AddComponent<Disabled>(trafficLightPanel.Value);
                                 }
 
@@ -64,16 +58,13 @@ public class TrafficLightChangeColorSystem : SystemBase
                             {
                                 // RED color
                                 trafficLightComponentData.isGreen = false;
-                                //rend.sharedMaterial.color = UnityEngine.Color.red;
 
                                 if (thisTrafficLightPanelName.Contains("Green"))
                                 {
-                                    //entityManager.AddComponent(trafficLightPanel.Value, typeof(Disabled));
                                     PostUpdateCommands.AddComponent<Disabled>(trafficLightPanel.Value);
                                 }
                                 else if (thisTrafficLightPanelName.Contains("Red"))
                                 {
-                                    //entityManager.RemoveComponent(trafficLightPanel.Value, typeof(Disabled));
                                     PostUpdateCommands.RemoveComponent<Disabled>(trafficLightPanel.Value);
                                 }
                             }
@@ -82,7 +73,6 @@ public class TrafficLightChangeColorSystem : SystemBase
                     else
                     {
                         LogErrorFormat("{0} has no child component", trafficLight.Index);
-                        //entityManager.SetName(trafficLight, "ECCOMISONOIOQUELLOCHECERCAVI" + trafficLight.Index);
                     }
 
                     // SPLINE

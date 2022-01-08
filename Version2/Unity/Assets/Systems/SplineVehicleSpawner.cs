@@ -8,7 +8,7 @@ public class SplineVehicleSpawner : SystemBase
     protected override void OnUpdate()
     {
         double elapsedTime = Time.ElapsedTime;
-        if (elapsedTime < 4 || World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled || World.GetExistingSystem<GraphGeneratorSystem>().Enabled) return;
+        if (World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled || World.GetExistingSystem<GraphGeneratorSystem>().Enabled) return;
 
         EntityManager entityManager = World.EntityManager;
         var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
@@ -19,21 +19,8 @@ public class SplineVehicleSpawner : SystemBase
 
         Entities.ForEach((ref SplineComponentData splineComponentData, in LocalToWorld localToWorld, in Entity spline) =>
         {
-            /*if (entityManager.GetName(splineComponentData.Track).Equals("Left-Bottom-1") && entityManager.GetName(getParentComponentDataFromEntity[splineComponentData.Track].Value).Equals("x_cross_4x4"))
-            {
-                if (splineComponentData.id == 0)
-                {
-                    UnityEngine.Debug.LogErrorFormat("index: {0}, occupied: {1}", spline.Index, splineComponentData.isOccupied);
-                    //EntityManager.SetName(spline, "EASIER TO FIND NOW MAYBE? ...oooooOOOO0000OOOOooooo...");
-                }
-            }
-            return;*/
             if (splineComponentData.isSpawner &&
             splineComponentData.isOccupied == false && (elapsedTime - splineComponentData.lastTimeTriedToSpawn) > 3)
-            /*((splineComponentData.lastSpawnedCar == Entity.Null || !entityManager.Exists(splineComponentData.lastSpawnedCar)
-            || entityManager.Exists(splineComponentData.lastSpawnedCar) && 
-            getCarComponentDataFromEntity.HasComponent(splineComponentData.lastSpawnedCar) &&
-            getCarComponentDataFromEntity[splineComponentData.lastSpawnedCar].SplineId > splineComponentData.id + 1)))*/
             {
                 var ltwForward = math.normalize(localToWorld.Forward);
                 int degree = 0;
@@ -81,24 +68,10 @@ public class SplineVehicleSpawner : SystemBase
                     HasJustSpawned = true
                 };
 
-                /*var newRotation = new Rotation
-                {
-                    Value = new quaternion(0, localToWorld.Rotation.value.y, 0, localToWorld.Rotation.value.w)
-                };*/
-
                 Entity carEntity = entityManager.Instantiate(splineComponentData.carEntity);
                 entityManager.SetComponentData(carEntity, new Translation { Value = localToWorld.Position + 0.5f * math.normalize(localToWorld.Up) });
                 entityManager.SetComponentData(carEntity, new Rotation { Value = quaternion.RotateY(math.radians(degree))});
                 ecb.AddComponent(carEntity, newCarComponentData);
-                //ecb.AddComponent(carEntity, newRotation);
-
-                /*var carComponentData = getCarComponentDataFromEntity[carEntity];
-                entityManager.SetComponentData(carEntity, new CarComponentData
-                {
-                    maxSpeed = 0.25f,
-                    SplineId = splineComponentData.id,
-                    Track = getParentComponentDataFromEntity[spline].Value
-                });*/
 
                 splineComponentData.lastTimeTriedToSpawn = elapsedTime;
                 splineComponentData.lastSpawnedCar = carEntity;

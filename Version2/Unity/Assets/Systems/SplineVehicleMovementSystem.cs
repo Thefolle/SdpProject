@@ -55,21 +55,8 @@ public class SplineVehicleMovementSystem : SystemBase
                 carComponentData.needToUpdatedPath = false;
             }
 
-            //var splines = getChildComponentData[carComponentData.Track];
-            //foreach (var spline in splines)
-            //{
-            //    mySplineEndComponentData = getSplineComponentDataFromEntity[spline.Value];
-
-            //    if (mySplineEndComponentData.id == (carComponentData.SplineId + 1))
-            //    {
-            //        mySplineEnd = spline.Value;
-            //        break;
-            //    }
-            //}
-
             if (!mySplineEndComponentData.isOccupied )
             {
-                //LogErrorFormat("{0}", carComponentData.SplineId);
                 var localToWorldSplineStart = getLocalToWorldComponentDataFromEntity[carComponentData.splineStart];
                 var localToWorldSplineEnd = getLocalToWorldComponentDataFromEntity[carComponentData.splineEnd];
                 var journeyLength = UnityEngine.Vector3.Distance(localToWorldSplineStart.Position, localToWorldSplineEnd.Position);
@@ -95,7 +82,6 @@ public class SplineVehicleMovementSystem : SystemBase
 
                     if (mySplineEndComponentData.isLast)
                     {
-                        //LogError("Reached last: " + carEntity.Index);
                         // TOGGLE AND UPDATE TRACK
                         carComponentData.isOnStreet = !carComponentData.isOnStreet;
                         carComponentData.isPathUpdated = false;
@@ -121,8 +107,6 @@ public class SplineVehicleMovementSystem : SystemBase
             {
                 carComponentData.splineReachedAtTime = elapsedTime;
             }
-            // physicsVelocity.Linear = math.normalize(localToWorld.Forward) * carComponentData.Speed / fixedDeltaTime;
-
         }).Run();
 
         ecb.Playback(entityManager);
