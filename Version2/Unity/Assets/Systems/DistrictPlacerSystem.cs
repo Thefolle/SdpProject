@@ -90,7 +90,7 @@ public class DistrictPlacerSystem : SystemBase
 
                         tmpTranslation = new Translation
                         {
-                            Value = tmpTranslation.Value + new float3(0, 0, -900)
+                            Value = tmpTranslation.Value + new float3(900, 0, 0)
                         };
                         entityManager.SetComponentData<Translation>(rightDistrict, tmpTranslation);
                         LinkDistrictsLeftRight(entityManager, thisDistrict, rightDistrict);
@@ -98,7 +98,7 @@ public class DistrictPlacerSystem : SystemBase
                     }
                 }
 
-                translation.Value += new float3(-900, 0, 0);
+                translation.Value += new float3(0, 0, -900);
             }
 
 

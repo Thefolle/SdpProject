@@ -5058,11 +5058,11 @@ PrefabInstance:
     - target: {fileID: 3354528050580370986, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
       propertyPath: endingCross
       value: 
-      objectReference: {fileID: 7151461298344205075}
+      objectReference: {fileID: 4264456341028823840}
     - target: {fileID: 3354528050580370986, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
       propertyPath: startingCross
       value: 
-      objectReference: {fileID: 4264456341028823840}
+      objectReference: {fileID: 7151461298344205075}
     - target: {fileID: 6848889043378361972, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
       propertyPath: m_Name
       value: Street8-6
@@ -20834,11 +20834,11 @@ PrefabInstance:
     - target: {fileID: 3354528050580370986, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
       propertyPath: endingCross
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 4077975186630423247}
     - target: {fileID: 3354528050580370986, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
       propertyPath: startingCross
       value: 
-      objectReference: {fileID: 4077975186630423247}
+      objectReference: {fileID: 0}
     - target: {fileID: 6848889043378361972, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
       propertyPath: m_Name
       value: StreetCX-16
@@ -29016,6 +29016,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3354528050580370986, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
       propertyPath: endingCross
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354528050580370986, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}
+      propertyPath: startingCross
       value: 
       objectReference: {fileID: 8327159956090177908}
     - target: {fileID: 6848889043378361972, guid: 61656a3d5aa92cc4194b94f94d89597c, type: 3}

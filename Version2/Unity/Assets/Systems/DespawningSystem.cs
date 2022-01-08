@@ -5,7 +5,7 @@ using Unity.Entities;
 /// <summary>
 /// <para>This system acts as a garbage collector for vehicles that reached their destination by destroying them.</para>
 /// </summary>
-public class VehicleDespawningSystem : SystemBase
+public class DespawningSystem : SystemBase
 {
     protected override void OnUpdate()
     {

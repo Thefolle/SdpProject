@@ -12,13 +12,6 @@ public class StreetSplinePlacerSystem : SystemBase
         double elapsedTime = Time.ElapsedTime;
         if (elapsedTime < 2 || World.GetExistingSystem<GraphGeneratorSystem>().Enabled) return;
         EntityManager entityManager = World.EntityManager;
-        /*
-        var getTrackComponentDataFromEntity = GetComponentDataFromEntity<TrackComponentData>();
-        var getLocalToWorldComponentDataFromEntity = GetComponentDataFromEntity<LocalToWorld>();
-        var getParentComponentDataFromEntity = GetComponentDataFromEntity<Parent>();
-        var getNonUniformScaleFromEntity = GetComponentDataFromEntity<NonUniformScale>();
-        var getRotationFromEntity = GetComponentDataFromEntity<Rotation>();
-        var getStreetComponentData = GetComponentDataFromEntity<StreetComponentData>();*/
 
 
         Entities.ForEach((ref TrackComponentData trackComponentData, in Entity trackEntity, in LocalToWorld localToWorld, in Translation translation) =>
@@ -346,6 +339,6 @@ public class StreetSplinePlacerSystem : SystemBase
             }
         }).WithStructuralChanges().Run();
         this.Enabled = false;
-        Debug.LogFormat("StreetSplinePlacerSystem - FINISHED PLACING");
+        Debug.LogFormat("StreetSplinePlacerSystem: the city has been correctly initialized. Simulation is starting...");
     }
 }

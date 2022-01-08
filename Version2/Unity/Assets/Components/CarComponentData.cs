@@ -5,26 +5,14 @@ using Unity.Entities;
 [GenerateAuthoringComponent]
 public struct CarComponentData : IComponentData
 {
-    public float Speed;
-    public float AngularSpeed;
     public float maxSpeed;
 
-    // Fields for lane change system
-    public bool tryOvertake;
-    public double lastTimeTried;
-    public bool rightOvertakeAllowed;
-
-    public bool emergencyBrakeActivated;
-
     public int SplineId;
-    public bool isOccuping;
+    //public bool isOccuping;
     public bool askToDespawn;
     public double splineReachedAtTime;
-    public int elapsedFramesMovement;
 
-    public int TrackId;
     public Entity Track;
-    public bool IsTracked;
 
     /// <summary>
     /// <para>When a car is moving from a street to a cross or viceversa, its path need to be updated.
@@ -40,6 +28,4 @@ public struct CarComponentData : IComponentData
     public bool HasReachedDestination;
 
     public bool isOnStreet;
-
-    public bool broken;
 }
