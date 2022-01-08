@@ -2,15 +2,16 @@
     "$schema": "http://json-schema.org/draft-07/schema",
     "type": "object",
     "properties": {
-        "city": {
+        "districts": {
             "type": "array",
             "items": {
                 "type": "array",
                 "items": {
-                    "type": "string"
-                },
-                "minItems": 5,
-                "maxItems": 5
+                    "enum": [
+                        "sm-1",
+                        "sm-2"
+                    ]
+                }
             }
         }
     }
