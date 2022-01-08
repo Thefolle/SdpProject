@@ -22,6 +22,7 @@ public struct CarComponentData : IComponentData
     public bool isPathUpdated;
     public bool needToUpdatedPath;
     public Entity splineStart;
+    public Entity splineEnd;
 
     // Spawning system variables
     public bool HasJustSpawned;

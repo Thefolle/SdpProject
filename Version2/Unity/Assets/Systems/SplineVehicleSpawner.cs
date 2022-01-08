@@ -60,7 +60,7 @@ public class SplineVehicleSpawner : SystemBase
                         degree = -45;
                 }
 
-                splineComponentData.isOccupied = true;
+                //splineComponentData.isOccupied = true;
 
                 var splineId = splineComponentData.id;
                 var TrackEntity = splineComponentData.Track;
@@ -74,6 +74,7 @@ public class SplineVehicleSpawner : SystemBase
                     splineReachedAtTime = elapsedTime,
                     SplineId = splineId,
                     splineStart = spline,
+                    splineEnd = spline,
                     Track = TrackEntity,
                     isOnStreet = true,
                     isPathUpdated = true,
