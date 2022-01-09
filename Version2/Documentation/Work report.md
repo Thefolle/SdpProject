@@ -2,12 +2,21 @@
 
 This document is a summary of the work done to develop the traffic simulation project.
 
-## Glossary
+## Purpose of the project
 
-Here follows some definitions that are extensively referenced by this document:
+The functional requirement of the project consists of a simulator about a city, and in particular its streets and vehicles.
+The non-functional requirement is high-scalability in the number of vehicles and in general in the number of entities in the scene. Indeed, the purpose of the project is to evaluate the capabilities of Unity DOTS to support hundreds of thousands of entities in the scene at the same time.
 
-- Traditional stack: the well-established and mature approach to create three-dimensional programs in Unity, based on mono behaviours;
-- DOTS: the Data-Oriented Technology Stack, a novel paradigm in building 3D applications. This is the target approach of this project. The community also talks about hybrid solutions, where mixing a small number of traditional scripts with DOTS is considered acceptable; in the context of this project, instead, the developers tried to stick to the Pure ECS paradigm.
+## The underlying technology: Unity DOTS
+
+Unity recently offers two paradigms to build an application:
+
+- Traditional stack: the well-established and mature approach to create three-dimensional (or bi-dimensional) programs in Unity, based on mono behaviours;
+- DOTS: the Data-Oriented Technology Stack, a novel paradigm in building 3D (or 2D) applications. This is the target approach of this project.
+
+DOTS is a paradigm that favours scalability in exchange for complexity. Hence, the data-oriented model suits projects that are characterized by a large or huge number of entities that obey to the same algorithm.
+
+The community also talks about hybrid solutions, where mixing a small number of traditional scripts with DOTS is considered acceptable; in the context of this project, instead, the developers tried to stick to the Pure ECS paradigm, although Unity internally creates old-styled scripts anyway for some purposes.
 
 ## The first version of the project
 
@@ -26,6 +35,8 @@ The second phase of the development process pertained the intent to build and de
 ## Why switching to the version 3?
 
 The developers, once again, realized that realism was not a requirement of the project, especially if it thwarts scalability at a very limited threshold. Indeed, using physics means loading Unity with a pletora of computations: collision surfaces and points, raycast and spherecast interpolation, gravity application, force computations and so on. Even if systems were partially but reasonably optimized, the resulting number of cars at steady state was unsatisfying. Systems were not run in parallel and some bugs were in place, but the developers traced back the poor performances to the usage of physics, which is therefore intended for few entities.
+
+## The  simulator
 
 ### What's the input of the simulator?
 
@@ -51,7 +62,7 @@ The inner data structure that represent the city is a cyclic directed graph. The
 
 Each street is subdivided in forward or backward lanes; each lane contains a certain number of points, declared statically. At runtime, each car proceeds point by point along a trajectory that is the linear interpolation of two successive points (a.k.a., nodes). Cars therefore follow a series of splines that are located across streets and crosses.
 
-Cars receive a random path at spawn time, that guides them from the source street/cross until the destination street/cross; the path is currently computed randomly.
+Cars receive a random path at spawn time, that guides them from the source street/cross until the destination street/cross; the path is currently filled with streets and crosses choosen randomly.
 
 ### The output of the simulator
 
@@ -61,53 +72,17 @@ This section describes the measures taken into account in order to evaluate the 
 
 ### How to enhance the project?
 
-We thought about how to permit a future contributor to enhance the project. The suggested path is allowing the user to put in a more fine-grained characterization of the city, as it was intended in the version 1 of this project.
-In particular, the future version of the system should rely upon the version 2, without modifying it; in other words, an eventual third version should be built on top of the second one.
+The suggested path comprises the following improvements:
 
-As far as our opinion is concerned, the user, through the usual json, will specify, besides the matrix as planned for system version 1, a further data structure that associates to each item in the matrix a bunch of characteristics. In other words, the user will be able to override the predefined districts.
-
-For instance, the input json may follow this structure:
-
-```json
-{
-    "city": [
-            [
-                "m-1", "l-2", "l-3", "s-5", ""
-            ],
-            [
-                
-            ]
-        ],
-    "districts": {
-        "m-1": {
-            "streets": [
-                {
-                    "isOneWay": true,
-                    "length": 5,
-                    "semiCarriageways": [
-                        {
-                            "lanesAmount": 1,
-                            "hasBusStop": false
-                        }
-                    ]
-                }
-            ],
-            "intersections": [
-                {
-                    "isRoundabout": false,
-                    "streets": [
-                        {
-                            "hasSemaphore": false
-                        }
-                    ]
-                }
-            ]
-        }
-    }
-}
-```
-
-We propose this improvement because it is best effort: the customizability of the system increases, but at the same time the contributor doesn't have to modify the core of the system too much.
-Additionally, the user will be able to add further predefined districts.
+- Wider streets, with more than two lanes;
+- Curved streets;
+- Uphills and downhills;
+- Different types of cars;
+- A public transport circuit.
 
 Anyway, the system relies on some conventions about the city organization that have to be taken into account so as to build a district that the simulator can recognize.
+
+Streets and crosses within a district must be mutually linked, by following these conventions:
+
+- Crosses: *in the Unity editor, position the view on the cross to link, such that the global z and the global x are aligned with the local z and local x of the element;*
+- Streets: *in the Unity editor, position the view on the street to link, such that the local z points toward the ending cross of the street.*
