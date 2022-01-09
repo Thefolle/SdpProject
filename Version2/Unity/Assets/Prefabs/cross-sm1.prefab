@@ -12056,6 +12056,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: trafficLightRoot
       objectReference: {fileID: 0}
+    - target: {fileID: 1352235488360343916, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1619543445293589054, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
       propertyPath: m_Name
       value: trafficLightBorderRight-2
