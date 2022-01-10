@@ -5546,6 +5546,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 92724136028641328}
     m_Modifications:
+    - target: {fileID: 1125192672640887129, guid: 5d9f2cdf212468d439832e1ef920c5e6, type: 3}
+      propertyPath: m_Name
+      value: trafficLightBorderTop-2
+      objectReference: {fileID: 0}
     - target: {fileID: 1352235488360343916, guid: 5d9f2cdf212468d439832e1ef920c5e6, type: 3}
       propertyPath: m_Name
       value: trafficLight-cross-corner-type2
@@ -5593,6 +5597,18 @@ PrefabInstance:
     - target: {fileID: 1841914728232088534, guid: 5d9f2cdf212468d439832e1ef920c5e6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4392831822987362000, guid: 5d9f2cdf212468d439832e1ef920c5e6, type: 3}
+      propertyPath: m_Name
+      value: trafficLightBorderBottom-1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7254700462836295048, guid: 5d9f2cdf212468d439832e1ef920c5e6, type: 3}
+      propertyPath: m_Name
+      value: trafficLightBorderCorner-3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527222912505116195, guid: 5d9f2cdf212468d439832e1ef920c5e6, type: 3}
+      propertyPath: m_Name
+      value: trafficLightBorderLeft-0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d9f2cdf212468d439832e1ef920c5e6, type: 3}

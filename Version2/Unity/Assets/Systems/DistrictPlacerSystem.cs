@@ -44,6 +44,10 @@ public class DistrictPlacerSystem : SystemBase
                         thisDistrict = entityManager.Instantiate(prefabComponentData.District2);
                         break;
 
+                    case District.Md1:
+                        thisDistrict = entityManager.Instantiate(prefabComponentData.District3);
+                        break;
+
                     default:
                         thisDistrict = Entity.Null;
                         LogError("Incorrect enum case, check the city.json file");
@@ -74,6 +78,10 @@ public class DistrictPlacerSystem : SystemBase
 
                             case District.Sm2:
                                 rightDistrict = entityManager.Instantiate(prefabComponentData.District2);
+                                break;
+
+                            case District.Md1:
+                                rightDistrict = entityManager.Instantiate(prefabComponentData.District3);
                                 break;
 
                             default:

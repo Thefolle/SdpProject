@@ -21,7 +21,7 @@ namespace Domain
         public List<List<District>> Districts { get; set; }
     }
 
-    public enum District { Sm1, Sm2 };
+    public enum District { Md1, Sm1, Sm2 };
 
     public partial class City
     {
@@ -57,6 +57,8 @@ namespace Domain
             var value = serializer.Deserialize<string>(reader);
             switch (value)
             {
+                case "md-1":
+                    return District.Md1;
                 case "sm-1":
                     return District.Sm1;
                 case "sm-2":
@@ -75,6 +77,9 @@ namespace Domain
             var value = (District)untypedValue;
             switch (value)
             {
+                case District.Md1:
+                    serializer.Serialize(writer, "md-1");
+                    return;
                 case District.Sm1:
                     serializer.Serialize(writer, "sm-1");
                     return;

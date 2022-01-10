@@ -64,6 +64,11 @@ public class SplineTrackAssignerSystem : SystemBase
 
                 foreach (var node in randomPath)
                 {
+                    if (node == null || node.Cross == Entity.Null)
+                    {
+                        entityManager.SetName(carComponentData.Track, "ECCOMIIIIIIIIIIIIIIIIIIII");
+                        entityManager.Debug.LogEntityInfo(carComponentData.Track);
+                    }
                     if (isFirst)
                     {
                         //carPath.Add(new PathComponentData { CrossOrStreet = node.Cross }); //neglect the first node when a car is spawned in a street
@@ -72,6 +77,7 @@ public class SplineTrackAssignerSystem : SystemBase
                     }
                     else
                     {
+
                         carPath.Add(new PathComponentData { CrossOrStreet = graph.GetEdge(lastStep, node.Cross.Index).Street });
                         carPath.Add(new PathComponentData { CrossOrStreet = node.Cross });
                         lastStep = node.Cross.Index;
