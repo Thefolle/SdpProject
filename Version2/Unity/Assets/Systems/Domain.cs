@@ -21,7 +21,7 @@ namespace Domain
         public List<List<District>> Districts { get; set; }
     }
 
-    public enum District { Md1, Sm1, Sm2 };
+    public enum District { Lg1, Md1, Sm1 };
 
     public partial class City
     {
@@ -57,12 +57,12 @@ namespace Domain
             var value = serializer.Deserialize<string>(reader);
             switch (value)
             {
+                case "lg-1":
+                    return District.Lg1;
                 case "md-1":
                     return District.Md1;
                 case "sm-1":
                     return District.Sm1;
-                case "sm-2":
-                    return District.Sm2;
             }
             throw new Exception("Cannot unmarshal type District");
         }
@@ -77,14 +77,14 @@ namespace Domain
             var value = (District)untypedValue;
             switch (value)
             {
+                case District.Lg1:
+                    serializer.Serialize(writer, "lg-1");
+                    return;
                 case District.Md1:
                     serializer.Serialize(writer, "md-1");
                     return;
                 case District.Sm1:
                     serializer.Serialize(writer, "sm-1");
-                    return;
-                case District.Sm2:
-                    serializer.Serialize(writer, "sm-2");
                     return;
             }
             throw new Exception("Cannot marshal type District");

@@ -40,7 +40,7 @@ public class DistrictPlacerSystem : SystemBase
                         thisDistrict = entityManager.Instantiate(prefabComponentData.District);
                         break;
 
-                    case District.Sm2:
+                    case District.Lg1:
                         thisDistrict = entityManager.Instantiate(prefabComponentData.District2);
                         break;
 
@@ -76,7 +76,7 @@ public class DistrictPlacerSystem : SystemBase
                                 rightDistrict = entityManager.Instantiate(prefabComponentData.District);
                                 break;
 
-                            case District.Sm2:
+                            case District.Lg1:
                                 rightDistrict = entityManager.Instantiate(prefabComponentData.District2);
                                 break;
 
