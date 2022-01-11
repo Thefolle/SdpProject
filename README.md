@@ -126,7 +126,7 @@ This new district prefab needs to be added to the empty gameobject called Prefab
 
 After that, open the citySchema.json file, and add the new district name in the enum list. Then copy the entire citySchema.json content, and paste it in [QuickType](https://app.quicktype.io/) to generate the C# class starting from this json schema.
 
-![](Version2/Documentation/img/quickTypeScreen.jpg)
+![](./Version2/Documentation/img/quickTypeScreen.jpg)
 
 Then copy the obtained C# class and overwrite the Domain C# script in the Systems folder.
 
