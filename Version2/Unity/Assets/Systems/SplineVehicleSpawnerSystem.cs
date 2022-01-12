@@ -3,7 +3,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using Unity.Collections;
 
-public class SplineVehicleSpawner : SystemBase
+public class SplineVehicleSpawnerSystem : SystemBase
 {
     protected override void OnUpdate()
     {
