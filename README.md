@@ -8,6 +8,7 @@ The functional requirement of the project consists of a city traffic simulator, 
 The non-functional requirement is **high-scalability** in the number of vehicles and in general in the number of entities in the scene. Indeed, the purpose of the project is to evaluate the capabilities of Unity DOTS to support hundreds of thousands of entities in the scene at the same time.
 
 ## Dependencies
+
 The developers have chosen not to use any external dependency, besides the core Unity libraries.
 
 ## The underlying technology: Unity DOTS
@@ -41,6 +42,7 @@ The second phase of the development process pertained the intent to build and de
 The developers, once again, realized that realism was not a requirement of the project, especially if it thwarts scalability at a very limited threshold. Indeed, using Physics means loading Unity with a pletora of computations: collision surfaces and points, raycast and spherecast interpolation, gravity application, force computations and so on. Even if systems were partially but reasonably optimized, the resulting number of cars at steady state was unsatisfying. Systems were not able to run in parallel and some bugs were in place, but the developers traced back the poor performances to the usage of physics, which is therefore intended for few entities.
 
 ## The  simulator
+
 *The following part of the document describes the final design and implementation of the simulator (version 3).*
 
 ### What's the input of the simulator?
@@ -77,13 +79,20 @@ Cars receive a random path at spawn time, that guides them from the source stree
 This section describes the measures taken into account in order to evaluate the simulator, along with their actual values on the three developers' machines. It follows a discussion on the collected results.
 
 ## Brief description of each system
+
 - DistrictPlacerSystem: instantiates and links the district specified in the input city.json. Then becomes inactive for the rest of the simulation;
 - GraphGeneratorSystem: builds the underlying graph data structure given the spawned city. Then becomes inactive for the rest of the simulation;
 - StreetSplinePlacerSystem: instantiates and positions all the nodes on streets that will later be interpolated to create the splines useful for vehicle movement. Then becomes inactive for the rest of the simulation;
-
-### TODO AGGIUNGERE ALTRI
+- SplineTrackAssignerSystem: assigns the subsequent track to each car when it is at the end of a cross/street; it also initializes the data structures of just-spawned cars;
+- SplineVehicleMovementSystem: creates the trajectory that each car follows, implemented as a linear interpolation of two successive nodes (Lerp);
+- SplineVehicleSpawnerSystem: spawns cars in each lane; in more detail, the car is spawned in a specific node of the lane, if the street has at least 10 nodes;
+- DespawningSystem: destroys all the entities that the simulator asked to;
+- Domain: a container for POCOs (Plain-Old C# Object); it currently holds the model of the city, as described by the pertinent json [schema](./citySchema.json);
+- TrafficLightSystem: given each cross, logically decides which semaphore has the turn;
+- TrafficLightChangeColorSystem: decides the color of a given traffic light based on the turn.
 
 ## Life cycle of the simulation
+
 At the start of a simulation, these three systems will be called only once, in this order:
 
 1. DistrictPlacerSystem;
@@ -105,6 +114,7 @@ The suggested path comprises the following improvements:
 - A public transport circuit.
 
 ### How to generate a new district?
+
 If the user wants to create a new district, he/she needs to keep in mind that each district has a fixed size and 12 fixed exit streets, 3 per side. These streets have a flag that indicates that they are border streets, connected only by one side (the district itself). Each border street is numbered from 1 to 12, as it is for instance in the district sm-1.
 
 Starting from this, the user can have fun creating a new district exploiting the available crosses and streets prefabs.
@@ -133,7 +143,9 @@ Then copy the obtained C# class and overwrite the Domain C# script in the System
 Finally open DistrictPlacerSystem and add the new district in the two switch cases, taking as example the existing ones.
 
 ### How to spawn a different city?
+
 The user can easily configure a city by modifing the city.json file located in `<UnityRootFolder>/Assets/Resources/city.json`. The file is structured as a matrix of districts. Each district is specified through its name.
 
 ## TODO:
 - Cambiare nome cartella Version2 con Version3
+- cambiare green turn da double a int

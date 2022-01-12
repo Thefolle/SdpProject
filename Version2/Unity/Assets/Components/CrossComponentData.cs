@@ -8,19 +8,24 @@ using Unity.Collections;
 public struct CrossComponentData : IComponentData
 {
     /// <summary>
-    /// <para>This parameter has the only purpose of filling this component data so that it is not empty anymore.
-    /// The entity manager indeed may throw errors when try to get an empty component data from an entity.</para>
-    /// </summary>
-    private readonly int pad;
-
-    /// <summary>
-    /// <para>This representation of adjacent streets is not scalable, unlike a vector. However, a vector would lose
-    /// topological associations.</para>
+    /// <para>This topological field links the current cross with the top street with respect to the local Z of the cross.</para>
     /// </summary>
     public Entity TopStreet;
+    /// <summary>
+    /// <para>This topological field links the current cross with the right street with respect to the local Z of the cross.</para>
+    /// </summary>
     public Entity RightStreet;
+    /// <summary>
+    /// <para>This topological field links the current cross with the bottom street with respect to the local Z of the cross.</para>
+    /// </summary>
     public Entity BottomStreet;
+    /// <summary>
+    /// <para>This topological field links the current cross with the left street with respect to the local Z of the cross.</para>
+    /// </summary>
     public Entity LeftStreet;
+    /// <summary>
+    /// <para>This topological field links the current cross with the corner street with respect to the local Z of the cross.</para>
+    /// </summary>
     public Entity CornerStreet;
 
 }

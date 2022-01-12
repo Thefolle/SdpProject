@@ -5,13 +5,19 @@ using Unity.Entities;
 [GenerateAuthoringComponent]
 public struct StreetComponentData : IComponentData
 {
+    /// <summary>
+    /// <para>Flag that tells whether the street is one-way. Currently it is not used.</para>
+    /// </summary>
     public bool IsOneWay;
 
+    /// <summary>
+    /// <para>The cross from which the street begins, keeping in mind that the car forward sense is its local Z axis.</para>
+    /// </summary>
     public Entity startingCross;
+    /// <summary>
+    /// <para>The cross where the street ends, keeping in mind that the car forward sense is its local Z axis.</para>
+    /// </summary>
     public Entity endingCross;
-
-    public bool allSplinesPlaced;
-    public Entity splineEntity;
 
     /// <summary>
     /// <para>This field is a topological hint that allows dynamic linking of districts at runtime.</para>
@@ -25,5 +31,8 @@ public struct StreetComponentData : IComponentData
     /// </para>
     /// </summary>
     public int exitNumber;
+    /// <summary>
+    /// <para>Flag that is true for border streets, i.e. when the street is intended to be linked with other districts.</para>
+    /// </summary>
     public bool IsBorder;
 }
