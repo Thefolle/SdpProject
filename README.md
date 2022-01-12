@@ -117,6 +117,8 @@ The suggested path comprises the following improvements:
 
 If the user wants to create a new district, he/she needs to keep in mind that each district has a fixed size and 12 fixed exit streets, 3 per side. These streets have a flag that indicates that they are border streets, connected only by one side (the district itself). Each border street is numbered from 1 to 12, as it is for instance in the district sm-1.
 
+![](./Version2/Documentation/img/DistrictBorders.JPG)
+
 Starting from this, the user can have fun creating a new district exploiting the available crosses and streets prefabs.
 
 The system relies on some conventions about the city organization that have to be taken into account in order to build a district that the simulator can recognize.
@@ -144,8 +146,19 @@ Finally open DistrictPlacerSystem and add the new district in the two switch cas
 
 ### How to spawn a different city?
 
-The user can easily configure a city by modifing the city.json file located in `<UnityRootFolder>/Assets/Resources/city.json`. The file is structured as a matrix of districts. Each district is specified through its name.
+The user can easily configure a city by modifing the city.json file located in `<UnityRootFolder>/Assets/Resources/city.json`. The file is structured as a matrix of districts. Each district is specified through its name. An example follows below:
+
+```json
+{
+    "districts": [
+        ["sm-1", "md-1"],
+        ["sm-1", "lg-1"]
+    ]
+}
+```
+![](./Version2/Documentation/img/cityExample.JPG)
 
 ## TODO:
 - Cambiare nome cartella Version2 con Version3
 - cambiare green turn da double a int
+x\
