@@ -56,4 +56,6 @@ public struct CarComponentData : IComponentData
     /// <para>Flag that is true when the car is currently on a street or on a cross.</para>
     /// </summary>
     public bool isOnStreet;
+
+    public bool isOccupying;
 }
