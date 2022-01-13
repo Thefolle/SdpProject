@@ -37,6 +37,8 @@ The former version can be considered as an *architectural spike*, namely a proto
 
 The second phase of the development process pertained the intent to build and deploy a full-fledged traffic simulator, on top of Unity DOTS. The paramount aspect of the second version is the usage of the physics to allow each component in the scene to interact with each other. The Physics package allows to reach a great degree of realism in the behaviour of the components inside the scene. For instance, cars continuously correct their trajectory along the lane, as in real life, rather than following invisible tracks.
 
+![](./Documentation/img/version2.JPG)
+
 ## Why switching to the version 3?
 
 The developers, once again, realized that realism was not a requirement of the project, especially if it thwarts scalability at a very limited threshold. Indeed, using Physics means loading Unity with a pletora of computations: collision surfaces and points, raycast and spherecast interpolation, gravity application, force computations and so on. Even if systems were partially but reasonably optimized, the resulting number of cars at steady state was unsatisfying. Systems were not able to run in parallel and some bugs were in place, but the developers traced back the poor performances to the usage of physics, which is therefore intended for few entities.
@@ -117,7 +119,7 @@ The suggested path comprises the following improvements:
 
 If the user wants to create a new district, he/she needs to keep in mind that each district has a fixed size and 12 fixed exit streets, 3 per side. These streets have a flag that indicates that they are border streets, connected only by one side (the district itself). Each border street is numbered from 1 to 12, as it is for instance in the district sm-1.
 
-![](./Version2/Documentation/img/DistrictBorders.JPG)
+![](./Documentation/img/DistrictBorders.JPG)
 
 Starting from this, the user can have fun creating a new district exploiting the available crosses and streets prefabs.
 
@@ -138,7 +140,7 @@ This new district prefab needs to be added to the empty gameobject called Prefab
 
 After that, open the citySchema.json file, and add the new district name in the enum list. Then copy the entire citySchema.json content, and paste it in [QuickType](https://app.quicktype.io/) to generate the C# class starting from this json schema.
 
-![](./Version2/Documentation/img/quickTypeScreen.JPG)
+![](./Documentation/img/quickTypeScreen.JPG)
 
 Then copy the obtained C# class and overwrite the Domain C# script in the Systems folder.
 
@@ -156,7 +158,7 @@ The user can easily configure a city by modifing the city.json file located in `
     ]
 }
 ```
-![](./Version2/Documentation/img/cityExample.JPG)
+![](./Documentation/img/cityExample.JPG)
 
 ## TODO:
 - Cambiare nome cartella Version2 con Version3
