@@ -159,7 +159,3 @@ The user can easily configure a city by modifing the city.json file located in `
 }
 ```
 ![](./Documentation/img/cityExample.JPG)
-
-## TODO:
-- Cambiare nome cartella Version2 con Version3
-- cambiare green turn da double a int
