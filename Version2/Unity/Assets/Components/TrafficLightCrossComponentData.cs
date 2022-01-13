@@ -6,7 +6,7 @@ using Unity.Entities;
 public struct TrafficLightCrossComponentData : IComponentData
 {
     /// <summary>
-    /// <para>The turn that indicates which semaphore is green.</para>
+    /// <para>The turn that indicates which semaphore is green in a given cross.</para>
     /// </summary>
-    public double greenTurn;
+    public int greenTurn;
 }

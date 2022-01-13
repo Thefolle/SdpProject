@@ -28,7 +28,7 @@ public class TrafficLightSystem : SystemBase
                 if (getChildComponentDataFromEntity.HasComponent(trafficLightCross))
                 {
                     var nOfTrafficLightsInCross = getChildComponentDataFromEntity[trafficLightCross].Length;
-                    var turn = (math.floor(elapsedTime / trafficLightTimeSwitch) % nOfTrafficLightsInCross);
+                    var turn = (int) (math.floor(elapsedTime / trafficLightTimeSwitch) % nOfTrafficLightsInCross);
                     TrafficLightCrossCompData.greenTurn = turn;
                 }
                 else
