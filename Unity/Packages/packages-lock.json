@@ -10,7 +10,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.collab-proxy": {
-      "version": "1.5.7",
+      "version": "1.7.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -28,24 +28,9 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.unity.dots.editor": {
-      "version": "0.12.0-preview.6",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.entities": "0.17.0-preview.41",
-        "com.unity.properties": "1.6.0-preview",
-        "com.unity.serialization": "1.6.1-preview",
-        "com.unity.properties.ui": "1.6.1-preview",
-        "com.unity.jobs": "0.8.0-preview.23",
-        "com.unity.burst": "1.4.1",
-        "com.unity.test-framework.performance": "2.3.1-preview"
-      },
-      "url": "https://packages.unity.com"
-    },
     "com.unity.entities": {
       "version": "0.17.0-preview.42",
-      "depth": 0,
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.burst": "1.4.1",
@@ -113,7 +98,7 @@
     },
     "com.unity.nuget.mono-cecil": {
       "version": "0.1.6-preview.2",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "nuget.mono-cecil": "0.1.6-preview"
@@ -146,7 +131,7 @@
     },
     "com.unity.platforms": {
       "version": "0.10.0-preview.10",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "com.unity.properties": "1.6.0-preview",
@@ -158,7 +143,7 @@
     },
     "com.unity.properties": {
       "version": "1.6.0-preview",
-      "depth": 1,
+      "depth": 3,
       "source": "registry",
       "dependencies": {
         "com.unity.nuget.mono-cecil": "0.1.6-preview.2",
@@ -168,7 +153,7 @@
     },
     "com.unity.properties.ui": {
       "version": "1.6.2-preview.1",
-      "depth": 2,
+      "depth": 3,
       "source": "registry",
       "dependencies": {
         "com.unity.properties": "1.6.0-preview",
@@ -188,14 +173,14 @@
     },
     "com.unity.scriptablebuildpipeline": {
       "version": "1.9.0",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.serialization": {
       "version": "1.6.2-preview",
-      "depth": 2,
+      "depth": 3,
       "source": "registry",
       "dependencies": {
         "com.unity.collections": "0.12.0-preview.13",
@@ -207,7 +192,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {
-      "version": "1.1.26",
+      "version": "1.1.27",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -259,7 +244,7 @@
     },
     "nuget.mono-cecil": {
       "version": "0.1.6-preview",
-      "depth": 2,
+      "depth": 3,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"

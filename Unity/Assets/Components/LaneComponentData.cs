@@ -1,7 +1,9 @@
+using System.Collections;
+using System.Collections.Generic;
 using Unity.Entities;
 
 [GenerateAuthoringComponent]
 public struct LaneComponentData : IComponentData
 {
-    public int localToStreetId;
+    private char Pad;
 }
