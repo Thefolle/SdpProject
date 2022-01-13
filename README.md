@@ -117,7 +117,7 @@ The suggested path comprises the following improvements:
 
 If the user wants to create a new district, he/she needs to keep in mind that each district has a fixed size and 12 fixed exit streets, 3 per side. These streets have a flag that indicates that they are border streets, connected only by one side (the district itself). Each border street is numbered from 1 to 12, as it is for instance in the district sm-1.
 
-![](./Version2/Documentation/img/DistrictBorders.JPG)
+![](./Documentation/img/DistrictBorders.JPG)
 
 Starting from this, the user can have fun creating a new district exploiting the available crosses and streets prefabs.
 
@@ -138,7 +138,7 @@ This new district prefab needs to be added to the empty gameobject called Prefab
 
 After that, open the citySchema.json file, and add the new district name in the enum list. Then copy the entire citySchema.json content, and paste it in [QuickType](https://app.quicktype.io/) to generate the C# class starting from this json schema.
 
-![](./Version2/Documentation/img/quickTypeScreen.JPG)
+![](./Documentation/img/quickTypeScreen.JPG)
 
 Then copy the obtained C# class and overwrite the Domain C# script in the Systems folder.
 
@@ -156,7 +156,7 @@ The user can easily configure a city by modifing the city.json file located in `
     ]
 }
 ```
-![](./Version2/Documentation/img/cityExample.JPG)
+![](./Documentation/img/cityExample.JPG)
 
 ## TODO:
 - Cambiare nome cartella Version2 con Version3
