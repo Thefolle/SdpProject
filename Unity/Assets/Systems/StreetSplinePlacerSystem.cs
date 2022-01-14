@@ -119,11 +119,13 @@ public class StreetSplinePlacerSystem : SystemBase
 
                     var laneName = entityManager.GetName(lane.Value).ToString();
                     var laneDirection = laneName.Substring(0, laneName.IndexOf('-'));
+                    var laneNumber= laneName.Substring(laneName.LastIndexOf('-') + 1);
                     bool isForward = false;
-                    bool canContainSpawner = false;
+                    //bool canContainSpawner = laneNumber.Equals("1");
+                    bool canContainSpawner = true;
                     if (laneName.Contains("Forward")) isForward = true;
 
-                    canContainSpawner = true;
+                    //canContainSpawner = true;
 
                     var streetNonUniformScale = entityManager.GetComponentData<NonUniformScale>(street.Value);
 
