@@ -82,6 +82,8 @@ This section describes the measures taken into account in order to evaluate the 
 
 Note: *All measures have been collected when the simulation was at steady state.*
 
+Among all the resources that Unity shows in the profiler view, like Scripts, Garbage Collector, Physics and so on, just two of them are relevant for the present simulation: Scripts and Others; indeed, the remaining categories don't show any relevant measure.
+
 #### Machine 1
 
 Hardware characteristics of the machine used for the simulation:
@@ -92,9 +94,18 @@ Hardware characteristics of the machine used for the simulation:
 
 Measures:
 
-| # districts | # cars | # entities |
-|-------------|--------|------------|
-| 4           | 7515       |  108662          |
+| Simulation id |  | Districts  |  | # cars | # entities | # FPS |
+| - |-------------|--------|------------|------| - | - |
+|  | # low-density | # medium-density | # high-density | | | |
+| 1 | 1           |  0  |   0  |  7515    | 108662 |  |
+| 2 | 1           |  1  |   0  |  7515    | 108662 |  |
+| 3 | 2           |  1  |   1  |  7515    | 108662 |  |
+| 4 | 2           |  2  |   2  |  7515    | 108662 |  |
+| 5 | 3           |  3  |   2  |  7515    | 108662 |  |
+
+The following figure shows the screenshot of the measures recorded for simulation with id 3:
+
+![]()
 
 #### Machine 2
 
