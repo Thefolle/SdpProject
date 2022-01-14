@@ -80,6 +80,50 @@ Cars receive a random path at spawn time, that guides them from the source stree
 
 This section describes the measures taken into account in order to evaluate the simulator, along with their actual values on the three developers' machines. It follows a discussion on the collected results.
 
+Note: *All measures have been collected when the simulation was at steady state.*
+
+#### Machine 1
+
+Hardware characteristics of the machine used for the simulation:
+
+- CPU: Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz Quad Core;
+- RAM: 8.00 GB;
+- GPU: NVIDIA GeForce MX130.
+
+Measures:
+
+| # districts | # cars | # entities |
+|-------------|--------|------------|
+| 4           | 7515       |  108662          |
+
+#### Machine 2
+
+Hardware characteristics of the machine used for the simulation:
+
+- CPU:
+- RAM:
+- GPU:
+
+Measures:
+
+| | # cars | # entities |
+|-|--------|------------|
+| |     | |
+
+#### Machine 3
+
+Hardware characteristics of the machine used for the simulation:
+
+- CPU:
+- RAM:
+- GPU:
+
+Measures:
+
+| | # cars | # entities |
+|-|--------|------------|
+| |     | |
+
 ## Brief description of each system
 
 - DistrictPlacerSystem: instantiates and links the district specified in the input city.json. Then becomes inactive for the rest of the simulation;
