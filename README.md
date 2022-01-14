@@ -88,7 +88,7 @@ Among all the resources that Unity shows in the profiler view, like Scripts, Gar
 
 Hardware characteristics of the machine used for the simulation:
 
-- CPU: Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz Quad Core;
+- CPU: Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz;
 - RAM: 8.00 GB;
 - GPU: NVIDIA GeForce MX130.
 
