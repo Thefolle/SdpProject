@@ -128,7 +128,7 @@ Measures:
 
 The following figure shows the screenshot of the measures recorded for simulation with id 3:
 
-![](./Documentation/img/sim3machine2.JPG)
+![](./Documentation/img/sim3machine2.jpg)
 
 #### Machine 3
 
@@ -148,6 +148,8 @@ Measures:
 | 3 | 2           |  1  |   1  |      |  |  |
 | 4 | 2           |  2  |   2  |      |  |  |
 | 5 | 3           |  3  |   2  |      |  |  |
+
+The following figure shows the screenshot of the measures recorded for simulation with id 3:
 
 ## Brief description of each system
 
