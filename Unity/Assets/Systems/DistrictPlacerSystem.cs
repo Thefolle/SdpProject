@@ -15,7 +15,7 @@ public class DistrictPlacerSystem : SystemBase
         City city;
         List<Entity> upperDistrictRow = new List<Entity>();
 
-        Entities.ForEach((PrefabComponentData prefabComponentData) =>
+        Entities.ForEach((in PrefabComponentData prefabComponentData) =>
         {
             // load the city as a json string
             string cityString = ((UnityEngine.TextAsset)UnityEngine.Resources.Load("City", typeof(UnityEngine.TextAsset))).text;
@@ -27,8 +27,6 @@ public class DistrictPlacerSystem : SystemBase
             {
                 Value = new float3(100, 0, 100)
             };
-
-            int k = 0;
 
             for (var i = 0; i < districts.Count; i++)
             {
