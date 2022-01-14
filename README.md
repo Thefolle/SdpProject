@@ -37,7 +37,7 @@ The former version can be considered as an *architectural spike*, namely a proto
 
 The second phase of the development process pertained the intent to build and deploy a full-fledged traffic simulator, on top of Unity DOTS. The paramount aspect of the second version is the usage of the physics to allow each component in the scene to interact with each other. The Physics package allows to reach a great degree of realism in the behaviour of the components inside the scene. For instance, cars continuously correct their trajectory along the lane, as in real life, rather than following invisible tracks.
 
-![](./Documentation/img/version2.JPG)
+![Version 2 city](./Documentation/img/version2.JPG)
 
 ## Why switching to the version 3?
 
@@ -97,9 +97,9 @@ Measures:
 | Simulation id |  | Districts  |  | # cars | # entities | # FPS |
 | - |-------------|--------|------------|------| - | - |
 |  | # low-density | # medium-density | # high-density | | | |
-| 1 | 1           |  0  |   0  |      |  |  |
-| 2 | 1           |  1  |   0  |      |  |  |
-| 3 | 2           |  1  |   1  |      |  |  |
+| 1 | 1           |  0  |   0  |  1116    | 44112 | 87.8 |
+| 2 | 1           |  1  |   0  |  2871    | 62945 | 49.6 |
+| 3 | 2           |  1  |   1  |  6562    | 107788 | 20.2 |
 | 4 | 2           |  2  |   2  |      |  |  |
 | 5 | 3           |  3  |   2  |      |  |  |
 
@@ -184,7 +184,7 @@ The suggested path comprises the following improvements:
 
 If the user wants to create a new district, he/she needs to keep in mind that each district has a fixed size and 12 fixed exit streets, 3 per side. These streets have a flag that indicates that they are border streets, connected only by one side (the district itself). Each border street is numbered from 1 to 12, as it is for instance in the district sm-1.
 
-![](./Documentation/img/DistrictBorders.JPG)
+![District borders](./Documentation/img/DistrictBorders.JPG)
 
 Starting from this, the user can have fun creating a new district exploiting the available crosses and streets prefabs.
 
@@ -205,7 +205,7 @@ This new district prefab needs to be added to the empty gameobject called Prefab
 
 After that, open the citySchema.json file, and add the new district name in the enum list. Then copy the entire citySchema.json content, and paste it in [QuickType](https://app.quicktype.io/) to generate the C# class starting from this json schema.
 
-![](./Documentation/img/quickTypeScreen.JPG)
+![Quick type online tool](./Documentation/img/quickTypeScreen.JPG)
 
 Then copy the obtained C# class and overwrite the Domain C# script in the Systems folder.
 
@@ -223,6 +223,7 @@ The user can easily configure a city by modifing the city.json file located in `
     ]
 }
 ```
-![](./Documentation/img/cityExample.JPG)
+
+![City example](./Documentation/img/cityExample.JPG)
 
 ## TODO:

@@ -21,7 +21,7 @@ public class SplineTrackAssignerSystem : SystemBase
         var getLaneComponentData = GetComponentDataFromEntity<LaneComponentData>();
         EntityManager entityManager = World.EntityManager;
 
-        Entities.ForEach((ref CarComponentData carComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
+        Entities.ForEach((ref CarComponentData carComponentData, ref AskToDespawnComponentData askToDespawnComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
         {
             if (carComponentData.HasJustSpawned)
             {
@@ -32,7 +32,12 @@ public class SplineTrackAssignerSystem : SystemBase
                 var trackedLaneName = entityManager.GetName(trackedLane);
                 var street = getParentComponentData[trackedLane].Value;
                 var streetComponentData = getStreetComponentData[street];
-                if (streetComponentData.IsBorder) return;
+                if (streetComponentData.IsBorder)
+                {
+                    LogFormat("Car spawned at the border street. Despawning...");
+                    askToDespawnComponentData.Asked = true;
+                    return;
+                }
                 int edgeInitialNode;
                 int edgeEndingNode;
                 /* Exploit the track name to infer which are the starting and the ending crosses. That's why 
@@ -64,11 +69,6 @@ public class SplineTrackAssignerSystem : SystemBase
 
                 foreach (var node in randomPath)
                 {
-                    if (node == null || node.Cross == Entity.Null)
-                    {
-                        entityManager.SetName(carComponentData.Track, "ECCOMIIIIIIIIIIIIIIIIIIII");
-                        entityManager.Debug.LogEntityInfo(carComponentData.Track);
-                    }
                     if (isFirst)
                     {
                         //carPath.Add(new PathComponentData { CrossOrStreet = node.Cross }); //neglect the first node when a car is spawned in a street
@@ -77,7 +77,6 @@ public class SplineTrackAssignerSystem : SystemBase
                     }
                     else
                     {
-
                         carPath.Add(new PathComponentData { CrossOrStreet = graph.GetEdge(lastStep, node.Cross.Index).Street });
                         carPath.Add(new PathComponentData { CrossOrStreet = node.Cross });
                         lastStep = node.Cross.Index;
