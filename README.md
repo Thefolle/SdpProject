@@ -134,17 +134,17 @@ The following figure shows the screenshot of the measures recorded for simulatio
 
 Hardware characteristics of the machine used for the simulation:
 
-- CPU:
-- RAM:
-- GPU:
+- CPU: Intel(R) Core(TM) i3-8130U CPU @ 2.20GHz
+- RAM: 20,0 GB
+- GPU: Intel UHD Graphics 620
 
 Measures:
 
 | Simulation id |  | Districts  |  | # cars | # entities | # FPS |
 | - |-------------|--------|------------|------| - | - |
 |  | # low-density | # medium-density | # high-density | | | |
-| 1 | 1           |  0  |   0  |      |  |  |
-| 2 | 1           |  1  |   0  |      |  |  |
+| 1 | 1           |  0  |   0  |  1471    | 44442 | 50 |
+| 2 | 1           |  1  |   0  |   3443   | 63503 | 30 |
 | 3 | 2           |  1  |   1  |      |  |  |
 | 4 | 2           |  2  |   2  |      |  |  |
 | 5 | 3           |  3  |   2  |      |  |  |
