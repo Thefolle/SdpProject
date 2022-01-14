@@ -97,11 +97,11 @@ Measures:
 | Simulation id |  | Districts  |  | # cars | # entities | # FPS |
 | - |-------------|--------|------------|------| - | - |
 |  | # low-density | # medium-density | # high-density | | | |
-| 1 | 1           |  0  |   0  |  7515    | 108662 |  |
-| 2 | 1           |  1  |   0  |  7515    | 108662 |  |
-| 3 | 2           |  1  |   1  |  7515    | 108662 |  |
-| 4 | 2           |  2  |   2  |  7515    | 108662 |  |
-| 5 | 3           |  3  |   2  |  7515    | 108662 |  |
+| 1 | 1           |  0  |   0  |      |  |  |
+| 2 | 1           |  1  |   0  |      |  |  |
+| 3 | 2           |  1  |   1  |      |  |  |
+| 4 | 2           |  2  |   2  |      |  |  |
+| 5 | 3           |  3  |   2  |      |  |  |
 
 The following figure shows the screenshot of the measures recorded for simulation with id 3:
 
@@ -111,15 +111,20 @@ The following figure shows the screenshot of the measures recorded for simulatio
 
 Hardware characteristics of the machine used for the simulation:
 
-- CPU:
-- RAM:
-- GPU:
+- CPU: Intel(R) Core(TM) i7-6500U CPU @ 2.50GHz 2.59 GHz
+- RAM: 12.00 GB
+- GPU: NVIDIA GeForce 940MX
 
 Measures:
 
-| | # cars | # entities |
-|-|--------|------------|
-| |     | |
+| Simulation id |  | Districts  |  | # cars | # entities | # FPS |
+| - |-------------|--------|------------|------| - | - |
+|  | # low-density | # medium-density | # high-density | | | |
+| 1 | 1           |  0  |   0  |      |  |  |
+| 2 | 1           |  1  |   0  |      |  |  |
+| 3 | 2           |  1  |   1  |      |  |  |
+| 4 | 2           |  2  |   2  |      |  |  |
+| 5 | 3           |  3  |   2  |      |  |  |
 
 #### Machine 3
 
@@ -131,9 +136,14 @@ Hardware characteristics of the machine used for the simulation:
 
 Measures:
 
-| | # cars | # entities |
-|-|--------|------------|
-| |     | |
+| Simulation id |  | Districts  |  | # cars | # entities | # FPS |
+| - |-------------|--------|------------|------| - | - |
+|  | # low-density | # medium-density | # high-density | | | |
+| 1 | 1           |  0  |   0  |      |  |  |
+| 2 | 1           |  1  |   0  |      |  |  |
+| 3 | 2           |  1  |   1  |      |  |  |
+| 4 | 2           |  2  |   2  |      |  |  |
+| 5 | 3           |  3  |   2  |      |  |  |
 
 ## Brief description of each system
 
