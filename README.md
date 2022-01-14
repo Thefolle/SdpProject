@@ -120,11 +120,15 @@ Measures:
 | Simulation id |  | Districts  |  | # cars | # entities | # FPS |
 | - |-------------|--------|------------|------| - | - |
 |  | # low-density | # medium-density | # high-density | | | |
-| 1 | 1           |  0  |   0  |      |  |  |
-| 2 | 1           |  1  |   0  |      |  |  |
-| 3 | 2           |  1  |   1  |      |  |  |
+| 1 | 1           |  0  |   0  | 1490 | 44452 | 92.1 |
+| 2 | 1           |  1  |   0  | 3440 | 63443 | 61 |
+| 3 | 2           |  1  |   1  | 7820 | 108991 | 21.9 |
 | 4 | 2           |  2  |   2  |      |  |  |
 | 5 | 3           |  3  |   2  |      |  |  |
+
+The following figure shows the screenshot of the measures recorded for simulation with id 3:
+
+![](./Documentation/img/sim3machine2.jpg)
 
 #### Machine 3
 
@@ -144,6 +148,8 @@ Measures:
 | 3 | 2           |  1  |   1  |      |  |  |
 | 4 | 2           |  2  |   2  |      |  |  |
 | 5 | 3           |  3  |   2  |      |  |  |
+
+The following figure shows the screenshot of the measures recorded for simulation with id 3:
 
 ## Brief description of each system
 
