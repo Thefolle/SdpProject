@@ -17,6 +17,7 @@ public class SplineVehicleMovementSystem : SystemBase
         var getChildComponentData = GetBufferFromEntity<Child>();
         var getLocalToWorldComponentDataFromEntity = GetComponentDataFromEntity<LocalToWorld>();
         var getParentComponentData = GetComponentDataFromEntity<Parent>();
+        var getSplineBufferComponentData = GetBufferFromEntity<SplineBufferComponentData>();
 
         EntityManager entityManager = World.EntityManager;
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
@@ -42,17 +43,28 @@ public class SplineVehicleMovementSystem : SystemBase
             if (carComponentData.needToUpdatedPath)
             {
                 carComponentData.SplineId = 0;
-                var splines = getChildComponentData[carComponentData.Track];
-                foreach (var spline in splines)
-                {
-                    mySplineEndComponentData = getSplineComponentDataFromEntity[spline.Value];
+                //if (!carComponentData.isOnStreet) { 
+                //    var splines = getChildComponentData[carComponentData.Track];
+                //    foreach (var spline in splines)
+                //    {
+                //        mySplineEndComponentData = getSplineComponentDataFromEntity[spline.Value];
 
-                    if (mySplineEndComponentData.id == 0)
+                //        if (mySplineEndComponentData.id == 0)
+                //        {
+                //            carComponentData.splineEnd = spline.Value;
+                //            break;
+                //        }
+                //    }
+                //}
+                //else // splineBuffer is available only for streets
+                //{
+                    var splineBufferComponentData = getSplineBufferComponentData[carComponentData.Track];
+                    if (splineBufferComponentData.Length > carComponentData.SplineId) // splineId may refer to a non-existing spline (off-by-one error)
                     {
-                        carComponentData.splineEnd = spline.Value;
-                        break;
+                        var spline = splineBufferComponentData[carComponentData.SplineId].spline;
+                        carComponentData.splineEnd = spline;
                     }
-                }
+                //}
                 carComponentData.needToUpdatedPath = false;
             }
 
@@ -95,7 +107,7 @@ public class SplineVehicleMovementSystem : SystemBase
                     }
                     else
                     {
-                        // Overtake needs too much computer power
+                        // Overtake algorithm is too heavy in its current implementation
                         bool overtakeEnabled = false;
                         if (overtakeEnabled)
                         {
@@ -103,17 +115,30 @@ public class SplineVehicleMovementSystem : SystemBase
                         }
                         else
                         {
-                            var splines = getChildComponentData[carComponentData.Track];
-                            foreach (var spline in splines)
-                            {
-                                mySplineEndComponentData = getSplineComponentDataFromEntity[spline.Value];
+                            //if (!carComponentData.isOnStreet)
+                            //{
+                            //    var splines = getChildComponentData[carComponentData.Track];
+                            //    foreach (var spline in splines)
+                            //    {
+                            //        mySplineEndComponentData = getSplineComponentDataFromEntity[spline.Value];
 
-                                if (mySplineEndComponentData.id == carComponentData.SplineId)
+                            //        if (mySplineEndComponentData.id == carComponentData.SplineId)
+                            //        {
+                            //            carComponentData.splineEnd = spline.Value;
+                            //            break;
+                            //        }
+                            //    }
+                            //}
+                            //else // splineBuffer is available only for streets
+                            //{
+                                var splineBufferComponentData = getSplineBufferComponentData[carComponentData.Track];
+                                if (splineBufferComponentData.Length > carComponentData.SplineId) // splineId may refer to a non-existing spline (off-by-one error)
                                 {
-                                    carComponentData.splineEnd = spline.Value;
-                                    break;
+                                    var spline = splineBufferComponentData[carComponentData.SplineId].spline;
+                                    carComponentData.splineEnd = spline;
                                 }
-                            }
+                            //}
+                            
                         }
                     }
                 }

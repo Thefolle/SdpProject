@@ -4,6 +4,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
+using static UnityEngine.Debug;
 
 public class StreetSplinePlacerSystem : SystemBase
 {
@@ -12,10 +13,13 @@ public class StreetSplinePlacerSystem : SystemBase
         double elapsedTime = Time.ElapsedTime;
         if (elapsedTime < 2 || World.GetExistingSystem<GraphGeneratorSystem>().Enabled) return;
         EntityManager entityManager = World.EntityManager;
+        var getChildBuffer = GetBufferFromEntity<Child>();
+        var getSplineComponentData = GetComponentDataFromEntity<SplineComponentData>();
 
 
         Entities.ForEach((ref TrackComponentData trackComponentData, in Entity trackEntity, in LocalToWorld localToWorld, in Translation translation) =>
         {
+            // if the track belongs to a street
             if (trackComponentData.allSplinesPlaced == false)
             {
                 // Calculating the number of splines to be placed, one each 10f, (example if lenght = 60, 2*60/10 + 1 = 13 is the number of splines)
@@ -134,6 +138,8 @@ public class StreetSplinePlacerSystem : SystemBase
 
                     var nSplinesToBePlaced = (int)(2 * streetNonUniformScale.Value.z / 10 + 1);
 
+                    var splineBufferComponentData = ecb2.AddBuffer<SplineBufferComponentData>(trackEntity);
+
                     for (var nSplinePlaced = 0; nSplinePlaced < nSplinesToBePlaced; nSplinePlaced++)
                     {
                         var spline = entityManager.Instantiate(trackComponentData.splineEntity);
@@ -151,9 +157,10 @@ public class StreetSplinePlacerSystem : SystemBase
                         };
                         ecb.AddComponent(spline, newRotation);
 
+                        SplineComponentData newSplineComponentData;
                         if (nSplinePlaced == nSplinesToBePlaced - 1)
                         {
-                            var newSplineComponentData = new SplineComponentData
+                            newSplineComponentData = new SplineComponentData
                             {
                                 id = isForward ? nSplinePlaced : (nSplinesToBePlaced - nSplinePlaced - 1),
                                 Track = trackEntity,
@@ -165,7 +172,7 @@ public class StreetSplinePlacerSystem : SystemBase
                         }
                         else if (nSplinePlaced == 0)
                         {
-                            var newSplineComponentData = new SplineComponentData
+                            newSplineComponentData = new SplineComponentData
                             {
                                 id = isForward ? nSplinePlaced : (nSplinesToBePlaced - nSplinePlaced - 1),
                                 Track = trackEntity,
@@ -177,7 +184,7 @@ public class StreetSplinePlacerSystem : SystemBase
                         }
                         else if (canContainSpawner && ((nSplinePlaced == 3 && nSplinesToBePlaced >= 10 && isForward) || (!isForward && nSplinePlaced == (nSplinesToBePlaced - 3 - 1) && nSplinesToBePlaced >= 10)))
                         {
-                            var newSplineComponentData = new SplineComponentData
+                            newSplineComponentData = new SplineComponentData
                             {
                                 id = isForward ? nSplinePlaced : (nSplinesToBePlaced - nSplinePlaced - 1),
                                 Track = trackEntity,
@@ -189,7 +196,7 @@ public class StreetSplinePlacerSystem : SystemBase
                         }
                         else
                         {
-                            var newSplineComponentData = new SplineComponentData
+                            newSplineComponentData = new SplineComponentData
                             {
                                 id = isForward ? nSplinePlaced : (nSplinesToBePlaced - nSplinePlaced - 1),
                                 Track = trackEntity,
@@ -203,6 +210,11 @@ public class StreetSplinePlacerSystem : SystemBase
                         ecb2.AddComponent(spline, new Parent { Value = trackEntity });
                         ecb2.AddComponent(spline, new LocalToParent { });
 
+                        // Manage SplineBufferComponentData
+                        //splineBufferComponentData.Insert(newSplineComponentData.id, new SplineBufferComponentData { spline = spline });
+                        splineBufferComponentData.Add(new SplineBufferComponentData { spline = spline });
+
+                        // Manage traffic light splines
                         if (endingCross != Entity.Null)
                         {
                             if ((nSplinePlaced == nSplinesToBePlaced - 1 && isForward) || (nSplinePlaced == 0 && !isForward)) // this spline is the last
@@ -297,6 +309,19 @@ public class StreetSplinePlacerSystem : SystemBase
                         }
                     }
 
+                    if (!isForward)
+                    {
+                        for (int i = 0; i < splineBufferComponentData.Length / 2; i++)
+                        {
+                            var tmp = splineBufferComponentData[i];
+                            splineBufferComponentData[i] = splineBufferComponentData[splineBufferComponentData.Length - i - 1];
+                            splineBufferComponentData[splineBufferComponentData.Length - i - 1] = tmp;
+                        }
+                    }
+
+                    splineBufferComponentData.TrimExcess();
+                    //LogFormat("{0}, {1} ({2})", splineBufferComponentData.Length, splineBufferComponentData.Capacity, trackEntity.Index);
+
                     ecb.Playback(EntityManager);
                     ecb2.Playback(EntityManager);
 
@@ -304,6 +329,30 @@ public class StreetSplinePlacerSystem : SystemBase
                     ecb2.Dispose();
                 }
                 trackComponentData.allSplinesPlaced = true;
+            }
+            else // the track belongs to a cross
+            {
+                var ecb = new EntityCommandBuffer(Allocator.TempJob);
+                var children = entityManager.GetBuffer<Child>(trackEntity);
+                var splineBufferComponentData = ecb.AddBuffer<SplineBufferComponentData>(trackEntity);
+                foreach (var child in children)
+                {
+                    splineBufferComponentData.Add(new SplineBufferComponentData { spline = child.Value });
+                }
+
+                // invert the buffer elements so that their id is increasing
+                if (splineBufferComponentData.Length >= 2 && entityManager.GetComponentData<SplineComponentData>(splineBufferComponentData[0].spline).id > entityManager.GetComponentData<SplineComponentData>(splineBufferComponentData[1].spline).id)
+                {
+                    for (int i = 0; i < splineBufferComponentData.Length / 2; i++)
+                    {
+                        var tmp = splineBufferComponentData[i];
+                        splineBufferComponentData[i] = splineBufferComponentData[splineBufferComponentData.Length - i - 1];
+                        splineBufferComponentData[splineBufferComponentData.Length - i - 1] = tmp;
+                    }
+                }
+
+                ecb.Playback(entityManager);
+                ecb.Dispose();
             }
         }).WithStructuralChanges().Run();
         this.Enabled = false;

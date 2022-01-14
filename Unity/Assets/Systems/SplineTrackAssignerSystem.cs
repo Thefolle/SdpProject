@@ -179,6 +179,8 @@ public class SplineTrackAssignerSystem : SystemBase
                         {
                             trackToAssign = trackChild.Value;
                             minimumRelativeTrackDistance = currentRelativeTrackDistance;
+
+                            if (minimumRelativeTrackDistance == 0) break;
                         }
                     }
 
@@ -246,6 +248,8 @@ public class SplineTrackAssignerSystem : SystemBase
                         {
                             trackToAssign = getChildComponentData[lane.Value][0].Value;
                             minimumRelativeTrackDistance = currentRelativeTrackDistance;
+
+                            if (minimumRelativeTrackDistance == 0) break;
                         }
                     }
                 }

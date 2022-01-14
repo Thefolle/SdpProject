@@ -141,22 +141,45 @@ public class Graph
         pathInt.Add(edgeEndingNode);
         i++;
         int currentNode = edgeEndingNode;
+        var possibleNextCrossIds = new List<int>();
         for (; i < pathLength; i++)
         {
-            var possibleNextCrossIds = Edges[currentNode].Keys;
-            int j = 0;
+            possibleNextCrossIds.AddRange(Edges[currentNode].Keys);
             int randomJ = RandomGenerator.Next(0, possibleNextCrossIds.Count);
-            foreach(var nextCrossId in possibleNextCrossIds)
+            int nextCrossId = -1;
+            //if (!pathInt.Contains(possibleNextCrossIds[randomJ]))
+            //{
+            //    nextCrossId = possibleNextCrossIds[randomJ];
+            //}
+            for (int j = 0; j < possibleNextCrossIds.Count; j++, randomJ = (randomJ + 1) % possibleNextCrossIds.Count)
             {
-                if (j == randomJ && !pathInt.Contains(nextCrossId))
+                if (!pathInt.Contains(possibleNextCrossIds[randomJ]))
                 {
-                    pathInt.Add(nextCrossId);
-                    currentNode = nextCrossId;
+                    nextCrossId = possibleNextCrossIds[randomJ];
                     break;
                 }
-                j++;
             }
+
+            if (nextCrossId != -1)
+            {
+                pathInt.Add(nextCrossId);
+                currentNode = nextCrossId;
+            }
+
+            //int j = 0;
+            //foreach(var nextCrossId in possibleNextCrossIds)
+            //{
+            //    if (j == randomJ && !pathInt.Contains(nextCrossId))
+            //    {
+            //        pathInt.Add(nextCrossId);
+            //        currentNode = nextCrossId;
+            //        break;
+            //    }
+            //    j++;
+            //}
+            possibleNextCrossIds.Clear();
         }
+        
 
         var path = new List<Node>();
         foreach (var nodeInt in pathInt)
