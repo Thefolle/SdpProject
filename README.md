@@ -145,11 +145,13 @@ Measures:
 |  | # low-density | # medium-density | # high-density | | | |
 | 1 | 1           |  0  |   0  |  1471    | 44442 | 50 |
 | 2 | 1           |  1  |   0  |   3443   | 63503 | 30 |
-| 3 | 2           |  1  |   1  |      |  |  |
-| 4 | 2           |  2  |   2  |      |  |  |
-| 5 | 3           |  3  |   2  |      |  |  |
+| 3 | 2           |  1  |   1  |    7688  | 108891 | 10  |
+| 4 | 2           |  2  |   2  |   12181   |  163410 | 5 |
+| 5 | 3           |  3  |   2  |  15828    | 192085 | 2 |
 
 The following figure shows the screenshot of the measures recorded for simulation with id 3:
+
+![](./Documentation/img/sim3machine3.png)
 
 ## Brief description of each system
 
