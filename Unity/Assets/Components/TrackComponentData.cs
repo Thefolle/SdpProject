@@ -18,4 +18,6 @@ public struct TrackComponentData : IComponentData
     /// <para>The car prefab used by node of splines that behave also as car spawners.</para>
     /// </summary>
     public Entity carEntity;
+
+    public Entity leftTrack;
 }

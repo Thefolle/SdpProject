@@ -24,6 +24,7 @@ public class StreetSplinePlacerSystem : SystemBase
             {
                 // Calculating the number of splines to be placed, one each 10f, (example if lenght = 60, 2*60/10 + 1 = 13 is the number of splines)
                 var lane = entityManager.GetComponentData<Parent>(trackEntity);
+                string laneName;
                 if (entityManager.HasComponent<Parent>(lane.Value))
                 {
                     var ecb = new EntityCommandBuffer(Allocator.TempJob);
@@ -121,7 +122,7 @@ public class StreetSplinePlacerSystem : SystemBase
                             degree = -45;
                     }
 
-                    var laneName = entityManager.GetName(lane.Value).ToString();
+                    laneName = entityManager.GetName(lane.Value).ToString();
                     var laneDirection = laneName.Substring(0, laneName.IndexOf('-'));
                     var laneNumber= laneName.Substring(laneName.LastIndexOf('-') + 1);
                     bool isForward = false;
@@ -328,6 +329,34 @@ public class StreetSplinePlacerSystem : SystemBase
                     ecb.Dispose();
                     ecb2.Dispose();
                 }
+
+                // If track has got another track on the left with the same direction, link it
+
+                laneName = entityManager.GetName(lane.Value).ToString();
+                if (laneName.Contains("Lane"))
+                {
+                    var laneDirection = laneName.Substring(0, laneName.IndexOf('-'));
+                    var laneNumberInDirection = System.Int32.Parse(laneName.Substring(laneName.LastIndexOf('-') + 1));
+                    if (laneNumberInDirection != 0) // Avoid to look at your left, you're at the left most lane
+                    {
+                        var currentStreet = entityManager.GetComponentData<Parent>(lane.Value).Value;
+                        foreach (var laneBrother in entityManager.GetBuffer<Child>(currentStreet))
+                        {
+                            var thisLaneName = entityManager.GetName(laneBrother.Value);
+                            if (thisLaneName.Contains("Lane"))
+                            {
+                                var thisLaneDirection = thisLaneName.Substring(0, thisLaneName.IndexOf('-'));
+                                var thisLaneNumberInDirection = System.Int32.Parse(thisLaneName.Substring(thisLaneName.LastIndexOf('-') + 1));
+                                if (laneDirection.Equals(thisLaneDirection) && laneNumberInDirection - 1 == thisLaneNumberInDirection)
+                                {
+                                    var leftTrack = entityManager.GetBuffer<Child>(laneBrother.Value)[0].Value;
+                                    trackComponentData.leftTrack = leftTrack;
+                                }
+                            }
+                        }
+                    }
+                }
+
                 trackComponentData.allSplinesPlaced = true;
             }
             else // the track belongs to a cross
