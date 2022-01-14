@@ -123,7 +123,7 @@ Measures:
 | 1 | 1           |  0  |   0  | 1490 | 44452 | 92.1 |
 | 2 | 1           |  1  |   0  | 3440 | 63443 | 61 |
 | 3 | 2           |  1  |   1  | 7820 | 108991 | 21.9 |
-| 4 | 2           |  2  |   2  |      |  |  |
+| 4 | 2           |  2  |   2  | 12050 | 163229 | 10.5 |
 | 5 | 3           |  3  |   2  |      |  |  |
 
 The following figure shows the screenshot of the measures recorded for simulation with id 3:
