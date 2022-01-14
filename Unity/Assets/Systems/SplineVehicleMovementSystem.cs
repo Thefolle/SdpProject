@@ -18,6 +18,7 @@ public class SplineVehicleMovementSystem : SystemBase
         var getLocalToWorldComponentDataFromEntity = GetComponentDataFromEntity<LocalToWorld>();
         var getParentComponentData = GetComponentDataFromEntity<Parent>();
         var getSplineBufferComponentData = GetBufferFromEntity<SplineBufferComponentData>();
+        var getTrackComponentData = GetComponentDataFromEntity<TrackComponentData>();
 
         EntityManager entityManager = World.EntityManager;
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
@@ -68,10 +69,13 @@ public class SplineVehicleMovementSystem : SystemBase
                 carComponentData.needToUpdatedPath = false;
             }
 
-            if(!mySplineEndComponentData.isOccupied)
-            //if (!mySplineEndComponentData.isOccupied || (mySplineEndComponentData.isOccupied && carComponentData.isOccupying))
+            //if(!mySplineEndComponentData.isOccupied)
+            if (!mySplineEndComponentData.isOccupied || (mySplineEndComponentData.isOccupied && carComponentData.isOccupying))
             {
-                //carComponentData.isOccupying = true;
+                carComponentData.isOccupying = true;
+
+                mySplineEndComponentData.isOccupied = true;
+                ecb.SetComponent(carComponentData.splineEnd, mySplineEndComponentData);
 
                 var localToWorldSplineStart = getLocalToWorldComponentDataFromEntity[carComponentData.splineStart];
                 var localToWorldSplineEnd = getLocalToWorldComponentDataFromEntity[carComponentData.splineEnd];
@@ -91,10 +95,9 @@ public class SplineVehicleMovementSystem : SystemBase
                     mySplineStartComponentData.isOccupied = false;
                     ecb.SetComponent(carComponentData.splineStart, mySplineStartComponentData);
 
-                    mySplineEndComponentData.isOccupied = true;
-                    ecb.SetComponent(carComponentData.splineEnd, mySplineEndComponentData);
+                    
 
-                    //carComponentData.isOccupying = false;
+                    carComponentData.isOccupying = false;
 
                     carComponentData.splineStart = carComponentData.splineEnd;
 
@@ -108,10 +111,10 @@ public class SplineVehicleMovementSystem : SystemBase
                     else
                     {
                         // Overtake algorithm is too heavy in its current implementation
-                        bool overtakeEnabled = false;
+                        bool overtakeEnabled = true;
                         if (overtakeEnabled)
                         {
-                            carComponentData.splineEnd = getNextNode(entityManager, getChildComponentData, getSplineComponentDataFromEntity, getParentComponentData, carComponentData, ecb, carEntity);
+                            carComponentData.splineEnd = getNextNode(entityManager, getSplineBufferComponentData, getTrackComponentData, getChildComponentData, getSplineComponentDataFromEntity, getParentComponentData, carComponentData, ecb, carEntity);
                         }
                         else
                         {
@@ -153,8 +156,41 @@ public class SplineVehicleMovementSystem : SystemBase
         ecb.Dispose();
     }
 
-    static Entity getNextNode(EntityManager entityManager, BufferFromEntity<Child> getChildComponentData, ComponentDataFromEntity<SplineComponentData> getSplineComponentDataFromEntity, ComponentDataFromEntity<Parent> getParentComponentData, CarComponentData carComponentData, EntityCommandBuffer ecb, Entity carEntity)
+    static Entity getNextNode(EntityManager entityManager, BufferFromEntity<SplineBufferComponentData> getSplineBufferComponentData, ComponentDataFromEntity<TrackComponentData> getTrackComponentData, BufferFromEntity<Child> getChildComponentData, ComponentDataFromEntity<SplineComponentData> getSplineComponentDataFromEntity, ComponentDataFromEntity<Parent> getParentComponentData, CarComponentData carComponentData, EntityCommandBuffer ecb, Entity carEntity)
     {
+        Entity entityToReturn = Entity.Null;
+
+        var splineBufferComponentData = getSplineBufferComponentData[carComponentData.Track];
+        if (splineBufferComponentData.Length > carComponentData.SplineId) // splineId may refer to a non-existing spline (off-by-one error)
+        {
+            var spline = splineBufferComponentData[carComponentData.SplineId].spline;
+            entityToReturn = spline;
+        }
+
+        var splineToReturnComponentData = getSplineComponentDataFromEntity[entityToReturn];
+
+        if (splineToReturnComponentData.isOccupied && !splineToReturnComponentData.isLast && carComponentData.isOnStreet)
+        {
+            // Try overtake on left, if there is a left track in the same direction
+            var myTrackComponentData = getTrackComponentData[carComponentData.Track];
+            var leftTrack = myTrackComponentData.leftTrack;
+            if(leftTrack != Entity.Null)
+            {
+                splineBufferComponentData = getSplineBufferComponentData[leftTrack];
+                if (splineBufferComponentData.Length > carComponentData.SplineId) // splineId may refer to a non-existing spline (off-by-one error)
+                {
+                    var spline = splineBufferComponentData[carComponentData.SplineId].spline;
+                    var thisSplineComponentData = getSplineComponentDataFromEntity[spline];
+                    if (!thisSplineComponentData.isOccupied)
+                    {
+                        carComponentData.Track = leftTrack;
+                        entityManager.SetComponentData<CarComponentData>(carEntity, carComponentData);
+                        entityToReturn = spline;
+                    }
+                }
+            }
+        }
+        /*
         Entity entityToReturn = Entity.Null;
         var splines = getChildComponentData[carComponentData.Track];
         SplineComponentData mySplineEndComponentData;
@@ -218,6 +254,7 @@ public class SplineVehicleMovementSystem : SystemBase
             }
         }
 
+        */
         return entityToReturn;
     }
 }
