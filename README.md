@@ -101,15 +101,15 @@ Measures:
 | Simulation id |  | Districts  |  | # cars | # entities | # FPS | Delay | SVMS' delay | STAS' delay |
 | - |-------------|--------|------------|------| - | - | - | - | - |
 |  | # low-density | # medium-density | # high-density | | | | | | |
-| 1 | 1           |  0  |   0  |  1116    | 44112 | 87.8 | | | |
-| 2 | 1           |  1  |   0  |  2871    | 62945 | 49.6 | | | |
-| 3 | 2           |  1  |   1  |  6562    | 107788 | 20.2 | | | |
-| 4 | 2           |  2  |   2  |      |  |  | | | |
-| 5 | 3           |  3  |   2  |      |  |  | | | |
+| 1 | 1 | 0 | 0 | 1432 | 44178 | 67.5 | 14.8 | 0.43 | 0.74 |
+| 2 | 1 | 1 | 0 | 4001 | 63834 | 39.6 | 25.2 | 1.90 | 6.35 |
+| 3 | 2 | 1 | 1 | 8463 | 108848 | 15.2 | 65.6 | 5.22 | 19.59 |
+| 4 | 2 | 2 | 2 | 14795 | 164485 | 6.6 | 151 | 33.14 | 76.28 |
+| 5 | 3 | 3 | 2 | 17674 | 192290 | 3.3 | 302.6 | 57.72 | 174.26 |
 
 The following figure shows the screenshot of the measures recorded for simulation with id 3:
 
-![]()
+![Simulation 3, machine 1](./Documentation/img/sim3machine1.png)
 
 #### Machine 2
 
