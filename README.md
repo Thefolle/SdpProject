@@ -39,6 +39,8 @@ The second phase of the development process pertained the intent to build and de
 
 ![Version 2 city](./Documentation/img/version2.JPG)
 
+An in-depth analysis on how the Physics package is exploited in version 2 is given in this same section of the README in the version2 branch.
+
 ## Why switching to the version 3?
 
 The developers, once again, realized that realism was not a requirement of the project, especially if it thwarts scalability at a very limited threshold. Indeed, using Physics means loading Unity with a pletora of computations: collision surfaces and points, raycast and spherecast interpolation, gravity application, force computations and so on. Even if systems were partially but reasonably optimized, the resulting number of cars at steady state was unsatisfying. Systems were not able to run in parallel and some bugs were in place, but the developers traced back the poor performances to the usage of physics, which is therefore intended for few entities.
@@ -111,9 +113,9 @@ The following figure shows the screenshot of the measures recorded for simulatio
 
 Hardware characteristics of the machine used for the simulation:
 
-- CPU: Intel(R) Core(TM) i7-6500U CPU @ 2.50GHz 2.59 GHz
-- RAM: 12.00 GB
-- GPU: NVIDIA GeForce 940MX
+- CPU: Intel(R) Core(TM) i7-6500U CPU @ 2.50GHz;
+- RAM: 12.00 GB;
+- GPU: NVIDIA GeForce 940MX.
 
 Measures:
 
@@ -134,9 +136,9 @@ The following figure shows the screenshot of the measures recorded for simulatio
 
 Hardware characteristics of the machine used for the simulation:
 
-- CPU: Intel(R) Core(TM) i3-8130U CPU @ 2.20GHz
-- RAM: 20,0 GB
-- GPU: Intel UHD Graphics 620
+- CPU: Intel(R) Core(TM) i3-8130U CPU @ 2.20GHz;
+- RAM: 20.0 GB;
+- GPU: Intel UHD Graphics 620.
 
 Measures:
 
@@ -233,5 +235,3 @@ The user can easily configure a city by modifing the city.json file located in `
 ```
 
 ![City example](./Documentation/img/cityExample.JPG)
-
-## TODO:
