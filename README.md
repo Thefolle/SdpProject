@@ -145,7 +145,7 @@ Hardware characteristics of the machine used for the simulation:
 Measures:
 
 
-| Simulation id |  | Districts  |  | # cars | # entities | # FPS | Delay (ms) | SVMS delay (ms)| STAS delay (ms)|
+| Simulation id |  | Districts  |  | # cars | # entities | # FPS | Total Delay (ms) | SVMS delay (ms)| STAS delay (ms)|
 | - |-------------|--------|------------|------| - | - | - | - | - |
 |  | # low-density | # medium-density | # high-density | | | |
 | 1 | 1           |  0  |   0  |  1958    | 44700 | 70 | 14 | 0.78 | 0.04 |
