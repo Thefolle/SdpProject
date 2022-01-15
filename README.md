@@ -86,6 +86,8 @@ Note: *All measures have been collected when the simulation was at steady state.
 
 Among all the resources that Unity shows in the profiler view, like Scripts, Garbage Collector, Physics and so on, just two of them are relevant for the present simulation: Scripts and Others; indeed, the remaining categories don't show any relevant measure.
 
+The bottlenecks of the simulator are the two main systems which allows the vehicles to move: SplineVehicleMovementSystem (SVMS) and SplineTrackAssignerSystem (STAS).
+
 #### Machine 1
 
 Hardware characteristics of the machine used for the simulation:
@@ -96,14 +98,14 @@ Hardware characteristics of the machine used for the simulation:
 
 Measures:
 
-| Simulation id |  | Districts  |  | # cars | # entities | # FPS |
-| - |-------------|--------|------------|------| - | - |
-|  | # low-density | # medium-density | # high-density | | | |
-| 1 | 1           |  0  |   0  |  1116    | 44112 | 87.8 |
-| 2 | 1           |  1  |   0  |  2871    | 62945 | 49.6 |
-| 3 | 2           |  1  |   1  |  6562    | 107788 | 20.2 |
-| 4 | 2           |  2  |   2  |      |  |  |
-| 5 | 3           |  3  |   2  |      |  |  |
+| Simulation id |  | Districts  |  | # cars | # entities | # FPS | Delay | SVMS' delay | STAS' delay |
+| - |-------------|--------|------------|------| - | - | - | - | - |
+|  | # low-density | # medium-density | # high-density | | | | | | |
+| 1 | 1           |  0  |   0  |  1116    | 44112 | 87.8 | | | |
+| 2 | 1           |  1  |   0  |  2871    | 62945 | 49.6 | | | |
+| 3 | 2           |  1  |   1  |  6562    | 107788 | 20.2 | | | |
+| 4 | 2           |  2  |   2  |      |  |  | | | |
+| 5 | 3           |  3  |   2  |      |  |  | | | |
 
 The following figure shows the screenshot of the measures recorded for simulation with id 3:
 
@@ -119,14 +121,14 @@ Hardware characteristics of the machine used for the simulation:
 
 Measures:
 
-| Simulation id |  | Districts  |  | # cars | # entities | # FPS |
-| - |-------------|--------|------------|------| - | - |
+| Simulation id |  | Districts  |  | # cars | # entities | # FPS | Delay | SVMS' delay | STAS' delay |
+| - |-------------|--------|------------|------| - | - | - | - | - |
 |  | # low-density | # medium-density | # high-density | | | |
-| 1 | 1           |  0  |   0  | 1490 | 44452 | 92.1 |
-| 2 | 1           |  1  |   0  | 3440 | 63443 | 61 |
-| 3 | 2           |  1  |   1  | 7820 | 108991 | 21.9 |
-| 4 | 2           |  2  |   2  | 12050 | 163229 | 10.5 |
-| 5 | 3           |  3  |   2  | 16010 | 192268 | 3.5 |
+| 1 | 1           |  0  |   0  | 1490 | 44452 | 92.1 | | | |
+| 2 | 1           |  1  |   0  | 3440 | 63443 | 61 | | | |
+| 3 | 2           |  1  |   1  | 7820 | 108991 | 21.9 | | | |
+| 4 | 2           |  2  |   2  | 12050 | 163229 | 10.5 | | | |
+| 5 | 3           |  3  |   2  | 16010 | 192268 | 3.5 | | | |
 
 The following figure shows the screenshot of the measures recorded for simulation with id 3:
 
@@ -142,14 +144,14 @@ Hardware characteristics of the machine used for the simulation:
 
 Measures:
 
-| Simulation id |  | Districts  |  | # cars | # entities | # FPS |
-| - |-------------|--------|------------|------| - | - |
+| Simulation id |  | Districts  |  | # cars | # entities | # FPS | Delay | SVMS' delay | STAS' delay |
+| - |-------------|--------|------------|------| - | - | - | - | - |
 |  | # low-density | # medium-density | # high-density | | | |
-| 1 | 1           |  0  |   0  |  1471    | 44442 | 50 |
-| 2 | 1           |  1  |   0  |   3443   | 63503 | 30 |
-| 3 | 2           |  1  |   1  |    7688  | 108891 | 10  |
-| 4 | 2           |  2  |   2  |   12181   |  163410 | 5 |
-| 5 | 3           |  3  |   2  |  15828    | 192085 | 2 |
+| 1 | 1           |  0  |   0  |  1471    | 44442 | 50 | | | |
+| 2 | 1           |  1  |   0  |   3443   | 63503 | 30 | | | |
+| 3 | 2           |  1  |   1  |    7688  | 108891 | 10  | | | |
+| 4 | 2           |  2  |   2  |   12181   |  163410 | 5 | | | |
+| 5 | 3           |  3  |   2  |  15828    | 192085 | 2 | | | |
 
 The following figure shows the screenshot of the measures recorded for simulation with id 3:
 
