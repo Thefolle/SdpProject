@@ -121,14 +121,14 @@ Hardware characteristics of the machine used for the simulation:
 
 Measures:
 
-| Simulation id |  | Districts  |  | # cars | # entities | # FPS | Delay | SVMS' delay | STAS' delay |
+| Simulation id |  | Districts  |  | # cars | # entities | # FPS | Total delay (ms) | SVMS delay (ms) | STAS delay (ms) |
 | - |-------------|--------|------------|------| - | - | - | - | - |
 |  | # low-density | # medium-density | # high-density | | | |
-| 1 | 1           |  0  |   0  | 2070 | 44760 | 92.2 | 10.8ms | 0.21ms | 0.70ms |
-| 2 | 1           |  1  |   0  | 5030 | 64850 | 61 | 16.4ms | 0.80ms | 2.90ms |
-| 3 | 2           |  1  |   1  | 9817 | 110291 | 24.4 | 40.9ms | 4.44ms | 12.35ms |
-| 4 | 2           |  2  |   2  | 15140 | 165004 | 10.1 | 99.0ms | 19.14ms | 46.65ms |
-| 5 | 3           |  3  |   2  | 20140 | 194906 | 4.3 | 234.4ms | 50.83ms | 134.58ms |
+| 1 | 1           |  0  |   0  | 2070 | 44760 | 92.2 | 10.8 | 0.21 | 0.70 |
+| 2 | 1           |  1  |   0  | 5030 | 64850 | 61 | 16.4 | 0.80 | 2.90 |
+| 3 | 2           |  1  |   1  | 9817 | 110291 | 24.4 | 40.9 | 4.44 | 12.35 |
+| 4 | 2           |  2  |   2  | 15140 | 165004 | 10.1 | 99.0 | 19.14 | 46.65 |
+| 5 | 3           |  3  |   2  | 20140 | 194906 | 4.3 | 234.4 | 50.83 | 134.58 |
 
 The following figure shows the screenshot of the measures recorded for simulation with id 3:
 
