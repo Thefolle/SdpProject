@@ -39,6 +39,14 @@ The second phase of the development process pertained the intent to build and de
 
 ![](./Documentation/img/version2.JPG)
 
+#### Brief description of some systems exploiting the Physics package
+
+- VehicleMovementSystem: allows the vehicle to follow the assigned lane, by simulating a series of corrections to the "steering wheel", thus continuously correcting the direction of the vehicle in its lane. **How was this system exploiting Physics**? Two side raycasts are shot from the center of the vehicle, one towards the right of the vehicle, and the other towards the left. If one of those detects a distance from the assigned lane greater than a threshold value, the vehicle angular velocity is slightly modified so that it approach its lane.
+- AntiCollisionSystem: manages the speed of the vehicle, making it brake and accelerate according to the conditions of the road ahead (so if there is traffic or not, or there is a red or green traffic light). **How was this system exploiting Physics**? A spherecast is shot in front of each vehicle. The faster the vehicle is, the more this sphere stretches along the forward direction. This stretch can go from a minimum elongation when the vehicle is not moving (defining the minimum safety distance between vehicles) up to a maximum elongation. If the spherecast hits another vehicle or a red traffic light, it must slow down.
+- VehicleChangeLaneSystem: allows vehicles to perform overtakes by changing its assigned lane. **How was this system exploiting Physics**? A spherecast is shot on the back of each vehicle. The slower the vehicle is, the more the sphere stretches along the backward direction (slower vehicles have to pay attention to faster ones on the back, when changing lane). If the spherecast hits another vehicle in the lane it wants to occupy, the overtake is aborted.
+- WhereIsVehicleSystem: keeps trace of where the vehicle is lying on (i.e.: on street, on cross or on spawner). **How was this system exploiting Physics**? A spherecast is shot under the vehicle itself. This sphere has a very little radius, but it is stretched toward the forward covering the whole car length.
+
+
 ## Why switching to the version 3?
 
 The developers, once again, realized that realism was not a requirement of the project, especially if it thwarts scalability at a very limited threshold. Indeed, using Physics means loading Unity with a pletora of computations: collision surfaces and points, raycast and spherecast interpolation, gravity application, force computations and so on. Even if systems were partially but reasonably optimized, the resulting number of cars at steady state was unsatisfying. Systems were not able to run in parallel and some bugs were in place, but the developers traced back the poor performances to the usage of physics, which is therefore intended for few entities.
