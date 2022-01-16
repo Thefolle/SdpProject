@@ -157,6 +157,12 @@ The following figure shows the screenshot of the measures recorded for simulatio
 
 ![Simulation 3, machine 3](./Documentation/img/sim3machine3.png)
 
+## Brief discussion on the collected results
+
+The results between the three different machines are almost equivalent, if compared to the underlying hardware equipment.
+
+At the end of the five runs, among the different machines, the maximum number of cars achieved is 20140 out of 194906 entities, at the same time.
+
 ## Brief description of each system
 
 - DistrictPlacerSystem: instantiates and links the district specified in the input city.json. Then becomes inactive for the rest of the simulation;
@@ -166,7 +172,7 @@ The following figure shows the screenshot of the measures recorded for simulatio
 - SplineVehicleMovementSystem: creates the trajectory that each car follows, implemented as a linear interpolation of two successive nodes (Lerp);
 - SplineVehicleSpawnerSystem: spawns cars in each lane; in more detail, the car is spawned in a specific node of the lane, if the street has at least 10 nodes;
 - DespawningSystem: destroys all the entities that the simulator asked to;
-- Domain: a container for POCOs (Plain-Old C# Object); it currently holds the model of the city, as described by the pertinent json [schema](./citySchema.json);
+- Domain: a container for POCOs (Plain-Old C# Object); it currently holds the model of the city, as described by the pertinent json [schema](./Unity/Assets/Resources/citySchema.json);
 - TrafficLightSystem: given each cross, logically decides which semaphore has the turn;
 - TrafficLightChangeColorSystem: decides the color of a given traffic light based on the turn.
 
