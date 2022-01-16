@@ -132,7 +132,7 @@ Measures:
 
 The following figure shows the screenshot of the measures recorded for simulation with id 3:
 
-![](./Documentation/img/sim3machine2.png)
+![Simulation 3, machine 2](./Documentation/img/sim3machine2.png)
 
 #### Machine 3
 
@@ -143,7 +143,6 @@ Hardware characteristics of the machine used for the simulation:
 - GPU: Intel UHD Graphics 620.
 
 Measures:
-
 
 | Simulation id |  | Districts  |  | # cars | # entities | # FPS | Total Delay (ms) | SVMS delay (ms)| STAS delay (ms)|
 | - |-------------|--------|------------|------| - | - | - | - | - |
@@ -156,7 +155,7 @@ Measures:
 
 The following figure shows the screenshot of the measures recorded for simulation with id 3:
 
-![](./Documentation/img/sim3machine3.png)
+![Simulation 3, machine 3](./Documentation/img/sim3machine3.png)
 
 ## Brief description of each system
 
@@ -183,15 +182,24 @@ The remaining systems run without any specific order.
 
 ## Last considerations
 
+### What are the achievements?
+
+The current project shed light on some points:
+
+- Physics is heavy for the Unity engine to render, due to the great number of underlying computations; few entities should behave according to real-world physics, like the main player in a computer game. The version 2 is the example that demonstrates this aspect;
+- It is sometimes convenient to fill in data structures manually, i.e. from the editor, although this may be tedious and repetitive; other times, it is better to automate the same task though scripts, although general formulas are quite complex to grasp. The version 1 of the current project is an example, where the developers tried to instantiate streets and crosses (along with their direction, rotation and so on) from scripts; this task came up to be flexible but complex and unnecessary.
+
+There are also other observations but, since they are more close to implementation aspects, they are not mentioned here.
+
 ### How to enhance the project?
 
 The suggested path comprises the following improvements:
 
-- Wider streets, with more than two lanes per direction;
-- Curved streets;
-- Uphills and downhills;
-- Different types of cars;
-- A public transport circuit.
+- Wider streets, with more than two lanes per direction: this enhancement is expected to add some complexity to the simulator, which should make the results of the simulation get worse; some optimizations should however put the results back at the current values;
+- Curved streets: this is an aesthetical improvement, since it implies effort just to model the streets in Blender and a more general algorithm to place splines along them; the simulation results are not expected to change;
+- Uphills and downhills: the same considerations of curved streets subsist also here;
+- Different types of cars: this task surely would add complexity to the simulation, but it would add value to the project;
+- A public transport circuit: the same considerations of adding different types of car subsist also here.
 
 ### How to generate a new district?
 
