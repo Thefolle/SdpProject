@@ -53,7 +53,7 @@ The developers, once again, realized that realism was not a requirement of the p
 
 The developers have conceived a general city as a matrix made up of square districts. Each district has predefined characteristics in terms of density. The scene under simulation can be customized as described beneath.
 
-1. The user writes the city matrix as a json file called `city.json`. The user validates the json file against the [schema](./citySchema.json) in order to probe any syntax error;
+1. The user writes the city matrix as a json file called `city.json`. The user validates the json file against the [schema](./Unity/Assets/Resources/citySchema.json) in order to probe any syntax error;
 2. The user saves the file in `<UnityRootFolder>/Assets/Resources/city.json`, as it is automatically loaded by the simulator so as to build the intended city.
 
 ### How does the simulator work?
