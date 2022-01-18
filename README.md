@@ -11,6 +11,11 @@ The non-functional requirement is **high-scalability** in the number of vehicles
 
 The developers have chosen not to use any external dependency, besides the core Unity libraries.
 
+## How to run the benchmark
+
+In UnityHub, install the Unity version 2020.3.13;, then from the `Projects` menu, open the `Unity` folder.
+Once the project is fully loaded, change scene moving to the one called `Scene` and then just press play.
+
 ## The underlying technology: Unity DOTS
 
 Unity recently offers two paradigms to build an application:
@@ -27,6 +32,8 @@ The community also talks about hybrid solutions, where mixing a small number of 
 The very first phase of the development approached the problem in a very flexible way. Essentially, the whole scene was created through scripts only. On one hand, this solution donated great flexibility since the input could be customized at a fine-grained level; on the other hand, generating all the components of the city on the fly came up to be time-consuming if compared to the results. The task was cumbersome for the final user as well, due to the great number of properties to configure.
 Additionally, the developers at that time acknowledged their lack of experience on Unity and 3D frameworks overall.
 
+The codebase is located on branch `version1` of the current repository.
+
 ## Why switching to the version 2?
 
 After having explored the Unity ecosystem through the version 1 of this project, the developers switched to a new version. The reason of this was the need to increase the development process speed in exchange for a quite less customizability of the city, as discussed just above.
@@ -39,7 +46,7 @@ The second phase of the development process pertained the intent to build and de
 
 ![Version 2 city](./Documentation/img/version2.JPG)
 
-An in-depth analysis on how the Physics package is exploited in version 2 is given in this same section of the README in the version2 branch.
+An in-depth analysis on how the Physics package is exploited in version 2 is given in this same section of the README in the `version2` branch.
 
 ## Why switching to the version 3?
 
