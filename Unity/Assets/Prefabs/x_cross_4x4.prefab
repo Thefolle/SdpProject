@@ -116,6 +116,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 1
+  DestinationDirection: 2
 --- !u!1 &401333760982973356
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,6 +237,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 2
+  DestinationDirection: 0
 --- !u!1 &417227339877257702
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,6 +356,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 3
+  DestinationDirection: 2
 --- !u!1 &436332880557936125
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,6 +475,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 1
+  DestinationDirection: 0
 --- !u!1 &484396201208874451
 GameObject:
   m_ObjectHideFlags: 0
@@ -572,6 +596,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 3
+  DestinationDirection: 0
 --- !u!1 &764859397929805974
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,6 +717,8 @@ MonoBehaviour:
   isGreen: 0
   Spline1: {fileID: 0}
   Spline2: {fileID: 0}
+  Direction: 2
+  RelativeId: 0
 --- !u!1 &855755839632729688
 GameObject:
   m_ObjectHideFlags: 0
@@ -803,6 +835,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 3
+  DestinationDirection: 0
 --- !u!1 &1052163127804657458
 GameObject:
   m_ObjectHideFlags: 0
@@ -1012,6 +1050,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 1
+  DestinationDirection: 3
 --- !u!1 &1245561835661302396
 GameObject:
   m_ObjectHideFlags: 0
@@ -1126,6 +1170,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 2
+  DestinationDirection: 1
 --- !u!114 &6067686768092220356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1454,6 +1504,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 0
+  DestinationDirection: 1
 --- !u!114 &6735075803462644337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1581,6 +1637,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 3
+  DestinationDirection: 1
 --- !u!1 &2747503953080087273
 GameObject:
   m_ObjectHideFlags: 0
@@ -1697,6 +1759,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 2
+  DestinationDirection: 3
 --- !u!1 &2791221748587097620
 GameObject:
   m_ObjectHideFlags: 0
@@ -1812,6 +1880,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 2
+  DestinationDirection: 0
 --- !u!1 &3417512442933402070
 GameObject:
   m_ObjectHideFlags: 0
@@ -1925,6 +1999,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 0
+  DestinationDirection: 3
 --- !u!114 &1638394216660656749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2208,6 +2288,8 @@ MonoBehaviour:
   isGreen: 0
   Spline1: {fileID: 0}
   Spline2: {fileID: 0}
+  Direction: 3
+  RelativeId: 3
 --- !u!1 &4680993698363856586
 GameObject:
   m_ObjectHideFlags: 0
@@ -2323,6 +2405,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 0
+  DestinationDirection: 2
 --- !u!114 &2745803864359630574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2450,6 +2538,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 2
+  DestinationDirection: 3
 --- !u!1 &5450653981192089888
 GameObject:
   m_ObjectHideFlags: 0
@@ -2565,6 +2659,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 1
+  DestinationDirection: 2
 --- !u!1 &6258004710244621464
 GameObject:
   m_ObjectHideFlags: 0
@@ -2680,6 +2780,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 1
+  DestinationDirection: 3
 --- !u!1 &6414218928450239043
 GameObject:
   m_ObjectHideFlags: 0
@@ -2795,6 +2901,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 0
+  DestinationDirection: 2
 --- !u!1 &6561561696497574038
 GameObject:
   m_ObjectHideFlags: 0
@@ -2909,6 +3021,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 0
+  DestinationDirection: 3
 --- !u!1 &7101102514930993770
 GameObject:
   m_ObjectHideFlags: 0
@@ -3023,6 +3141,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 1
+  DestinationDirection: 0
 --- !u!1 &7139599299358718224
 GameObject:
   m_ObjectHideFlags: 0
@@ -3138,6 +3262,8 @@ MonoBehaviour:
   isGreen: 0
   Spline1: {fileID: 0}
   Spline2: {fileID: 0}
+  Direction: 0
+  RelativeId: 2
 --- !u!1 &7196712727892969832
 GameObject:
   m_ObjectHideFlags: 0
@@ -3345,6 +3471,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 2
+  DestinationDirection: 1
 --- !u!1 &7575077730789971781
 GameObject:
   m_ObjectHideFlags: 0
@@ -3459,6 +3591,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 3
+  DestinationDirection: 2
 --- !u!1 &7987573392768147730
 GameObject:
   m_ObjectHideFlags: 0
@@ -3574,6 +3712,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 0
+  DestinationDirection: 1
 --- !u!1 &8090994509640180555
 GameObject:
   m_ObjectHideFlags: 0
@@ -3783,6 +3927,8 @@ MonoBehaviour:
   isGreen: 0
   Spline1: {fileID: 0}
   Spline2: {fileID: 0}
+  Direction: 1
+  RelativeId: 1
 --- !u!1 &8512048965058110828
 GameObject:
   m_ObjectHideFlags: 0
@@ -3898,6 +4044,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 3
+  DestinationDirection: 1
 --- !u!1001 &28497915683683368
 PrefabInstance:
   m_ObjectHideFlags: 0

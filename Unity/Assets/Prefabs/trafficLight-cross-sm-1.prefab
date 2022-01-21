@@ -98,6 +98,8 @@ MonoBehaviour:
   isGreen: 0
   Spline1: {fileID: 0}
   Spline2: {fileID: 0}
+  Direction: 0
+  RelativeId: 3
 --- !u!114 &2163261444952000333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,6 +274,8 @@ MonoBehaviour:
   isGreen: 0
   Spline1: {fileID: 0}
   Spline2: {fileID: 0}
+  Direction: 1
+  RelativeId: 2
 --- !u!114 &2163261446494762400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,6 +387,8 @@ MonoBehaviour:
   isGreen: 0
   Spline1: {fileID: 0}
   Spline2: {fileID: 0}
+  Direction: 2
+  RelativeId: 1
 --- !u!114 &2163261444828751861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,6 +500,8 @@ MonoBehaviour:
   isGreen: 0
   Spline1: {fileID: 0}
   Spline2: {fileID: 0}
+  Direction: 4
+  RelativeId: 4
 --- !u!114 &2163261446277363725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -605,6 +613,8 @@ MonoBehaviour:
   isGreen: 0
   Spline1: {fileID: 0}
   Spline2: {fileID: 0}
+  Direction: 3
+  RelativeId: 0
 --- !u!114 &2163261445052760710
 MonoBehaviour:
   m_ObjectHideFlags: 0

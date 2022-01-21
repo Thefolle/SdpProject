@@ -116,6 +116,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 1
+  DestinationDirection: 2
 --- !u!1 &764859397929805974
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,6 +237,8 @@ MonoBehaviour:
   isGreen: 0
   Spline1: {fileID: 0}
   Spline2: {fileID: 0}
+  Direction: 2
+  RelativeId: 0
 --- !u!1 &868911690231259095
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,6 +541,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 2
+  DestinationDirection: 1
 --- !u!1 &1554498794497882139
 GameObject:
   m_ObjectHideFlags: 0
@@ -1100,6 +1114,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 1
+  DestinationDirection: 2
 --- !u!1 &7322014575448251094
 GameObject:
   m_ObjectHideFlags: 0
@@ -1213,6 +1233,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 2
+  DestinationDirection: 1
 --- !u!1 &8509206114803773801
 GameObject:
   m_ObjectHideFlags: 0
@@ -1328,6 +1354,8 @@ MonoBehaviour:
   isGreen: 0
   Spline1: {fileID: 0}
   Spline2: {fileID: 0}
+  Direction: 1
+  RelativeId: 1
 --- !u!1001 &15335937749429154
 PrefabInstance:
   m_ObjectHideFlags: 0

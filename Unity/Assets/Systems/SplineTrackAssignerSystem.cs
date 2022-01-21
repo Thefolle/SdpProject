@@ -29,12 +29,12 @@ public class SplineTrackAssignerSystem : SystemBase
 
                 /* Request a random path */
                 var trackedLane = getParentComponentData[carComponentData.Track].Value;
-                var trackedLaneName = entityManager.GetName(trackedLane);
+                var trackComponentData = getTrackComponentData[carComponentData.Track];
                 var street = getParentComponentData[trackedLane].Value;
                 var streetComponentData = getStreetComponentData[street];
                 if (streetComponentData.IsBorder)
                 {
-                    LogFormat("Car spawned at the border street. Despawning...");
+                    //LogFormat("Car spawned at the border street. Despawning...");
                     askToDespawnComponentData.Asked = true;
                     return;
                 }
@@ -43,22 +43,15 @@ public class SplineTrackAssignerSystem : SystemBase
                 /* Exploit the track name to infer which are the starting and the ending crosses. That's why 
                     * the algorithm must work with tracks rather than streets
                     */
-                if (trackedLaneName.Contains("Forward"))
+                if (trackComponentData.IsForward)
                 {
                     edgeInitialNode = streetComponentData.startingCross.Index;
                     edgeEndingNode = streetComponentData.endingCross.Index;
                 }
-                else if (trackedLaneName.Contains("Backward"))
+                else
                 {
                     edgeInitialNode = streetComponentData.endingCross.Index;
                     edgeEndingNode = streetComponentData.startingCross.Index;
-                }
-                else
-                {
-                    LogErrorFormat("%s", "The trackedLane name is malformed: it doesn't contain neither \"Forward\" nor \"Backward\"");
-                    /* Cannot recover from this error */
-                    edgeInitialNode = 0;
-                    edgeEndingNode = 0;
                 }
 
                 var carPath = GetBufferFromEntity<PathComponentData>()[carEntity];
@@ -110,72 +103,72 @@ public class SplineTrackAssignerSystem : SystemBase
                     * Second, infer which is the outgoing street;
                     */
                 var crossComponentData = getCrossComponentData[currentCross];
-                string trackToAssignName = "";
+                //string trackToAssignName = "";
+                Direction sourceDirection = Direction.Top;
+                Direction destinationDirection = Direction.Top;
                 if (crossComponentData.TopStreet != Entity.Null && crossComponentData.TopStreet == previousStreet)
                 {
-                    trackToAssignName += "Top";
+                    sourceDirection = Direction.Top;
                 }
                 else if (crossComponentData.RightStreet != Entity.Null && crossComponentData.RightStreet == previousStreet)
                 {
-                    trackToAssignName += "Right";
+                    sourceDirection = Direction.Right;
                 }
                 else if (crossComponentData.BottomStreet != Entity.Null && crossComponentData.BottomStreet == previousStreet)
                 {
-                    trackToAssignName += "Bottom";
+                    sourceDirection = Direction.Bottom;
                 }
                 else if (crossComponentData.LeftStreet != Entity.Null && crossComponentData.LeftStreet == previousStreet)
                 {
-                    trackToAssignName += "Left";
+                    sourceDirection = Direction.Left;
                 }
                 else if (crossComponentData.CornerStreet != Entity.Null && crossComponentData.CornerStreet == previousStreet)
                 {
-                    trackToAssignName += "Corner";
+                    sourceDirection = Direction.Corner;
                 }
                 else
                 {
                     LogErrorFormat("The cross with id {0} is not linked to the incoming street of a car. Check that its CrossComponentData is consistent.", currentCross.Index);
                 }
 
-                trackToAssignName += "-";
 
                 if (crossComponentData.TopStreet != Entity.Null && crossComponentData.TopStreet == nextStreet)
                 {
-                    trackToAssignName += "Top";
+                    destinationDirection = Direction.Top;
                 }
                 else if (crossComponentData.RightStreet != Entity.Null && crossComponentData.RightStreet == nextStreet)
                 {
-                    trackToAssignName += "Right";
+                    destinationDirection = Direction.Right;
                 }
                 else if (crossComponentData.BottomStreet != Entity.Null && crossComponentData.BottomStreet == nextStreet)
                 {
-                    trackToAssignName += "Bottom";
+                    destinationDirection = Direction.Bottom;
                 }
                 else if (crossComponentData.LeftStreet != Entity.Null && crossComponentData.LeftStreet == nextStreet)
                 {
-                    trackToAssignName += "Left";
+                    destinationDirection = Direction.Left;
                 }
                 else if (crossComponentData.CornerStreet != Entity.Null && crossComponentData.CornerStreet == nextStreet)
                 {
-                    trackToAssignName += "Corner";
+                    destinationDirection = Direction.Corner;
                 }
                 else
                 {
                     LogErrorFormat("Cannot find the outgoing street of a track to assign to a car.");
                 }
 
+                var streetTrackComponentData = getTrackComponentData[carComponentData.Track];
                 var buffer = getChildComponentData[currentCross];
                 var trackToAssign = Entity.Null;
                 var minimumRelativeTrackDistance = int.MaxValue;
-                var currentLane = getParentComponentData[carComponentData.Track].Value;
-                string currentTrackName;
                 int currentRelativeTrackDistance;
                 foreach (var trackChild in buffer)
                 {
                     if (getTrackComponentData.HasComponent(trackChild.Value))
                     {
-                        currentTrackName = entityManager.GetName(trackChild.Value);
-                        currentRelativeTrackDistance = math.abs(int.Parse(currentTrackName.Split('-')[2]) - int.Parse(entityManager.GetName(currentLane).Split('-')[1]));
-                        if (currentTrackName.Contains(trackToAssignName) && currentRelativeTrackDistance < minimumRelativeTrackDistance)
+                        var crossTrackComponentData = getTrackComponentData[trackChild.Value];
+                        currentRelativeTrackDistance = math.abs(streetTrackComponentData.relativeId - crossTrackComponentData.relativeId);
+                        if (crossTrackComponentData.SourceDirection == sourceDirection && crossTrackComponentData.DestinationDirection == destinationDirection && currentRelativeTrackDistance < minimumRelativeTrackDistance)
                         {
                             trackToAssign = trackChild.Value;
                             minimumRelativeTrackDistance = currentRelativeTrackDistance;
@@ -187,7 +180,8 @@ public class SplineTrackAssignerSystem : SystemBase
                 }
                 if (trackToAssign == Entity.Null)
                 {
-                    LogErrorFormat("The cross with id {0} doesn't contain a track with name {1}", currentCross.Index, trackToAssignName);
+                    //LogErrorFormat("The cross with id {0} doesn't contain a track with source direction {1} and destination direction {2}.", currentCross.Index, sourceDirection, destinationDirection);
+                    entityManager.Debug.LogEntityInfo(currentCross);
                 }
 
                 carComponentData.isPathUpdated = true;
@@ -218,14 +212,15 @@ public class SplineTrackAssignerSystem : SystemBase
 
                 var street = nextStreet;
                 var streetComponentData = getStreetComponentData[street];
-                var trackCandidatesName = "";
+                //var trackCandidatesName = "";
+                bool isForward = false;
                 if (streetComponentData.startingCross == currentCross)
                 {
-                    trackCandidatesName += "ForwardLane";
+                    isForward = true;
                 }
                 else if (streetComponentData.endingCross == currentCross)
                 {
-                    trackCandidatesName += "BackwardLane";
+                    isForward = false;
                 }
                 else
                 {
@@ -235,16 +230,17 @@ public class SplineTrackAssignerSystem : SystemBase
                 var lanes = getChildComponentData[street];
                 var trackToAssign = Entity.Null;
                 var minimumRelativeTrackDistance = int.MaxValue;
-                var currentTrack = carComponentData.Track;
-                string currentLaneName;
+                var crossTrack = carComponentData.Track;
+                var crossTrackComponentData = getTrackComponentData[crossTrack];
                 int currentRelativeTrackDistance;
                 foreach (var lane in lanes)
                 {
                     if (getLaneComponentData.HasComponent(lane.Value))
                     {
-                        currentLaneName = entityManager.GetName(lane.Value);
-                        currentRelativeTrackDistance = math.abs(int.Parse(currentLaneName.Split('-')[1]) - int.Parse(entityManager.GetName(currentTrack).Split('-')[2]));
-                        if (entityManager.GetName(lane.Value).Contains(trackCandidatesName) && currentRelativeTrackDistance < minimumRelativeTrackDistance)
+                        var streetTrack = getChildComponentData[lane.Value][0].Value;
+                        var streetTrackComponentData = getTrackComponentData[streetTrack];
+                        currentRelativeTrackDistance = math.abs(crossTrackComponentData.relativeId - streetTrackComponentData.relativeId);
+                        if (streetTrackComponentData.IsForward == isForward && currentRelativeTrackDistance < minimumRelativeTrackDistance)
                         {
                             trackToAssign = getChildComponentData[lane.Value][0].Value;
                             minimumRelativeTrackDistance = currentRelativeTrackDistance;

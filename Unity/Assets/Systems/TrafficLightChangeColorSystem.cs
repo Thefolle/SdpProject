@@ -25,12 +25,14 @@ public class TrafficLightChangeColorSystem : SystemBase
         var getChildComponentDataFromEntity = GetBufferFromEntity<Child>();
         var getTrafficLightCrossComponentDataFromEntity = GetComponentDataFromEntity<TrafficLightCrossComponentData>();
         var getSplineComponentDataFromEntity = GetComponentDataFromEntity<SplineComponentData>();
+        var getTrafficLightPanelComponentData = GetComponentDataFromEntity<TrafficLightPanelComponentData>();
+
         var PostUpdateCommands = new EntityCommandBuffer(Allocator.Temp);
         elapsedTime -= simStart;
         if (((elapsedTime / trafficLightTimeSwitch) % 1) < 0.1 || ((elapsedTime / trafficLightTimeSwitch) % 1) > 0.9)
             Entities.ForEach((ref TrafficLightComponentData trafficLightComponentData, in Entity trafficLight) =>
             {
-                var trafficLightNumber = entityManager.GetName(trafficLight).Substring(entityManager.GetName(trafficLight).LastIndexOf('-') + 1);
+                var trafficLightNumber = trafficLightComponentData.RelativeId;
                 var trafficLightCross = getParentComponentDataFromEntity[trafficLight];
                 if (getTrafficLightCrossComponentDataFromEntity.HasComponent(trafficLightCross.Value))
                 {
@@ -39,40 +41,43 @@ public class TrafficLightChangeColorSystem : SystemBase
                     {
                         foreach (var trafficLightPanel in getChildComponentDataFromEntity[trafficLight])
                         {
-                            var thisTrafficLightPanelName = entityManager.GetName(trafficLightPanel.Value);
-                            if (trafficLightNumber == trafficLightCrossComponentData.greenTurn.ToString())
+                            if (getTrafficLightPanelComponentData.HasComponent(trafficLightPanel.Value)) // exclude the support
                             {
-                                // GREEN color
-                                trafficLightComponentData.isGreen = true;
-                                if (thisTrafficLightPanelName.Contains("Green"))
+                                var trafficLightPanelComponentData = getTrafficLightPanelComponentData[trafficLightPanel.Value];
+                                if (trafficLightNumber == trafficLightCrossComponentData.greenTurn)
                                 {
-                                    PostUpdateCommands.RemoveComponent<Disabled>(trafficLightPanel.Value);
-                                }
-                                else if (thisTrafficLightPanelName.Contains("Red"))
-                                {
-                                    PostUpdateCommands.AddComponent<Disabled>(trafficLightPanel.Value);
-                                }
+                                    // GREEN color
+                                    trafficLightComponentData.isGreen = true;
+                                    if (trafficLightPanelComponentData.Color == TrafficLightColor.Green)
+                                    {
+                                        PostUpdateCommands.RemoveComponent<Disabled>(trafficLightPanel.Value);
+                                    }
+                                    else if (trafficLightPanelComponentData.Color == TrafficLightColor.Red)
+                                    {
+                                        PostUpdateCommands.AddComponent<Disabled>(trafficLightPanel.Value);
+                                    }
 
-                            }
-                            else
-                            {
-                                // RED color
-                                trafficLightComponentData.isGreen = false;
-
-                                if (thisTrafficLightPanelName.Contains("Green"))
-                                {
-                                    PostUpdateCommands.AddComponent<Disabled>(trafficLightPanel.Value);
                                 }
-                                else if (thisTrafficLightPanelName.Contains("Red"))
+                                else
                                 {
-                                    PostUpdateCommands.RemoveComponent<Disabled>(trafficLightPanel.Value);
+                                    // RED color
+                                    trafficLightComponentData.isGreen = false;
+
+                                    if (trafficLightPanelComponentData.Color == TrafficLightColor.Green)
+                                    {
+                                        PostUpdateCommands.AddComponent<Disabled>(trafficLightPanel.Value);
+                                    }
+                                    else if (trafficLightPanelComponentData.Color == TrafficLightColor.Red)
+                                    {
+                                        PostUpdateCommands.RemoveComponent<Disabled>(trafficLightPanel.Value);
+                                    }
                                 }
                             }
                         }
                     }
                     else
                     {
-                        LogErrorFormat("{0} has no child component", trafficLight.Index);
+                        //LogErrorFormat("{0} has no child component", trafficLight.Index);
                     }
 
                     // SPLINE

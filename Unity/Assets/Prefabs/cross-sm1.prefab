@@ -226,6 +226,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 1
+  DestinationDirection: 2
 --- !u!1 &948963398938597032
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,6 +348,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 0
+  DestinationDirection: 2
 --- !u!1 &959186375702793663
 GameObject:
   m_ObjectHideFlags: 0
@@ -566,6 +578,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 2
+  DestinationDirection: 4
 --- !u!1 &1088414244731501217
 GameObject:
   m_ObjectHideFlags: 0
@@ -681,6 +699,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 0
+  DestinationDirection: 1
 --- !u!114 &757419262805269580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -808,6 +832,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 1
+  DestinationDirection: 4
 --- !u!1 &1857098665130775592
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,6 +954,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 4
+  DestinationDirection: 0
 --- !u!114 &9086037446137907331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1053,6 +1089,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 3
+  DestinationDirection: 0
 --- !u!1 &2025349126187653256
 GameObject:
   m_ObjectHideFlags: 0
@@ -1167,6 +1209,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 0
+  DestinationDirection: 4
 --- !u!1 &2110026400183045451
 GameObject:
   m_ObjectHideFlags: 0
@@ -1282,6 +1330,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 3
+  DestinationDirection: 2
 --- !u!1 &2216760330326031384
 GameObject:
   m_ObjectHideFlags: 0
@@ -1398,6 +1452,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 3
+  DestinationDirection: 4
 --- !u!1 &2281134399821843339
 GameObject:
   m_ObjectHideFlags: 0
@@ -1514,6 +1574,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 3
+  DestinationDirection: 1
 --- !u!114 &5296213901443134481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1641,6 +1707,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 3
+  DestinationDirection: 4
 --- !u!1 &2696829534269709005
 GameObject:
   m_ObjectHideFlags: 0
@@ -1756,6 +1828,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 1
+  DestinationDirection: 0
 --- !u!1 &2920352210996396008
 GameObject:
   m_ObjectHideFlags: 0
@@ -1965,6 +2043,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 2
+  DestinationDirection: 3
 --- !u!1 &3161174790761923227
 GameObject:
   m_ObjectHideFlags: 0
@@ -2079,6 +2163,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 2
+  DestinationDirection: 1
 --- !u!1 &3374405502008783800
 GameObject:
   m_ObjectHideFlags: 0
@@ -2195,6 +2285,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 3
+  DestinationDirection: 0
 --- !u!1 &3525606969458657963
 GameObject:
   m_ObjectHideFlags: 0
@@ -2311,6 +2407,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 3
+  DestinationDirection: 1
 --- !u!1 &3545805575937898352
 GameObject:
   m_ObjectHideFlags: 0
@@ -2427,6 +2529,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 4
+  DestinationDirection: 1
 --- !u!1 &3652371103608294799
 GameObject:
   m_ObjectHideFlags: 0
@@ -2543,6 +2651,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 2
+  DestinationDirection: 0
 --- !u!1 &3738389731527190880
 GameObject:
   m_ObjectHideFlags: 0
@@ -2659,6 +2773,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 1
+  DestinationDirection: 3
 --- !u!1 &3848039814233072818
 GameObject:
   m_ObjectHideFlags: 0
@@ -2774,6 +2894,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 2
+  DestinationDirection: 3
 --- !u!1 &4228414097833161245
 GameObject:
   m_ObjectHideFlags: 0
@@ -2888,6 +3014,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 1
+  DestinationDirection: 2
 --- !u!1 &4574692203784217404
 GameObject:
   m_ObjectHideFlags: 0
@@ -3003,6 +3135,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 4
+  DestinationDirection: 2
 --- !u!1 &4752048850720772225
 GameObject:
   m_ObjectHideFlags: 0
@@ -3224,6 +3362,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 4
+  DestinationDirection: 3
 --- !u!1 &5000326446456490996
 GameObject:
   m_ObjectHideFlags: 0
@@ -3338,6 +3482,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 4
+  DestinationDirection: 3
 --- !u!1 &5223688525214142465
 GameObject:
   m_ObjectHideFlags: 0
@@ -3454,6 +3604,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 1
+  DestinationDirection: 3
 --- !u!1 &5724968291724659912
 GameObject:
   m_ObjectHideFlags: 0
@@ -3663,6 +3819,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 4
+  DestinationDirection: 0
 --- !u!1 &6071272256835054061
 GameObject:
   m_ObjectHideFlags: 0
@@ -3778,6 +3940,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 0
+  DestinationDirection: 4
 --- !u!1 &6444375618163670963
 GameObject:
   m_ObjectHideFlags: 0
@@ -4081,6 +4249,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 0
+  DestinationDirection: 3
 --- !u!1 &7081477880586821503
 GameObject:
   m_ObjectHideFlags: 0
@@ -4197,6 +4371,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 0
+  DestinationDirection: 2
 --- !u!1 &7455178813172781878
 GameObject:
   m_ObjectHideFlags: 0
@@ -4312,6 +4492,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 2
+  DestinationDirection: 4
 --- !u!1 &7584717167739667182
 GameObject:
   m_ObjectHideFlags: 0
@@ -4427,6 +4613,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 1
+  DestinationDirection: 4
 --- !u!1 &7641077640058868625
 GameObject:
   m_ObjectHideFlags: 0
@@ -4543,6 +4735,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 2
+  DestinationDirection: 0
 --- !u!1 &7805118009631509964
 GameObject:
   m_ObjectHideFlags: 0
@@ -4656,6 +4854,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 2
+  DestinationDirection: 1
 --- !u!114 &8211242239384352262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4783,6 +4987,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 1
+  DestinationDirection: 0
 --- !u!1 &7929012275937413296
 GameObject:
   m_ObjectHideFlags: 0
@@ -4899,6 +5109,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 4
+  DestinationDirection: 1
 --- !u!1 &7972210425550522873
 GameObject:
   m_ObjectHideFlags: 0
@@ -5109,6 +5325,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 4
+  DestinationDirection: 2
 --- !u!1 &8227124330272368868
 GameObject:
   m_ObjectHideFlags: 0
@@ -5224,6 +5446,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 3
+  DestinationDirection: 2
 --- !u!1 &8341934050038419679
 GameObject:
   m_ObjectHideFlags: 0
@@ -5340,6 +5568,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 0
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 0
+  DestinationDirection: 3
 --- !u!1 &8506018529603371079
 GameObject:
   m_ObjectHideFlags: 0
@@ -5551,6 +5785,12 @@ MonoBehaviour:
   allSplinesPlaced: 1
   splineEntity: {fileID: 7893671485395592138, guid: 05eba2fe52bd7984dbdf58b21c0b61fd, type: 3}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  leftTrack: {fileID: 0}
+  relativeId: 1
+  IsOnStreet: 0
+  IsForward: 0
+  SourceDirection: 0
+  DestinationDirection: 1
 --- !u!1001 &19192239357566220
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12101,14 +12341,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2163261444828751860, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
-      propertyPath: Spline1
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2163261444828751860, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
-      propertyPath: Spline2
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2163261444828751860, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
       propertyPath: Spline3
       value: 
       objectReference: {fileID: 6874574195092369635}
@@ -12132,14 +12364,6 @@ PrefabInstance:
       propertyPath: Spline8
       value: 
       objectReference: {fileID: 8107506356517444709}
-    - target: {fileID: 2163261444952000332, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
-      propertyPath: Spline1
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2163261444952000332, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
-      propertyPath: Spline2
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 2163261444952000332, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
       propertyPath: Spline3
       value: 
@@ -12165,14 +12389,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 989276132460034395}
     - target: {fileID: 2163261445052760709, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
-      propertyPath: Spline1
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2163261445052760709, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
-      propertyPath: Spline2
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2163261445052760709, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
       propertyPath: Spline3
       value: 
       objectReference: {fileID: 6220270062266538134}
@@ -12196,18 +12412,6 @@ PrefabInstance:
       propertyPath: Spline8
       value: 
       objectReference: {fileID: 4822254607879715989}
-    - target: {fileID: 2163261445052760709, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
-      propertyPath: isGreen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2163261446277363724, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
-      propertyPath: Spline1
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2163261446277363724, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
-      propertyPath: Spline2
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 2163261446277363724, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
       propertyPath: Spline3
       value: 
@@ -12235,14 +12439,6 @@ PrefabInstance:
     - target: {fileID: 2163261446277363731, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
       propertyPath: m_Material.m_CollisionResponse.m_Value
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2163261446494762407, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
-      propertyPath: Spline1
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2163261446494762407, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
-      propertyPath: Spline2
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2163261446494762407, guid: fd5f73c7f2e19e84fb903e99f73c299e, type: 3}
       propertyPath: Spline3

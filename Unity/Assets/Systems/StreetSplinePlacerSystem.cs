@@ -246,6 +246,8 @@ public class StreetSplinePlacerSystem : SystemBase
                                                                 isGreen = trafficLightComponentData.isGreen,
                                                                 Spline1 = entityManager.GetName(lane.Value).Contains("0") ? spline : trafficLightComponentData.Spline1,
                                                                 Spline2 = entityManager.GetName(lane.Value).Contains("1") ? spline : trafficLightComponentData.Spline2,
+                                                                Direction = trafficLightComponentData.Direction,
+                                                                RelativeId = trafficLightComponentData.RelativeId
                                                             });
                                                         }
                                                     }
@@ -259,6 +261,8 @@ public class StreetSplinePlacerSystem : SystemBase
                                                                 isGreen = trafficLightComponentData.isGreen,
                                                                 Spline1 = entityManager.GetName(lane.Value).Contains("0") ? spline : trafficLightComponentData.Spline1,
                                                                 Spline2 = entityManager.GetName(lane.Value).Contains("1") ? spline : trafficLightComponentData.Spline2,
+                                                                Direction = trafficLightComponentData.Direction,
+                                                                RelativeId = trafficLightComponentData.RelativeId
                                                             });
                                                         }
                                                     }
@@ -272,6 +276,8 @@ public class StreetSplinePlacerSystem : SystemBase
                                                                 isGreen = trafficLightComponentData.isGreen,
                                                                 Spline1 = entityManager.GetName(lane.Value).Contains("0") ? spline : trafficLightComponentData.Spline1,
                                                                 Spline2 = entityManager.GetName(lane.Value).Contains("1") ? spline : trafficLightComponentData.Spline2,
+                                                                Direction = trafficLightComponentData.Direction,
+                                                                RelativeId = trafficLightComponentData.RelativeId
                                                             });
                                                         }
                                                     }
@@ -285,6 +291,8 @@ public class StreetSplinePlacerSystem : SystemBase
                                                                 isGreen = trafficLightComponentData.isGreen,
                                                                 Spline1 = entityManager.GetName(lane.Value).Contains("0") ? spline : trafficLightComponentData.Spline1,
                                                                 Spline2 = entityManager.GetName(lane.Value).Contains("1") ? spline : trafficLightComponentData.Spline2,
+                                                                Direction = trafficLightComponentData.Direction,
+                                                                RelativeId = trafficLightComponentData.RelativeId
                                                             });
                                                         }
                                                     }
@@ -298,6 +306,8 @@ public class StreetSplinePlacerSystem : SystemBase
                                                                 isGreen = trafficLightComponentData.isGreen,
                                                                 Spline1 = entityManager.GetName(lane.Value).Contains("0") ? spline : trafficLightComponentData.Spline1,
                                                                 Spline2 = entityManager.GetName(lane.Value).Contains("1") ? spline : trafficLightComponentData.Spline2,
+                                                                Direction = trafficLightComponentData.Direction,
+                                                                RelativeId = trafficLightComponentData.RelativeId
                                                             });
                                                         }
                                                     }
