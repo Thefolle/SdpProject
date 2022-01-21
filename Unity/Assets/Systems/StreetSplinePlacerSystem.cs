@@ -24,7 +24,6 @@ public class StreetSplinePlacerSystem : SystemBase
             {
                 // Calculating the number of splines to be placed, one each 10f, (example if lenght = 60, 2*60/10 + 1 = 13 is the number of splines)
                 var lane = entityManager.GetComponentData<Parent>(trackEntity);
-                var laneName = entityManager.GetName(lane.Value).ToString();
 
                 if (entityManager.HasComponent<Parent>(lane.Value))
                 {
@@ -123,14 +122,10 @@ public class StreetSplinePlacerSystem : SystemBase
                             degree = -45;
                     }
 
-                    var laneDirection = laneName.Substring(0, laneName.IndexOf('-'));
-                    var laneNumber= laneName.Substring(laneName.LastIndexOf('-') + 1);
-                    bool isForward = false;
-                    //bool canContainSpawner = laneNumber.Equals("1");
+                    var isForward = trackComponentData.IsForward;
+                    var relativeId = trackComponentData.relativeId;
+                    //bool canContainSpawner = relativeId == 1;
                     bool canContainSpawner = true;
-                    if (laneName.Contains("Forward")) isForward = true;
-
-                    //canContainSpawner = true;
 
                     var streetNonUniformScale = entityManager.GetComponentData<NonUniformScale>(street.Value);
 
@@ -236,16 +231,16 @@ public class StreetSplinePlacerSystem : SystemBase
                                             {
                                                 foreach (var trafficLigthBorder in entityManager.GetBuffer<Child>(child.Value))
                                                 {
+                                                    var trafficLightComponentData = entityManager.GetComponentData<TrafficLightComponentData>(trafficLigthBorder.Value);
                                                     if (bottom)
                                                     {
-                                                        if (entityManager.GetName(trafficLigthBorder.Value).Contains("Bottom"))
+                                                        if (trafficLightComponentData.Direction == Direction.Bottom)
                                                         {
-                                                            var trafficLightComponentData = entityManager.GetComponentData<TrafficLightComponentData>(trafficLigthBorder.Value);
                                                             entityManager.SetComponentData(trafficLigthBorder.Value, new TrafficLightComponentData
                                                             {
                                                                 isGreen = trafficLightComponentData.isGreen,
-                                                                Spline1 = entityManager.GetName(lane.Value).Contains("0") ? spline : trafficLightComponentData.Spline1,
-                                                                Spline2 = entityManager.GetName(lane.Value).Contains("1") ? spline : trafficLightComponentData.Spline2,
+                                                                Spline1 = trackComponentData.relativeId == 0 ? spline : trafficLightComponentData.Spline1,
+                                                                Spline2 = trackComponentData.relativeId == 1 ? spline : trafficLightComponentData.Spline2,
                                                                 Direction = trafficLightComponentData.Direction,
                                                                 RelativeId = trafficLightComponentData.RelativeId
                                                             });
@@ -253,14 +248,13 @@ public class StreetSplinePlacerSystem : SystemBase
                                                     }
                                                     else if (right)
                                                     {
-                                                        if (entityManager.GetName(trafficLigthBorder.Value).Contains("Right"))
+                                                        if (trafficLightComponentData.Direction == Direction.Right)
                                                         {
-                                                            var trafficLightComponentData = entityManager.GetComponentData<TrafficLightComponentData>(trafficLigthBorder.Value);
                                                             entityManager.SetComponentData(trafficLigthBorder.Value, new TrafficLightComponentData
                                                             {
                                                                 isGreen = trafficLightComponentData.isGreen,
-                                                                Spline1 = entityManager.GetName(lane.Value).Contains("0") ? spline : trafficLightComponentData.Spline1,
-                                                                Spline2 = entityManager.GetName(lane.Value).Contains("1") ? spline : trafficLightComponentData.Spline2,
+                                                                Spline1 = trackComponentData.relativeId == 0 ? spline : trafficLightComponentData.Spline1,
+                                                                Spline2 = trackComponentData.relativeId == 1 ? spline : trafficLightComponentData.Spline2,
                                                                 Direction = trafficLightComponentData.Direction,
                                                                 RelativeId = trafficLightComponentData.RelativeId
                                                             });
@@ -268,14 +262,13 @@ public class StreetSplinePlacerSystem : SystemBase
                                                     }
                                                     else if (top)
                                                     {
-                                                        if (entityManager.GetName(trafficLigthBorder.Value).Contains("Top"))
+                                                        if (trafficLightComponentData.Direction == Direction.Top)
                                                         {
-                                                            var trafficLightComponentData = entityManager.GetComponentData<TrafficLightComponentData>(trafficLigthBorder.Value);
                                                             entityManager.SetComponentData(trafficLigthBorder.Value, new TrafficLightComponentData
                                                             {
                                                                 isGreen = trafficLightComponentData.isGreen,
-                                                                Spline1 = entityManager.GetName(lane.Value).Contains("0") ? spline : trafficLightComponentData.Spline1,
-                                                                Spline2 = entityManager.GetName(lane.Value).Contains("1") ? spline : trafficLightComponentData.Spline2,
+                                                                Spline1 = trackComponentData.relativeId == 0 ? spline : trafficLightComponentData.Spline1,
+                                                                Spline2 = trackComponentData.relativeId == 1 ? spline : trafficLightComponentData.Spline2,
                                                                 Direction = trafficLightComponentData.Direction,
                                                                 RelativeId = trafficLightComponentData.RelativeId
                                                             });
@@ -283,14 +276,13 @@ public class StreetSplinePlacerSystem : SystemBase
                                                     }
                                                     else if (left)
                                                     {
-                                                        if (entityManager.GetName(trafficLigthBorder.Value).Contains("Left"))
+                                                        if (trafficLightComponentData.Direction == Direction.Left)
                                                         {
-                                                            var trafficLightComponentData = entityManager.GetComponentData<TrafficLightComponentData>(trafficLigthBorder.Value);
                                                             entityManager.SetComponentData(trafficLigthBorder.Value, new TrafficLightComponentData
                                                             {
                                                                 isGreen = trafficLightComponentData.isGreen,
-                                                                Spline1 = entityManager.GetName(lane.Value).Contains("0") ? spline : trafficLightComponentData.Spline1,
-                                                                Spline2 = entityManager.GetName(lane.Value).Contains("1") ? spline : trafficLightComponentData.Spline2,
+                                                                Spline1 = trackComponentData.relativeId == 0 ? spline : trafficLightComponentData.Spline1,
+                                                                Spline2 = trackComponentData.relativeId == 1 ? spline : trafficLightComponentData.Spline2,
                                                                 Direction = trafficLightComponentData.Direction,
                                                                 RelativeId = trafficLightComponentData.RelativeId
                                                             });
@@ -298,14 +290,13 @@ public class StreetSplinePlacerSystem : SystemBase
                                                     }
                                                     else if (corner)
                                                     {
-                                                        if (entityManager.GetName(trafficLigthBorder.Value).Contains("Corner"))
+                                                        if (trafficLightComponentData.Direction == Direction.Corner)
                                                         {
-                                                            var trafficLightComponentData = entityManager.GetComponentData<TrafficLightComponentData>(trafficLigthBorder.Value);
                                                             entityManager.SetComponentData(trafficLigthBorder.Value, new TrafficLightComponentData
                                                             {
                                                                 isGreen = trafficLightComponentData.isGreen,
-                                                                Spline1 = entityManager.GetName(lane.Value).Contains("0") ? spline : trafficLightComponentData.Spline1,
-                                                                Spline2 = entityManager.GetName(lane.Value).Contains("1") ? spline : trafficLightComponentData.Spline2,
+                                                                Spline1 = trackComponentData.relativeId == 0 ? spline : trafficLightComponentData.Spline1,
+                                                                Spline2 = trackComponentData.relativeId == 1 ? spline : trafficLightComponentData.Spline2,
                                                                 Direction = trafficLightComponentData.Direction,
                                                                 RelativeId = trafficLightComponentData.RelativeId
                                                             });
@@ -342,25 +333,23 @@ public class StreetSplinePlacerSystem : SystemBase
 
                 // If track has got another track on the left with the same direction, link it
 
-                if (laneName.Contains("Lane"))
+                if (entityManager.HasComponent<LaneComponentData>(lane.Value))
                 {
-                    var laneDirection = laneName.Substring(0, laneName.IndexOf('-'));
-                    var laneNumberInDirection = System.Int32.Parse(laneName.Substring(laneName.LastIndexOf('-') + 1));
-                    if (laneNumberInDirection != 0) // Avoid to look at your left, you're at the left most lane
+                    var isForward = trackComponentData.IsForward;
+                    var relativeId = trackComponentData.relativeId;
+                    if (relativeId != 0) // Avoid to look at your left, you're at the left most lane
                     {
                         if (entityManager.HasComponent<Parent>(lane.Value))
                         {
                             var currentStreet = entityManager.GetComponentData<Parent>(lane.Value).Value;
                             foreach (var laneBrother in entityManager.GetBuffer<Child>(currentStreet))
                             {
-                                var thisLaneName = entityManager.GetName(laneBrother.Value);
-                                if (thisLaneName.Contains("Lane"))
+                                if (entityManager.HasComponent<LaneComponentData>(laneBrother.Value))
                                 {
-                                    var thisLaneDirection = thisLaneName.Substring(0, thisLaneName.IndexOf('-'));
-                                    var thisLaneNumberInDirection = System.Int32.Parse(thisLaneName.Substring(thisLaneName.LastIndexOf('-') + 1));
-                                    if (laneDirection.Equals(thisLaneDirection) && laneNumberInDirection - 1 == thisLaneNumberInDirection)
+                                    var leftTrack = entityManager.GetBuffer<Child>(laneBrother.Value)[0].Value;
+                                    var leftTrackComponentData = entityManager.GetComponentData<TrackComponentData>(leftTrack);
+                                    if (isForward == leftTrackComponentData.IsForward && relativeId - 1 == leftTrackComponentData.relativeId)
                                     {
-                                        var leftTrack = entityManager.GetBuffer<Child>(laneBrother.Value)[0].Value;
                                         trackComponentData.leftTrack = leftTrack;
                                     }
                                 }
