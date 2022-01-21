@@ -5,6 +5,10 @@ using Unity.Collections;
 
 public class SplineVehicleSpawnerSystem : SystemBase
 {
+
+    public int maxVehicleNumber = 0;
+    public int currentVehicleNumber = 0;
+
     protected override void OnUpdate()
     {
         double elapsedTime = Time.ElapsedTime;
@@ -19,9 +23,11 @@ public class SplineVehicleSpawnerSystem : SystemBase
 
         Entities.ForEach((ref SplineComponentData splineComponentData, in LocalToWorld localToWorld, in Entity spline) =>
         {
-            if (splineComponentData.isSpawner &&
+            if (splineComponentData.isSpawner && currentVehicleNumber < maxVehicleNumber &&
             splineComponentData.isOccupied == false && (elapsedTime - splineComponentData.lastTimeTriedToSpawn) > 3)
             {
+                currentVehicleNumber++;
+
                 var ltwForward = math.normalize(localToWorld.Forward);
                 int degree = 0;
                 if (math.abs(ltwForward.x - 1f) < 0.00001 || math.abs(ltwForward.x - (-1f)) < 0.00001)

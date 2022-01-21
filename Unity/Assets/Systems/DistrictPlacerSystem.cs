@@ -21,6 +21,7 @@ public class DistrictPlacerSystem : SystemBase
             string cityString = ((UnityEngine.TextAsset)UnityEngine.Resources.Load("City", typeof(UnityEngine.TextAsset))).text;
             // deserialize the string to City
             city = City.FromJson(cityString);
+            World.GetExistingSystem<SplineVehicleSpawnerSystem>().maxVehicleNumber = (int) city.MaxVehicleNumber;
             var districts = city.Districts;
 
             var translation = new Translation
