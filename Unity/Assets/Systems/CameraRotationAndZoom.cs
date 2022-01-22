@@ -14,6 +14,9 @@ public class CameraRotationAndZoom : MonoBehaviour
     public float maximumY = 800;
 
     public bool toggleRot = true;
+
+    public GameObject Panel;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -24,6 +27,14 @@ public class CameraRotationAndZoom : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H))
         {
             toggleRot = !toggleRot;
+        }
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            if(Panel != null)
+            {
+                bool isActive = Panel.activeSelf;
+                Panel.SetActive(!isActive);
+            }
         }
 
         //Quaternion rot = transform.rotation;
