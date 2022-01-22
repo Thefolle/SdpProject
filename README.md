@@ -11,6 +11,11 @@ The non-functional requirement is **high-scalability** in the number of vehicles
 
 The developers have chosen not to use any external dependency, besides the core Unity libraries.
 
+## How to run the benchmark
+
+In UnityHub, install the Unity version 2020.3.13;, then from the `Projects` menu, open the `Unity` folder.
+Once the project is fully loaded, change scene moving to the one called `Scene` and then just press play.
+
 ## The underlying technology: Unity DOTS
 
 Unity recently offers two paradigms to build an application:
@@ -27,6 +32,8 @@ The community also talks about hybrid solutions, where mixing a small number of 
 The very first phase of the development approached the problem in a very flexible way. Essentially, the whole scene was created through scripts only. On one hand, this solution donated great flexibility since the input could be customized at a fine-grained level; on the other hand, generating all the components of the city on the fly came up to be time-consuming if compared to the results. The task was cumbersome for the final user as well, due to the great number of properties to configure.
 Additionally, the developers at that time acknowledged their lack of experience on Unity and 3D frameworks overall.
 
+The codebase is located on branch `version1` of the current repository.
+
 ## Why switching to the version 2?
 
 After having explored the Unity ecosystem through the version 1 of this project, the developers switched to a new version. The reason of this was the need to increase the development process speed in exchange for a quite less customizability of the city, as discussed just above.
@@ -39,7 +46,7 @@ The second phase of the development process pertained the intent to build and de
 
 ![Version 2 city](./Documentation/img/version2.JPG)
 
-An in-depth analysis on how the Physics package is exploited in version 2 is given in this same section of the README in the version2 branch.
+An in-depth analysis on how the Physics package is exploited in version 2 is given in this same section of the README in the `version2` branch.
 
 ## Why switching to the version 3?
 
@@ -53,7 +60,7 @@ The developers, once again, realized that realism was not a requirement of the p
 
 The developers have conceived a general city as a matrix made up of square districts. Each district has predefined characteristics in terms of density. The scene under simulation can be customized as described beneath.
 
-1. The user writes the city matrix as a json file called `city.json`. The user validates the json file against the [schema](./citySchema.json) in order to probe any syntax error;
+1. The user writes the city matrix as a json file called `city.json`. The user validates the json file against the [schema](./Unity/Assets/Resources/citySchema.json) in order to probe any syntax error;
 2. The user saves the file in `<UnityRootFolder>/Assets/Resources/city.json`, as it is automatically loaded by the simulator so as to build the intended city.
 
 ### How does the simulator work?
@@ -157,6 +164,12 @@ The following figure shows the screenshot of the measures recorded for simulatio
 
 ![Simulation 3, machine 3](./Documentation/img/sim3machine3.png)
 
+## Brief discussion on the collected results
+
+The results between the three different machines are almost equivalent, if compared to the underlying hardware equipment.
+
+At the end of the five runs, among the different machines, the maximum number of cars achieved is 20140 out of 194906 entities, at the same time.
+
 ## Brief description of each system
 
 - DistrictPlacerSystem: instantiates and links the district specified in the input city.json. Then becomes inactive for the rest of the simulation;
@@ -166,7 +179,7 @@ The following figure shows the screenshot of the measures recorded for simulatio
 - SplineVehicleMovementSystem: creates the trajectory that each car follows, implemented as a linear interpolation of two successive nodes (Lerp);
 - SplineVehicleSpawnerSystem: spawns cars in each lane; in more detail, the car is spawned in a specific node of the lane, if the street has at least 10 nodes;
 - DespawningSystem: destroys all the entities that the simulator asked to;
-- Domain: a container for POCOs (Plain-Old C# Object); it currently holds the model of the city, as described by the pertinent json [schema](./citySchema.json);
+- Domain: a container for POCOs (Plain-Old C# Object); it currently holds the model of the city, as described by the pertinent json [schema](./Unity/Assets/Resources/citySchema.json);
 - TrafficLightSystem: given each cross, logically decides which semaphore has the turn;
 - TrafficLightChangeColorSystem: decides the color of a given traffic light based on the turn.
 
