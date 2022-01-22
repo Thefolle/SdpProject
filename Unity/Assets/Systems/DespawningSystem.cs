@@ -25,6 +25,8 @@ public class DespawningSystem : SystemBase
                 {
                     //World.GetExistingSystem<SplineVehicleSpawnerSystem>().currentVehicleNumber--;
                     Globals.currentVehicleNumber--;
+                    Globals.numberDespawnedVehicles++;
+                    Globals.numberOfVehicleDespawnedInLastSecond++;
                 }
 
                 var ecb = new EntityCommandBuffer(Allocator.TempJob); 

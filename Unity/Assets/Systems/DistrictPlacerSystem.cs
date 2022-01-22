@@ -37,14 +37,17 @@ public class DistrictPlacerSystem : SystemBase
                 switch (row[0])
                 {
                     case District.Sm1:
+                        Globals.numberOfSmallDistricts++;
                         thisDistrict = entityManager.Instantiate(prefabComponentData.District);
                         break;
 
                     case District.Lg1:
-                        thisDistrict = entityManager.Instantiate(prefabComponentData.District2);
+                        Globals.numberOfLargeDistricts++;
+                         thisDistrict = entityManager.Instantiate(prefabComponentData.District2);
                         break;
 
                     case District.Md1:
+                        Globals.numberOfMediumDistricts++;
                         thisDistrict = entityManager.Instantiate(prefabComponentData.District3);
                         break;
 
@@ -73,14 +76,17 @@ public class DistrictPlacerSystem : SystemBase
                         switch (row[j + 1])
                         {
                             case District.Sm1:
+                                Globals.numberOfSmallDistricts++;
                                 rightDistrict = entityManager.Instantiate(prefabComponentData.District);
                                 break;
 
                             case District.Lg1:
+                                Globals.numberOfLargeDistricts++;
                                 rightDistrict = entityManager.Instantiate(prefabComponentData.District2);
                                 break;
 
                             case District.Md1:
+                                Globals.numberOfMediumDistricts++;
                                 rightDistrict = entityManager.Instantiate(prefabComponentData.District3);
                                 break;
 

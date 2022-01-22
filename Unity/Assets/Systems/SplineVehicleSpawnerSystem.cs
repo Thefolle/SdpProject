@@ -5,8 +5,17 @@ using Unity.Collections;
 
 public static class Globals
 {
+    public static bool startStats = false;
     public static int maxVehicleNumber = 0;
     public static int currentVehicleNumber = 0;
+    public static int numberDespawnedVehicles = 0;
+    public static int numberOfSmallDistricts = 0;
+    public static int numberOfMediumDistricts = 0;
+    public static int numberOfLargeDistricts = 0;
+
+    public static double heldTime = 0;
+    public static int numberOfVehicleSpawnedInLastSecond = 0;
+    public static int numberOfVehicleDespawnedInLastSecond = 0;
 }
 
 public class SplineVehicleSpawnerSystem : SystemBase
@@ -19,6 +28,17 @@ public class SplineVehicleSpawnerSystem : SystemBase
     {
         double elapsedTime = Time.ElapsedTime;
         if (World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled || World.GetExistingSystem<GraphGeneratorSystem>().Enabled) return;
+
+        if (!Globals.startStats)
+            Globals.startStats = true;
+
+        Globals.heldTime += Time.DeltaTime;
+        if(Globals.heldTime >= 1)
+        {
+            Globals.heldTime = 0;
+            Globals.numberOfVehicleSpawnedInLastSecond = 0;
+            Globals.numberOfVehicleDespawnedInLastSecond = 0;
+        }
 
         EntityManager entityManager = World.EntityManager;
         var getCarComponentDataFromEntity = GetComponentDataFromEntity<CarComponentData>();
@@ -33,6 +53,7 @@ public class SplineVehicleSpawnerSystem : SystemBase
             splineComponentData.isOccupied == false && (elapsedTime - splineComponentData.lastTimeTriedToSpawn) > 3)
             {
                 Globals.currentVehicleNumber++;
+                Globals.numberOfVehicleSpawnedInLastSecond++;
 
                 var ltwForward = math.normalize(localToWorld.Forward);
                 int degree = 0;
