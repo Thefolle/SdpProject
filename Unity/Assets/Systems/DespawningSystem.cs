@@ -23,7 +23,8 @@ public class DespawningSystem : SystemBase
             {
                 if(entityManager.HasComponent<CarComponentData>(entity))
                 {
-                    World.GetExistingSystem<SplineVehicleSpawnerSystem>().currentVehicleNumber--;
+                    //World.GetExistingSystem<SplineVehicleSpawnerSystem>().currentVehicleNumber--;
+                    Globals.currentVehicleNumber--;
                 }
 
                 var ecb = new EntityCommandBuffer(Allocator.TempJob); 

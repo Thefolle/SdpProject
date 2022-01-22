@@ -3,10 +3,16 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using Unity.Collections;
 
+public static class Globals
+{
+    public static int maxVehicleNumber = 0;
+    public static int currentVehicleNumber = 0;
+}
+
 public class SplineVehicleSpawnerSystem : SystemBase
 {
 
-    public int maxVehicleNumber = 0;
+    public static int maxVehicleNumber = 0;
     public int currentVehicleNumber = 0;
 
     protected override void OnUpdate()
@@ -23,10 +29,10 @@ public class SplineVehicleSpawnerSystem : SystemBase
 
         Entities.ForEach((ref SplineComponentData splineComponentData, in LocalToWorld localToWorld, in Entity spline) =>
         {
-            if (splineComponentData.isSpawner && currentVehicleNumber < maxVehicleNumber &&
+            if (splineComponentData.isSpawner && Globals.currentVehicleNumber < Globals.maxVehicleNumber &&
             splineComponentData.isOccupied == false && (elapsedTime - splineComponentData.lastTimeTriedToSpawn) > 3)
             {
-                currentVehicleNumber++;
+                Globals.currentVehicleNumber++;
 
                 var ltwForward = math.normalize(localToWorld.Forward);
                 int degree = 0;
