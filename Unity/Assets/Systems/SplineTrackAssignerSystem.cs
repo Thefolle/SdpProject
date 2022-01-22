@@ -212,7 +212,6 @@ public class SplineTrackAssignerSystem : SystemBase
 
                 var street = nextStreet;
                 var streetComponentData = getStreetComponentData[street];
-                //var trackCandidatesName = "";
                 bool isForward = false;
                 if (streetComponentData.startingCross == currentCross)
                 {

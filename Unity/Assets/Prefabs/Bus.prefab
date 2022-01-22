@@ -11,6 +11,10 @@ GameObject:
   - component: {fileID: 4908897995883887944}
   - component: {fileID: 8336219179791561453}
   - component: {fileID: 6076697733947115047}
+  - component: {fileID: 1487804125779073766}
+  - component: {fileID: -9107816020914368555}
+  - component: {fileID: 7605573578117307506}
+  - component: {fileID: 1770887252901686367}
   m_Layer: 0
   m_Name: Bus
   m_TagString: Untagged
@@ -81,3 +85,66 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1487804125779073766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5716255488173762546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConversionMode: 0
+--- !u!114 &-9107816020914368555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5716255488173762546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f991f876e7549245b246e948dbee612, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSpeed: 0.25
+  SplineId: 0
+  splineReachedAtTime: 0
+  Track: {fileID: 0}
+  isPathUpdated: 1
+  needToUpdatedPath: 0
+  splineStart: {fileID: 0}
+  splineEnd: {fileID: 0}
+  HasJustSpawned: 1
+  HasReachedDestination: 0
+  isOnStreet: 0
+  isOccupying: 0
+  IsBus: 1
+--- !u!114 &7605573578117307506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5716255488173762546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 416d3ef1a89eabb4bb8ba1dd52496b7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1770887252901686367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5716255488173762546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b137b83ed0b0ac4588240057fa80482, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Asked: 0

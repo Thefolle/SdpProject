@@ -1,0 +1,35 @@
+The bus moves as a vehicle, where the gizmo of the bus is at its front.
+The translation of the bus is the default one. The bus is spawned with the default position.
+The rotation of the bus equals the rotation of the second spline in the buffer (with index 1).
+The bus additionally occupies three splines behind. The bus stores a buffer of splines. When a new track is assigned, this buffer is not flushed, but just shifts the splines of 1 position. This buffer works as a fixed-size queue.
+Let lengthInSplines be the number of splines occupied by a bus. splineStart is lengthInSplines / 2 - 1; splineEnd is lengthInSplines / 2 = splineStart + 1.
+When the bus reaches splineEnd, it searches for the next spline to add to the buffer.
+In order to proceed between splineStart and splineEnd, the length of the buffer must be lengthInSplines + 1. If this condition is met, the bus proceeds between splineStart and splineEnd. When the bus reaches splineEnd, it frees the last spline in the buffer and removes that spline from the buffer.
+Note: make lengthInSplines as readonly.
+If the buffer length is instead lengthInSplines, the bus checks whether the next spline is free. If the last spline of the buffer is isLast, the vehicle movement triggers the track assigner, which stores the next track in a field called NextTrack. The bus must stop in the street until NextTrack is filled.
+
+For now, lengthInSplines = 3
+When the bus is spawned: splineStart = splineEnd, bus translation is splineStart (also rotation), the buffer is filled with splineStart - 1, splineStart, splineStart + 1.
+
+if (bus in splineEnd) {
+	Find nextSpline
+	if (isOccupied) return;
+	nextSpline.Occupied = true;
+	addToBuffer(nextSpline)
+	lastSpline.Occupied = false;
+	deleteFromBuffer(lastSpline)
+	splineStart = splines[0]; // old spline end
+	splineEnd = splines[1];
+} else {
+	lerp(splineStart, splineEnd);
+}
+
+Regarding the spawn, for now buses spawn at the same way as cars (later we will face parking both for cars and for buses).
+Same for despawn.
+
+Regarding the path, buses need a fixed path to follow.
+For movement within-the-district, a fixed-length list of entities as a component data (not buffer), which can be filled in the GUI.
+For free movement beyond the spawn district, some streets may be eligible as source/destination points for buses.
+Otherwise, the graph may choose a random street as destination.
+Regarding the path between the source and the destination, the graph has to find it. You may implement the minimum path algorithm.
+For now, buses receive the same path as cars.
