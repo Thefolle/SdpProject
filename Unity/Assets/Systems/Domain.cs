@@ -20,7 +20,7 @@ namespace Domain
         [JsonProperty("districts", NullValueHandling = NullValueHandling.Ignore)]
         public List<List<District>> Districts { get; set; }
 
-        [JsonProperty("maxVehicleNumber", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("maxVehicleNumber")]
         public long? MaxVehicleNumber { get; set; }
     }
 

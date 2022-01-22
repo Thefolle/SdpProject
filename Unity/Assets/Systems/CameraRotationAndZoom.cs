@@ -28,7 +28,7 @@ public class CameraRotationAndZoom : MonoBehaviour
         {
             toggleRot = !toggleRot;
         }
-        if (Input.GetKeyDown(KeyCode.F3))
+        if (Input.GetKeyDown(KeyCode.T))
         {
             if(Panel != null)
             {

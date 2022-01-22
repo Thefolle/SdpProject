@@ -17,7 +17,7 @@
         },
         "maxVehicleNumber":
         {
-            "type": "integer"
+            "type": ["integer", "null"]
         }
     }
 }

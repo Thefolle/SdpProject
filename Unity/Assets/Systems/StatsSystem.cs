@@ -35,14 +35,14 @@ public class StatsSystem : MonoBehaviour
             if (updateOnce)
             {
                 if (maxNumberVehicleText != null)
-                    maxNumberVehicleText.text = $"Max vehicle number: {maxVehicleNumber}";
+                    maxNumberVehicleText.text = maxVehicleNumber != -1 ?  $"Max vehicle number: {maxVehicleNumber}" : "No max vehicle number limit";
                 if (districtDescriberText != null)
                     districtDescriberText.text = $"District Describer [{totNumberOfDistricts} Total]\n {numberOfSmallDistricts} low street density districts\n {numberOfMediumDistricts} medium street density districts\n {numberOfLargeDistricts} high street density districts";
                 updateOnce = false;
             }
 
             if (currentVehicleNumberText != null)
-                currentVehicleNumberText.text = $"Current vehicle number: {currentVehicleNumber} [{fillPercentage}%]";
+                currentVehicleNumberText.text =  maxVehicleNumber != -1 ? $"Current vehicle number: {currentVehicleNumber} [{fillPercentage}%]" : $"Current vehicle number: {currentVehicleNumber}";
             if (numberOfDespawnedVehiclesText != null)
                 numberOfDespawnedVehiclesText.text = $"Number of despawned vehicles: {numberDespawnedVehicles}";
             if (lastSecondStats != null)
