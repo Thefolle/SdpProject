@@ -19,6 +19,9 @@ namespace Domain
     {
         [JsonProperty("districts", NullValueHandling = NullValueHandling.Ignore)]
         public List<List<District>> Districts { get; set; }
+
+        [JsonProperty("maxVehicleNumber", NullValueHandling = NullValueHandling.Ignore)]
+        public long? MaxVehicleNumber { get; set; }
     }
 
     public enum District { Lg1, Md1, Sm1 };

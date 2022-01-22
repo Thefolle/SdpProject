@@ -21,6 +21,14 @@ public class DespawningSystem : SystemBase
         {
             if(askToDespawnComponentData.Asked)
             {
+                if(entityManager.HasComponent<CarComponentData>(entity))
+                {
+                    //World.GetExistingSystem<SplineVehicleSpawnerSystem>().currentVehicleNumber--;
+                    Globals.currentVehicleNumber--;
+                    Globals.numberDespawnedVehicles++;
+                    Globals.numberOfVehicleDespawnedInLastSecond++;
+                }
+
                 var ecb = new EntityCommandBuffer(Allocator.TempJob); 
 
                 DestroyHierarchy(ecb, entityManager, entity);
