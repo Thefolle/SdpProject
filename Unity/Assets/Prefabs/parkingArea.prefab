@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5399450373496429097}
   - component: {fileID: 9025609565761557900}
   - component: {fileID: 6531802058407092550}
+  - component: {fileID: 5291780192540841922}
+  - component: {fileID: 8630649401132795822}
   m_Layer: 0
   m_Name: parkingArea
   m_TagString: Untagged
@@ -82,3 +84,33 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5291780192540841922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4730296029825106067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConversionMode: 0
+--- !u!114 &8630649401132795822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4730296029825106067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f713a22331588e441ac9166fb73c527c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsOneWay: 0
+  startingCross: {fileID: 0}
+  endingCross: {fileID: 0}
+  exitNumber: 0
+  IsBorder: 0
