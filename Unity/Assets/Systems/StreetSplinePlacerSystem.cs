@@ -365,7 +365,7 @@ public class StreetSplinePlacerSystem : SystemBase
 
                 trackComponentData.allSplinesPlaced = true;
             }
-            else // the track belongs to a cross
+            else // the track belongs to a cross or parking area
             {
                 var ecb = new EntityCommandBuffer(Allocator.TempJob);
                 var children = entityManager.GetBuffer<Child>(trackEntity);

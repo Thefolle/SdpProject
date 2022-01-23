@@ -210,5 +210,5 @@ MonoBehaviour:
   Track: {fileID: 0}
   carEntity: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
   lastSpawnedCar: {fileID: 0}
-  lastTimeSpawned: 0
+  lastTimeTriedToSpawn: 0
   isSpawner: 0
