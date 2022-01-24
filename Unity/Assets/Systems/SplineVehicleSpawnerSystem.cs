@@ -49,9 +49,10 @@ public class SplineVehicleSpawnerSystem : SystemBase
 
         Entities.ForEach((ref SplineComponentData splineComponentData, in LocalToWorld localToWorld, in Entity spline) =>
         {
-            if (splineComponentData.isSpawner &&
+            if (splineComponentData.isSpawner && (elapsedTime - splineComponentData.lastTimeTriedToSpawn) > 10 ||
+            (splineComponentData.isParkingSpawner && (elapsedTime - splineComponentData.lastTimeTriedToSpawn) > 1) &&
             (Globals.maxVehicleNumber == -1 || Globals.currentVehicleNumber < Globals.maxVehicleNumber) &&
-            splineComponentData.isOccupied == false && (elapsedTime - splineComponentData.lastTimeTriedToSpawn) > 3)
+            splineComponentData.isOccupied == false)
             {
                 Globals.currentVehicleNumber++;
                 Globals.numberOfVehicleSpawnedInLastSecond++;

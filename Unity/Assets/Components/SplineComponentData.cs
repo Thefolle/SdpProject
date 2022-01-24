@@ -46,4 +46,14 @@ public struct SplineComponentData : IComponentData
     /// <para>Flag that tells whether the node can spawn cars.</para>
     /// </summary>
     public bool isSpawner;
+
+    /// <summary>
+    /// <para>Flag that tells whether the node can spawn cars. This is a spawner with a better spawn rate than a normal one.</para>
+    /// </summary>
+    public bool isParkingSpawner;
+
+    /// <summary>
+    /// <para>Flag that tells whether the node can despawn cars.</para>
+    /// </summary>
+    public bool isDespawner;
 }

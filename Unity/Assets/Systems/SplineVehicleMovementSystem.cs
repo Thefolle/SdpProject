@@ -72,40 +72,55 @@ public class SplineVehicleMovementSystem : SystemBase
 
                 if (math.all(localToWorldSplineEnd.Position == translation.Value))
                 {
-                    if (!carComponentData.isOnStreet) rotation.Value = localToWorldSplineEnd.Rotation;
-                    carComponentData.SplineId = carComponentData.SplineId + 1;
-                    carComponentData.splineReachedAtTime = elapsedTime;
-
-                    mySplineStartComponentData.isOccupied = false;
-                    ecb.SetComponent(carComponentData.splineStart, mySplineStartComponentData);
-
-                    
-
-                    carComponentData.isOccupying = false;
-
-                    carComponentData.splineStart = carComponentData.splineEnd;
-
-                    if (mySplineEndComponentData.isLast)
+                    if (mySplineEndComponentData.isDespawner)
                     {
-                        // TOGGLE AND UPDATE TRACK
-                        carComponentData.isOnStreet = !carComponentData.isOnStreet;
-                        carComponentData.isPathUpdated = false;
-                        carComponentData.needToUpdatedPath = true;
+                        mySplineStartComponentData.isOccupied = false;
+                        ecb.SetComponent(carComponentData.splineStart, mySplineStartComponentData);
+                        mySplineEndComponentData.isOccupied = false;
+                        ecb.SetComponent(carComponentData.splineEnd, mySplineEndComponentData);
+
+                        ecb.SetComponent(carEntity, new AskToDespawnComponentData { Asked = true });
+
+                        //carComponentData.askToDespawn = true;
+                        return;
                     }
                     else
                     {
-                        bool overtakeEnabled = true;
-                        if (overtakeEnabled)
+                        if (!carComponentData.isOnStreet) rotation.Value = localToWorldSplineEnd.Rotation;
+                        carComponentData.SplineId = carComponentData.SplineId + 1;
+                        carComponentData.splineReachedAtTime = elapsedTime;
+
+                        mySplineStartComponentData.isOccupied = false;
+                        ecb.SetComponent(carComponentData.splineStart, mySplineStartComponentData);
+
+
+
+                        carComponentData.isOccupying = false;
+
+                        carComponentData.splineStart = carComponentData.splineEnd;
+
+                        if (mySplineEndComponentData.isLast)
                         {
-                            carComponentData.splineEnd = getNextNode(entityManager, getSplineBufferComponentData, getTrackComponentData, getSplineComponentDataFromEntity, carComponentData, carEntity);
+                            // TOGGLE AND UPDATE TRACK
+                            carComponentData.isOnStreet = !carComponentData.isOnStreet;
+                            carComponentData.isPathUpdated = false;
+                            carComponentData.needToUpdatedPath = true;
                         }
                         else
                         {
-                            var splineBufferComponentData = getSplineBufferComponentData[carComponentData.Track];
-                            if (splineBufferComponentData.Length > carComponentData.SplineId) // splineId may refer to a non-existing spline (off-by-one error)
+                            bool overtakeEnabled = true;
+                            if (overtakeEnabled)
                             {
-                                var spline = splineBufferComponentData[carComponentData.SplineId].spline;
-                                carComponentData.splineEnd = spline;
+                                carComponentData.splineEnd = getNextNode(entityManager, getSplineBufferComponentData, getTrackComponentData, getSplineComponentDataFromEntity, carComponentData, carEntity);
+                            }
+                            else
+                            {
+                                var splineBufferComponentData = getSplineBufferComponentData[carComponentData.Track];
+                                if (splineBufferComponentData.Length > carComponentData.SplineId) // splineId may refer to a non-existing spline (off-by-one error)
+                                {
+                                    var spline = splineBufferComponentData[carComponentData.SplineId].spline;
+                                    carComponentData.splineEnd = spline;
+                                }
                             }
                         }
                     }
