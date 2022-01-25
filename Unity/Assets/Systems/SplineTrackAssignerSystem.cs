@@ -176,7 +176,6 @@ public class SplineTrackAssignerSystem : SystemBase
                             if (minimumRelativeTrackDistance == 0) break;
                         }
                     }
-
                 }
                 if (trackToAssign == Entity.Null)
                 {

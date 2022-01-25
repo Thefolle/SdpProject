@@ -11,7 +11,7 @@ public class StreetSplinePlacerSystem : SystemBase
     protected override void OnUpdate()
     {
         double elapsedTime = Time.ElapsedTime;
-        if (elapsedTime < 2 || World.GetExistingSystem<GraphGeneratorSystem>().Enabled) return;
+        if (elapsedTime < 2 || World.GetExistingSystem<GraphGeneratorSystem>().Enabled || World.GetExistingSystem<BusPathFinderSystem>().Enabled) return;
         EntityManager entityManager = World.EntityManager;
         var getChildBuffer = GetBufferFromEntity<Child>();
         var getSplineComponentData = GetComponentDataFromEntity<SplineComponentData>();

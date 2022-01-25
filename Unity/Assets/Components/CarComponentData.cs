@@ -42,8 +42,6 @@ public struct CarComponentData : IComponentData
     /// <para>The final node of the spline along which the car is moving.</para>
     /// </summary>
     public Entity splineEnd;
-    public int splineStartIndex;
-    public int splineEndIndex;
 
     /// <summary>
     /// <para>Flag that is true for the first frame after a car has been spawned.</para>

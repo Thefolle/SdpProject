@@ -76,6 +76,12 @@ public class Graph
     Dictionary<int, Node> Nodes;
     Dictionary<int, Dictionary<int, Edge>> Edges;
 
+    /// <summary>
+    /// <para>This dictionary stores pairs (bus line number, path); for instance, it can be (10, {12, 14, 11, 23}).</para>
+    /// <para>Notice that the path doesn't have to be a cycle or a simple path.</para>
+    /// </summary>
+    Dictionary<int, List<int>> BusRoute;
+
     private int Seed;
     private Random RandomGenerator;
 
@@ -181,6 +187,82 @@ public class Graph
         }
         
 
+        var path = new List<Node>();
+        foreach (var nodeInt in pathInt)
+        {
+            path.Add(GetNode(nodeInt));
+        }
+
+        return path;
+    }
+
+    /// <summary>
+    /// <para>Compute the minimum path between two edges.</para>
+    /// <para>The complexity of this function is O(|V||E|).</para>
+    /// </summary>
+    /// <param name="startEdgeInitialNode"></param>
+    /// <param name="startEdgeEndingNode"></param>
+    /// <param name="finalEdgeInitialNode"></param>
+    /// <param name="finalEdgeEndingNode"></param>
+    /// <returns></returns>
+    public List<Node> MinimumPath(int startEdgeInitialNode, int startEdgeEndingNode, int finalEdgeInitialNode, int finalEdgeEndingNode)
+    {
+        /* Compute the minimum path through the Bellman-Ford algorithm */
+        var st = new List<int>();
+        var d = new List<int>();
+        var map = new List<int>(); // maps each index to the corresponding node id
+        int i = 0;
+        foreach(var nodeInt in Nodes.Keys)
+        {
+            map.Add(nodeInt);
+            st.Add(-1);
+            d.Add(int.MaxValue);
+            i++;
+        }
+        d[map.IndexOf(startEdgeEndingNode)] = 0;
+        st[map.IndexOf(startEdgeEndingNode)] = map.IndexOf(startEdgeEndingNode);
+        var possibleNextNodeIds = new List<int>();
+
+        for (int w = 0; w < Nodes.Count - 1; w++)
+        {
+            for (int v = 0; v < Nodes.Count; v++)
+            {
+                if (d[v] < int.MaxValue)
+                {
+                    possibleNextNodeIds.AddRange(Edges[map[v]].Keys);
+                    foreach (var possibleNextCrossId in possibleNextNodeIds)
+                    {
+                        if (d[map.IndexOf(possibleNextCrossId)] > d[v] + 1)
+                        {
+                            d[map.IndexOf(possibleNextCrossId)] = d[v] + 1;
+                            st[map.IndexOf(possibleNextCrossId)] = v;
+                        }
+                    }
+                    possibleNextNodeIds.Clear();
+                }
+            }
+        }
+
+        var pathInt = new List<int>();
+        //pathInt.Add(finalEdgeEndingNode);
+        //pathInt.Add(finalEdgeInitialNode);
+        var currentNode = map.IndexOf(finalEdgeInitialNode);
+        while (currentNode != map.IndexOf(startEdgeEndingNode))
+        {
+            pathInt.Add(map[currentNode]);
+            currentNode = st[currentNode];
+        }
+        //if (!pathInt.Contains(finalEdgeEndingNode)) pathInt.Add(finalEdgeEndingNode);
+
+        pathInt.Add(startEdgeEndingNode);
+        //pathInt.Add(startEdgeInitialNode);
+
+        pathInt.Reverse(); // the st vector returns the minimum path in reverse order
+
+        //if (!pathInt.Contains(startEdgeEndingNode)) pathInt.Add(startEdgeEndingNode);
+
+
+        /* Translate from int to Node */
         var path = new List<Node>();
         foreach (var nodeInt in pathInt)
         {

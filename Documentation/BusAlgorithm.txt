@@ -33,3 +33,6 @@ For free movement beyond the spawn district, some streets may be eligible as sou
 Otherwise, the graph may choose a random street as destination.
 Regarding the path between the source and the destination, the graph has to find it. You may implement the minimum path algorithm.
 For now, buses receive the same path as cars.
+
+The user can specify which bus lines a certain street is a bus stop of. The spawner will spawn buses only for streets that have at least one bus stop, with that bus line.
+During initialization phase of the simulation, a system collects all the streets that belongs to a certain bus line. Then, it computes the route made up of the minimum paths between successive bus stops. The graph may internally store the minimum paths between two streets for a certain bus stop.

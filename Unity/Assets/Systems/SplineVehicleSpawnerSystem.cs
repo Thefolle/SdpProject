@@ -86,9 +86,7 @@ public class SplineVehicleSpawnerSystem : SystemBase
                         isOnStreet = true,
                         isPathUpdated = true,
                         HasJustSpawned = true,
-                        IsBus = true,
-                        splineStartIndex = splineComponentData.id,
-                        splineEndIndex = splineComponentData.id
+                        IsBus = true
                     };
                     ecb.SetComponent(bus, newCarComponentData);
 
