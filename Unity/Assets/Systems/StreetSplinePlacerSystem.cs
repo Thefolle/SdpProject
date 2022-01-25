@@ -386,6 +386,147 @@ public class StreetSplinePlacerSystem : SystemBase
                     }
                 }
 
+                // Manage traffic light for parkingArea
+                if (trackComponentData.IsOnStreet)
+                {
+                    var lane = entityManager.GetComponentData<Parent>(trackEntity);
+                    if (entityManager.HasComponent<Parent>(lane.Value))
+                    {
+                        bool bottomOfEnding = false;
+                        bool rightOfEnding = false;
+                        bool topOfEnding = false;
+                        bool leftOfEnding = false;
+                        bool cornerOfEnding = false;
+
+                        var street = entityManager.GetComponentData<Parent>(lane.Value);
+                        var streetComponentData = entityManager.GetComponentData<StreetComponentData>(street.Value);
+                        var endingCross = streetComponentData.endingCross;
+
+                        if (endingCross != Entity.Null)
+                        {
+                            var endingCrossComponentData = entityManager.GetComponentData<CrossComponentData>(endingCross);
+                            if (endingCrossComponentData.BottomStreet == street.Value)
+                            {
+                                bottomOfEnding = true;
+                            }
+                            else if (endingCrossComponentData.RightStreet == street.Value)
+                            {
+                                rightOfEnding = true;
+                            }
+                            else if (endingCrossComponentData.TopStreet == street.Value)
+                            {
+                                topOfEnding = true;
+                            }
+                            else if (endingCrossComponentData.LeftStreet == street.Value)
+                            {
+                                leftOfEnding = true;
+                            }
+                            else if (endingCrossComponentData.CornerStreet == street.Value)
+                            {
+                                cornerOfEnding = true;
+                            }
+                        }
+
+                        if (endingCross != Entity.Null)
+                        {
+                            var spline = splineBufferComponentData[splineBufferComponentData.Length - 1]; // last spline: isLast
+                            var theCross = endingCross;
+                            bool bottom = bottomOfEnding;
+                            bool right = rightOfEnding;
+                            bool top = topOfEnding;
+                            bool left = leftOfEnding;
+                            bool corner = cornerOfEnding;
+
+                            if (entityManager.HasComponent<Child>(theCross))
+                            {
+                                foreach (var child in entityManager.GetBuffer<Child>(theCross))
+                                {
+                                    if (entityManager.HasComponent<TrafficLightCrossComponentData>(child.Value))
+                                    {
+                                        if (entityManager.HasComponent<Child>(child.Value))
+                                        {
+                                            foreach (var trafficLigthBorder in entityManager.GetBuffer<Child>(child.Value))
+                                            {
+                                                var trafficLightComponentData = entityManager.GetComponentData<TrafficLightComponentData>(trafficLigthBorder.Value);
+                                                if (bottom)
+                                                {
+                                                    if (trafficLightComponentData.Direction == Direction.Bottom)
+                                                    {
+                                                        entityManager.SetComponentData(trafficLigthBorder.Value, new TrafficLightComponentData
+                                                        {
+                                                            isGreen = trafficLightComponentData.isGreen,
+                                                            Spline1 = spline.spline,
+                                                            Spline2 = spline.spline,
+                                                            Direction = trafficLightComponentData.Direction,
+                                                            RelativeId = trafficLightComponentData.RelativeId
+                                                        });
+                                                    }
+                                                }
+                                                else if (right)
+                                                {
+                                                    if (trafficLightComponentData.Direction == Direction.Right)
+                                                    {
+                                                        entityManager.SetComponentData(trafficLigthBorder.Value, new TrafficLightComponentData
+                                                        {
+                                                            isGreen = trafficLightComponentData.isGreen,
+                                                            Spline1 = spline.spline,
+                                                            Spline2 = spline.spline,
+                                                            Direction = trafficLightComponentData.Direction,
+                                                            RelativeId = trafficLightComponentData.RelativeId
+                                                        });
+                                                    }
+                                                }
+                                                else if (top)
+                                                {
+                                                    if (trafficLightComponentData.Direction == Direction.Top)
+                                                    {
+                                                        entityManager.SetComponentData(trafficLigthBorder.Value, new TrafficLightComponentData
+                                                        {
+                                                            isGreen = trafficLightComponentData.isGreen,
+                                                            Spline1 = spline.spline,
+                                                            Spline2 = spline.spline,
+                                                            Direction = trafficLightComponentData.Direction,
+                                                            RelativeId = trafficLightComponentData.RelativeId
+                                                        });
+                                                    }
+                                                }
+                                                else if (left)
+                                                {
+                                                    if (trafficLightComponentData.Direction == Direction.Left)
+                                                    {
+                                                        entityManager.SetComponentData(trafficLigthBorder.Value, new TrafficLightComponentData
+                                                        {
+                                                            isGreen = trafficLightComponentData.isGreen,
+                                                            Spline1 = spline.spline,
+                                                            Spline2 = spline.spline,
+                                                            Direction = trafficLightComponentData.Direction,
+                                                            RelativeId = trafficLightComponentData.RelativeId
+                                                        });
+                                                    }
+                                                }
+                                                else if (corner)
+                                                {
+                                                    if (trafficLightComponentData.Direction == Direction.Corner)
+                                                    {
+                                                        entityManager.SetComponentData(trafficLigthBorder.Value, new TrafficLightComponentData
+                                                        {
+                                                            isGreen = trafficLightComponentData.isGreen,
+                                                            Spline1 = spline.spline,
+                                                            Spline2 = spline.spline,
+                                                            Direction = trafficLightComponentData.Direction,
+                                                            RelativeId = trafficLightComponentData.RelativeId
+                                                        });
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
                 ecb.Playback(entityManager);
                 ecb.Dispose();
             }

@@ -56,4 +56,7 @@ public struct SplineComponentData : IComponentData
     /// <para>Flag that tells whether the node can despawn cars.</para>
     /// </summary>
     public bool isDespawner;
+
+    public bool isParkingEntrance;
+    public bool isParkingExit;
 }

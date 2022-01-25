@@ -86,7 +86,11 @@ public class SplineVehicleMovementSystem : SystemBase
                     }
                     else
                     {
-                        if (!carComponentData.isOnStreet) rotation.Value = localToWorldSplineEnd.Rotation;
+                        if (mySplineEndComponentData.isParkingEntrance) carComponentData.isOnParkingArea = true;
+                        else if (mySplineEndComponentData.isParkingExit) carComponentData.isOnParkingArea = false;
+
+                        if (!carComponentData.isOnStreet || carComponentData.isOnParkingArea) rotation.Value = localToWorldSplineEnd.Rotation;
+
                         carComponentData.SplineId = carComponentData.SplineId + 1;
                         carComponentData.splineReachedAtTime = elapsedTime;
 

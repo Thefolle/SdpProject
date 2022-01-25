@@ -100,7 +100,8 @@ public class SplineVehicleSpawnerSystem : SystemBase
                     Track = TrackEntity,
                     isOnStreet = true,
                     isPathUpdated = true,
-                    HasJustSpawned = true
+                    HasJustSpawned = true,
+                    isOnParkingArea = splineComponentData.isParkingSpawner
                 };
 
                 Entity carEntity = entityManager.Instantiate(splineComponentData.carEntity);
