@@ -4,6 +4,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
+using System;
 using static UnityEngine.Debug;
 
 public class StreetSplinePlacerSystem : SystemBase
@@ -15,7 +16,6 @@ public class StreetSplinePlacerSystem : SystemBase
         EntityManager entityManager = World.EntityManager;
         var getChildBuffer = GetBufferFromEntity<Child>();
         var getSplineComponentData = GetComponentDataFromEntity<SplineComponentData>();
-
 
         Entities.ForEach((ref TrackComponentData trackComponentData, in Entity trackEntity, in LocalToWorld localToWorld, in Translation translation) =>
         {
@@ -375,8 +375,28 @@ public class StreetSplinePlacerSystem : SystemBase
                     splineBufferComponentData.Add(new SplineBufferComponentData { spline = child.Value });
                 }
 
+                BubbleSort(splineBufferComponentData, entityManager);
+
+                /*var list = new List<SplineBufferComponentData>(splineBufferComponentData.ToNativeArray(Allocator.TempJob));
+                list.Sort(new Comparison<SplineBufferComponentData>((SplineBufferComponentData splineBufferComponentData1, SplineBufferComponentData splineBufferComponentData2) => {
+                    return entityManager.GetComponentData<SplineComponentData>(splineBufferComponentData1.spline).id -
+                        entityManager.GetComponentData<SplineComponentData>(splineBufferComponentData2.spline).id;
+                }));*/
+
+                //splineBufferComponentData.AsNativeArray().Sort<SplineBufferComponentData>((SplineBufferComponentData splineBufferComponentData1, SplineBufferComponentData splineBufferComponentData2) => { return 0; });
+
+                //splineBufferComponentData.AsNativeArray().Sort(lambdaSort);
+
+                /*splineBufferComponentData.AsNativeArray().Sort<SplineBufferComponentData>(((var a, var b) => {
+                    if (entityManager.GetComponentData<SplineComponentData>(a.spline).id > entityManager.GetComponentData<SplineComponentData>(b.spline).id)
+                        return 1;
+                    else
+                        return 0;
+                    }));*/
+
                 // invert the buffer elements so that their id is increasing
-                if (splineBufferComponentData.Length >= 2 && entityManager.GetComponentData<SplineComponentData>(splineBufferComponentData[0].spline).id > entityManager.GetComponentData<SplineComponentData>(splineBufferComponentData[1].spline).id)
+                /*if (splineBufferComponentData.Length >= 2 &&
+                entityManager.GetComponentData<SplineComponentData>(splineBufferComponentData[0].spline).id > entityManager.GetComponentData<SplineComponentData>(splineBufferComponentData[1].spline).id)
                 {
                     for (int i = 0; i < splineBufferComponentData.Length / 2; i++)
                     {
@@ -384,7 +404,9 @@ public class StreetSplinePlacerSystem : SystemBase
                         splineBufferComponentData[i] = splineBufferComponentData[splineBufferComponentData.Length - i - 1];
                         splineBufferComponentData[splineBufferComponentData.Length - i - 1] = tmp;
                     }
-                }
+                }*/
+
+                //System.Array.Sort(splineBufferComponentData -> { });
 
                 // Manage traffic light for parkingArea
                 if (trackComponentData.IsOnStreet)
@@ -430,6 +452,10 @@ public class StreetSplinePlacerSystem : SystemBase
                         if (endingCross != Entity.Null)
                         {
                             var spline = splineBufferComponentData[splineBufferComponentData.Length - 1]; // last spline: isLast
+
+                            var splineComponentData = entityManager.GetComponentData<SplineComponentData>(spline.spline);
+                            LogErrorFormat("{0}, {1}", splineComponentData.isParkingExit, spline.spline.Index);
+                            
                             var theCross = endingCross;
                             bool bottom = bottomOfEnding;
                             bool right = rightOfEnding;
@@ -533,5 +559,24 @@ public class StreetSplinePlacerSystem : SystemBase
         }).WithStructuralChanges().Run();
         this.Enabled = false;
         Debug.LogFormat("StreetSplinePlacerSystem: the city has been correctly initialized. Simulation is starting...");
+    }
+
+    private void BubbleSort(DynamicBuffer<SplineBufferComponentData> splineBufferComponentData, EntityManager entityManager)
+    {
+        int i, j;
+        int n = splineBufferComponentData.Length;
+
+        for (i = 0; i < n - 1; i++)
+            for (j = 0; j < n - i - 1; j++)
+            {
+                var splineComponentData1 = entityManager.GetComponentData<SplineComponentData>(splineBufferComponentData[j].spline);
+                var splineComponentData2 = entityManager.GetComponentData<SplineComponentData>(splineBufferComponentData[j+1].spline);
+                if (splineComponentData1.id > splineComponentData2.id)
+                {
+                    var tmp = splineBufferComponentData[j];
+                    splineBufferComponentData[j] = splineBufferComponentData[j+1];
+                    splineBufferComponentData[j+1] = tmp;
+                }
+            }
     }
 }
