@@ -19,7 +19,7 @@ public class BusPathFinderSystem : SystemBase
         var lastStreet = Entity.Null; // the preceding bus stop of the bus route
         var firstStreet = Entity.Null; // the initial bus stop of the bus route
 
-        Entities.ForEach((in DynamicBuffer<BusStopLinesBuffer> busStopLinesBuffer, in Entity street, in StreetComponentData streetComponentData, in BusStopComponentData busStopComponentData) =>
+        Entities.ForEach((in BusStopComponentData busStopComponentData, in Entity street, in StreetComponentData streetComponentData) =>
         {
             if (lastStreet == Entity.Null)
             {
@@ -48,11 +48,6 @@ public class BusPathFinderSystem : SystemBase
                 SetMinimumPath(firstStreet, firstStreetComponentData, graph, ecb, streetComponentData); // overwrite the first street path for each iteration, since cannot infer whether this is the last street of Entities.ForEach
                 graph.AddEdge(streetComponentData.endingCross.Index, streetComponentData.startingCross.Index, startingStreetEdge);
                 graph.AddEdge(firstStreetComponentData.endingCross.Index, firstStreetComponentData.startingCross.Index, firstStreetEdge);
-
-                //foreach (var step in busPath)
-                //{
-                //    entityManager.Debug.LogEntityInfo(step.CrossOrStreet);
-                //}
 
                 lastStreet = street;
             }

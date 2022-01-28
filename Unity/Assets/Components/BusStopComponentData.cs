@@ -5,6 +5,5 @@ using Unity.Entities;
 [GenerateAuthoringComponent]
 public struct BusStopComponentData : IComponentData
 {
-    public DynamicBuffer<PathComponentData> ForwardPath;
-    public DynamicBuffer<PathComponentData> BackwardPath;
+    private char Pad;
 }

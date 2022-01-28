@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2123123475620739534}
   - component: {fileID: 4220487222441954564}
   - component: {fileID: 5171868113556810887}
-  - component: {fileID: 3591648259302886774}
   m_Layer: 0
   m_Name: SpawningPoint
   m_TagString: Untagged
@@ -96,17 +95,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ConversionMode: 0
---- !u!114 &3591648259302886774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2419227623576431825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07f0d2bd639c2254fbed1b5f1852733c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CarPrefab: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
-  LastSpawnedCar: {fileID: 0}

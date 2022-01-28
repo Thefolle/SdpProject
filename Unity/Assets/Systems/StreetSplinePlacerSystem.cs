@@ -189,6 +189,8 @@ public class StreetSplinePlacerSystem : SystemBase
                                 carEntity = trackComponentData.carEntity
                             };
                             ecb.AddComponent(spline, newSplineComponentData);
+                            var spawnerComponentData = new SpawnerComponentData { };
+                            ecb.AddComponent(spline, spawnerComponentData);
                         }
                         else
                         {
