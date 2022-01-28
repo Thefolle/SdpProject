@@ -49,10 +49,10 @@ public class SplineVehicleSpawnerSystem : SystemBase
 
         Entities.ForEach((ref SplineComponentData splineComponentData, in LocalToWorld localToWorld, in Entity spline) =>
         {
-            if (splineComponentData.isSpawner && (elapsedTime - splineComponentData.lastTimeTriedToSpawn) > 6 ||
-            (splineComponentData.isParkingSpawner && (elapsedTime - splineComponentData.lastTimeTriedToSpawn) > 1) &&
-            (Globals.maxVehicleNumber == -1 || Globals.currentVehicleNumber < Globals.maxVehicleNumber) &&
-            splineComponentData.isOccupied == false)
+            if ((Globals.maxVehicleNumber == -1 || Globals.currentVehicleNumber < Globals.maxVehicleNumber) &&
+            splineComponentData.isOccupied == false &&
+            ((splineComponentData.isSpawner && (elapsedTime - splineComponentData.lastTimeTriedToSpawn) > 6) ||
+            (splineComponentData.isParkingSpawner && (elapsedTime - splineComponentData.lastTimeTriedToSpawn) > 1)))
             {
                 Globals.currentVehicleNumber++;
                 Globals.numberOfVehicleSpawnedInLastSecond++;
@@ -117,6 +117,8 @@ public class SplineVehicleSpawnerSystem : SystemBase
                 splineComponentData.lastTimeTriedToSpawn = elapsedTime;
             }
         }).WithStructuralChanges().Run();
+
+        UnityEngine.Debug.LogErrorFormat("{0}, {1}", Globals.currentVehicleNumber, Globals.maxVehicleNumber);
 
         ecb.Playback(EntityManager);
         ecb.Dispose();
