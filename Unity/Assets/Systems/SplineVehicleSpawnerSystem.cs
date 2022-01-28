@@ -118,8 +118,6 @@ public class SplineVehicleSpawnerSystem : SystemBase
             }
         }).WithStructuralChanges().Run();
 
-        UnityEngine.Debug.LogErrorFormat("{0}, {1}", Globals.currentVehicleNumber, Globals.maxVehicleNumber);
-
         ecb.Playback(EntityManager);
         ecb.Dispose();
     }
