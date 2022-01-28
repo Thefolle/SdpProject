@@ -68,7 +68,7 @@ public class SplineVehicleSpawnerSystem : SystemBase
                         degree = -45;
                 }
 
-                if (!splineComponentData.isOccupied && !precedingSplineComponentData.isOccupied && !nextSplineComponentData.isOccupied && (elapsedTime - splineComponentData.lastTimeTriedToSpawn) > 3)
+                if (!splineComponentData.isOccupied && !precedingSplineComponentData.isOccupied && !nextSplineComponentData.isOccupied && splineComponentData.isForward && (elapsedTime - splineComponentData.lastTimeTriedToSpawn) > 3 && entityManager.HasComponent<BusStopLinesBuffer>(getParentComponentDataFromEntity[getParentComponentDataFromEntity[track].Value].Value))
                 {
                     var busPrefab = GetSingleton<PrefabComponentData>().Bus;
                     Entity bus = ecb.Instantiate(busPrefab);

@@ -153,10 +153,7 @@ public class Graph
             possibleNextCrossIds.AddRange(Edges[currentNode].Keys);
             int randomJ = RandomGenerator.Next(0, possibleNextCrossIds.Count);
             int nextCrossId = -1;
-            //if (!pathInt.Contains(possibleNextCrossIds[randomJ]))
-            //{
-            //    nextCrossId = possibleNextCrossIds[randomJ];
-            //}
+
             for (int j = 0; j < possibleNextCrossIds.Count; j++, randomJ = (randomJ + 1) % possibleNextCrossIds.Count)
             {
                 if (!pathInt.Contains(possibleNextCrossIds[randomJ]))
@@ -172,17 +169,6 @@ public class Graph
                 currentNode = nextCrossId;
             }
 
-            //int j = 0;
-            //foreach(var nextCrossId in possibleNextCrossIds)
-            //{
-            //    if (j == randomJ && !pathInt.Contains(nextCrossId))
-            //    {
-            //        pathInt.Add(nextCrossId);
-            //        currentNode = nextCrossId;
-            //        break;
-            //    }
-            //    j++;
-            //}
             possibleNextCrossIds.Clear();
         }
         
@@ -270,6 +256,24 @@ public class Graph
         }
 
         return path;
+    }
+
+    /// <summary>
+    /// <para>Extract an edge from the graph. If the edge is not directed (i.e. an edge exists for both directions), just one of them is extracted.</para>
+    /// </summary>
+    /// <param name="startingNodeId"></param>
+    /// <param name="endingNodeId"></param>
+    /// <returns></returns>
+    public Edge ExtractEdge(int startingNodeId, int endingNodeId)
+    {
+        var edge = GetEdge(startingNodeId, endingNodeId);
+        if (edge == null) return null;
+        else
+        {
+            Edges[startingNodeId].Remove(endingNodeId);
+            if (Edges[startingNodeId].Count == 0) Edges.Remove(startingNodeId);
+            return edge;
+        }
     }
 
     private int EdgeCount()

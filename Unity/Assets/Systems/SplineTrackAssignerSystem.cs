@@ -14,7 +14,7 @@ public class SplineTrackAssignerSystem : SystemBase
         var graph = World.GetExistingSystem<GraphGeneratorSystem>().District;
         var getParentComponentData = GetComponentDataFromEntity<Parent>();
         var getStreetComponentData = GetComponentDataFromEntity<StreetComponentData>();
-        var getBufferFromEntity = GetBufferFromEntity<PathComponentData>();
+        var getPathBuffer = GetBufferFromEntity<PathComponentData>();
         var getCrossComponentData = GetComponentDataFromEntity<CrossComponentData>();
         var getChildComponentData = GetBufferFromEntity<Child>();
         var getTrackComponentData = GetComponentDataFromEntity<TrackComponentData>();
@@ -38,47 +38,55 @@ public class SplineTrackAssignerSystem : SystemBase
                     askToDespawnComponentData.Asked = true;
                     return;
                 }
-                int edgeInitialNode;
-                int edgeEndingNode;
-                /* Exploit the track name to infer which are the starting and the ending crosses. That's why 
-                    * the algorithm must work with tracks rather than streets
-                    */
-                if (trackComponentData.IsForward)
+
+                if (carComponentData.IsBus)
                 {
-                    edgeInitialNode = streetComponentData.startingCross.Index;
-                    edgeEndingNode = streetComponentData.endingCross.Index;
+                    var path = getPathBuffer[street];
+                    var busPath = GetBufferFromEntity<PathComponentData>()[carEntity];
+                    busPath.CopyFrom(path);
                 }
                 else
                 {
-                    edgeInitialNode = streetComponentData.endingCross.Index;
-                    edgeEndingNode = streetComponentData.startingCross.Index;
-                }
+                    int edgeInitialNode;
+                    int edgeEndingNode;
 
-                var carPath = GetBufferFromEntity<PathComponentData>()[carEntity];
-                var randomPath = graph.RandomPath(edgeInitialNode, edgeEndingNode);
-
-                var isFirst = true;
-                var lastStep = -1;
-
-                foreach (var node in randomPath)
-                {
-                    if (isFirst)
+                    if (trackComponentData.IsForward)
                     {
-                        //carPath.Add(new PathComponentData { CrossOrStreet = node.Cross }); //neglect the first node when a car is spawned in a street
-                        lastStep = node.Cross.Index;
-                        isFirst = false;
+                        edgeInitialNode = streetComponentData.startingCross.Index;
+                        edgeEndingNode = streetComponentData.endingCross.Index;
                     }
                     else
                     {
-                        carPath.Add(new PathComponentData { CrossOrStreet = graph.GetEdge(lastStep, node.Cross.Index).Street });
-                        carPath.Add(new PathComponentData { CrossOrStreet = node.Cross });
-                        lastStep = node.Cross.Index;
+                        edgeInitialNode = streetComponentData.endingCross.Index;
+                        edgeEndingNode = streetComponentData.startingCross.Index;
+                    }
+
+                    var carPath = GetBufferFromEntity<PathComponentData>()[carEntity];
+                    var randomPath = graph.RandomPath(edgeInitialNode, edgeEndingNode);
+
+                    var isFirst = true;
+                    var lastStep = -1;
+
+                    foreach (var node in randomPath)
+                    {
+                        if (isFirst)
+                        {
+                            //carPath.Add(new PathComponentData { CrossOrStreet = node.Cross }); //neglect the first node when a car is spawned in a street
+                            lastStep = node.Cross.Index;
+                            isFirst = false;
+                        }
+                        else
+                        {
+                            carPath.Add(new PathComponentData { CrossOrStreet = graph.GetEdge(lastStep, node.Cross.Index).Street });
+                            carPath.Add(new PathComponentData { CrossOrStreet = node.Cross });
+                            lastStep = node.Cross.Index;
+                        }
                     }
                 }
             }
             else if (!carComponentData.isOnStreet && !carComponentData.isPathUpdated) // the car is passing from a street to a cross
             {
-                var path = getBufferFromEntity[carEntity];
+                var path = getPathBuffer[carEntity];
                 if (path.Length == 0)
                 {
                     LogErrorFormat("The path of the car with id {0} has length {1} which is inconsistent.", carEntity.Index, path.Length);
@@ -188,7 +196,7 @@ public class SplineTrackAssignerSystem : SystemBase
             }
             else if (carComponentData.isOnStreet && !carComponentData.isPathUpdated) // The car is passing from a cross to a street
             {
-                var path = getBufferFromEntity[carEntity];
+                var path = getPathBuffer[carEntity];
 
                 if (path.Length == 0)
                 {
