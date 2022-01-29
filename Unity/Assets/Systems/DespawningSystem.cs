@@ -27,6 +27,8 @@ public class DespawningSystem : SystemBase
                     Globals.currentVehicleNumber--;
                     Globals.numberDespawnedVehicles++;
                     Globals.numberOfVehicleDespawnedInLastSecond++;
+                    if(entityManager.GetComponentData<CarComponentData>(entity).IsBus)
+                        Globals.currentBusNumber--;
                 }
 
                 var ecb = new EntityCommandBuffer(Allocator.TempJob); 

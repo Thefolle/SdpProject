@@ -150,7 +150,6 @@ public class SplineVehicleMovementSystem : SystemBase
                         splineComponentData.isOccupied = false;
                     }
                     entityManager.SetComponentData(carEntity, new AskToDespawnComponentData { Asked = true });
-                    Globals.currentBusNumber--;
                     return;
                 }
                 if (carComponentData.needToUpdatedPath && !carComponentData.isPathUpdated)
