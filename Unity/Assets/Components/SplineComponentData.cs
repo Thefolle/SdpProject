@@ -37,10 +37,6 @@ public struct SplineComponentData : IComponentData
     /// <para>The last car that have been spawned by the underlying node. Useful to configure the spawn strategy. Meaningful if <see cref="isSpawner"/> is set.</para>
     /// </summary>
     public Entity lastSpawnedCar;
-    /// <summary>
-    /// <para>The time instant at which the last car has been spawned.</para>
-    /// </summary>
-    public double lastTimeTriedToSpawn;
 
     /// <summary>
     /// <para>Flag that tells whether the node can spawn cars.</para>

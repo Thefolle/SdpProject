@@ -60,4 +60,6 @@ public struct CarComponentData : IComponentData
     public bool isOnParkingArea;
 
     public bool isOccupying;
+
+    public bool IsBus;
 }

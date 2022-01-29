@@ -6,6 +6,9 @@ using Unity.Entities;
 [GenerateAuthoringComponent]
 public struct PrefabComponentData : IComponentData
 {
+    public Entity Car;
+    public Entity Bus;
+
     /// <summary>
     /// <para>A district prefab, manually dragged and dropped from the Unity editor.</para>
     /// </summary>

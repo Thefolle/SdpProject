@@ -12,7 +12,7 @@ public class StreetSplinePlacerSystem : SystemBase
     protected override void OnUpdate()
     {
         double elapsedTime = Time.ElapsedTime;
-        if (elapsedTime < 2 || World.GetExistingSystem<GraphGeneratorSystem>().Enabled) return;
+        if (elapsedTime < 2 || World.GetExistingSystem<GraphGeneratorSystem>().Enabled || World.GetExistingSystem<BusPathFinderSystem>().Enabled) return;
         EntityManager entityManager = World.EntityManager;
         var getChildBuffer = GetBufferFromEntity<Child>();
         var getSplineComponentData = GetComponentDataFromEntity<SplineComponentData>();
@@ -189,6 +189,7 @@ public class StreetSplinePlacerSystem : SystemBase
                                 carEntity = trackComponentData.carEntity
                             };
                             ecb.AddComponent(spline, newSplineComponentData);
+                            ecb.AddComponent(spline, new SpawnerComponentData { });
                         }
                         else
                         {

@@ -24,6 +24,14 @@ public class SplineVehicleSpawnerSystem : SystemBase
     public static int maxVehicleNumber = 0;
     public int currentVehicleNumber = 0;
 
+    protected override void OnStartRunning()
+    {
+        base.OnStartRunning();
+
+        var prefabs = GetEntityQuery(typeof(PrefabComponentData)).ToComponentDataArray<PrefabComponentData>(Allocator.Temp)[0];
+        SetSingleton(prefabs);
+    }
+
     protected override void OnUpdate()
     {
         double elapsedTime = Time.ElapsedTime;
@@ -47,12 +55,12 @@ public class SplineVehicleSpawnerSystem : SystemBase
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
         var streetLocalToWorld = new LocalToWorld { };
 
-        Entities.ForEach((ref SplineComponentData splineComponentData, in LocalToWorld localToWorld, in Entity spline) =>
+        Entities.ForEach((ref SpawnerComponentData spawnerComponentData, ref SplineComponentData splineComponentData, in LocalToWorld localToWorld, in Entity spline) =>
         {
             if ((Globals.maxVehicleNumber == -1 || Globals.currentVehicleNumber < Globals.maxVehicleNumber) &&
             splineComponentData.isOccupied == false &&
-            ((splineComponentData.isSpawner && (elapsedTime - splineComponentData.lastTimeTriedToSpawn) > 6) ||
-            (splineComponentData.isParkingSpawner && (elapsedTime - splineComponentData.lastTimeTriedToSpawn) > 1)))
+            ((splineComponentData.isSpawner && (elapsedTime - spawnerComponentData.LastTimeTriedToSpawn) > 6) ||
+            (splineComponentData.isParkingSpawner && (elapsedTime - spawnerComponentData.LastTimeTriedToSpawn) > 1)))
             {
                 Globals.currentVehicleNumber++;
                 Globals.numberOfVehicleSpawnedInLastSecond++;
@@ -82,39 +90,84 @@ public class SplineVehicleSpawnerSystem : SystemBase
                         degree = -45;
                 }
 
-                //splineComponentData.isOccupied = true;
+                var track = splineComponentData.Track;
+                var splines = entityManager.GetBuffer<SplineBufferComponentData>(track);
+                var precedingSpline = splines[splineComponentData.id - 1].spline;
+                var precedingSplineComponentData = entityManager.GetComponentData<SplineComponentData>(precedingSpline);
+                var nextSpline = splines[splineComponentData.id + 1].spline;
+                var nextSplineComponentData = entityManager.GetComponentData<SplineComponentData>(nextSpline);
 
-                var splineId = splineComponentData.id;
-                var TrackEntity = splineComponentData.Track;
-
-                if (!splineComponentData.isForward)
-                    degree += 180;
-
-                var newCarComponentData = new CarComponentData
+                if (!splineComponentData.isOccupied && !precedingSplineComponentData.isOccupied && !nextSplineComponentData.isOccupied && splineComponentData.isForward /*&& (elapsedTime - spawnerComponentData.LastTimeTriedToSpawn) > 3*/ && spawnerComponentData.Turn == SpawnerComponentData.TurnWindowLength - 1 /*&& ((int)elapsedTime % 15 == 0)*/ && entityManager.HasComponent<BusStopComponentData>(getParentComponentDataFromEntity[getParentComponentDataFromEntity[track].Value].Value))
                 {
-                    maxSpeed = 0.25f,
-                    splineReachedAtTime = elapsedTime,
-                    SplineId = splineId,
-                    splineStart = spline,
-                    splineEnd = spline,
-                    Track = TrackEntity,
-                    isOnStreet = true,
-                    isPathUpdated = true,
-                    HasJustSpawned = true,
-                    isOnParkingArea = splineComponentData.isParkingSpawner
-                };
+                    var busPrefab = GetSingleton<PrefabComponentData>().Bus;
+                    Entity bus = ecb.Instantiate(busPrefab);
+                    ecb.SetComponent(bus, new Translation { Value = localToWorld.Position + 1f * math.normalize(localToWorld.Up) });
+                    ecb.SetComponent(bus, new Rotation { Value = quaternion.RotateY(math.radians(degree)) });
 
-                Entity carEntity = entityManager.Instantiate(splineComponentData.carEntity);
-                entityManager.SetComponentData(carEntity, new Translation { Value = localToWorld.Position + 0.5f * math.normalize(localToWorld.Up) });
-                entityManager.SetComponentData(carEntity, new Rotation { Value = quaternion.RotateY(math.radians(degree))});
-                ecb.AddComponent(carEntity, newCarComponentData);
+                    var newCarComponentData = new CarComponentData
+                    {
+                        maxSpeed = 0.25f,
+                        splineReachedAtTime = elapsedTime,
+                        SplineId = splineComponentData.id,
+                        splineStart = spline,
+                        splineEnd = spline,
+                        Track = splineComponentData.Track,
+                        isOnStreet = true,
+                        isPathUpdated = true,
+                        HasJustSpawned = true,
+                        IsBus = true
+                    };
+                    ecb.SetComponent(bus, newCarComponentData);
 
-                splineComponentData.lastTimeTriedToSpawn = elapsedTime;
-                splineComponentData.lastSpawnedCar = carEntity;
+                    precedingSplineComponentData.isOccupied = true;
+                    ecb.SetComponent(precedingSpline, precedingSplineComponentData);
+                    splineComponentData.isOccupied = true;
+                    nextSplineComponentData.isOccupied = true;
+                    ecb.SetComponent(nextSpline, nextSplineComponentData);
+
+                    var occupiedSplines = ecb.AddBuffer<SplineBufferComponentData>(bus);
+                    occupiedSplines.Add(new SplineBufferComponentData { spline = precedingSpline });
+                    occupiedSplines.Add(new SplineBufferComponentData { spline = spline });
+                    occupiedSplines.Add(new SplineBufferComponentData { spline = nextSpline });
+
+                    spawnerComponentData.LastTimeTriedToSpawn = elapsedTime;
+                    spawnerComponentData.Turn = (spawnerComponentData.Turn + 1) % SpawnerComponentData.TurnWindowLength;
+                }
+                else if (!splineComponentData.isOccupied /*&& (elapsedTime - spawnerComponentData.LastTimeTriedToSpawn) > 3*/ && spawnerComponentData.Turn < SpawnerComponentData.TurnWindowLength)
+                {
+                    var splineId = splineComponentData.id;
+                    var TrackEntity = splineComponentData.Track;
+
+                    if (!splineComponentData.isForward)
+                        degree += 180;
+
+                    var newCarComponentData = new CarComponentData
+                    {
+                        maxSpeed = 0.25f,
+                        splineReachedAtTime = elapsedTime,
+                        SplineId = splineId,
+                        splineStart = spline,
+                        splineEnd = spline,
+                        Track = TrackEntity,
+                        isOnStreet = true,
+                        isPathUpdated = true,
+                        HasJustSpawned = true,
+                        isOnParkingArea = splineComponentData.isParkingSpawner
+                    };
+
+                    var prefabs = GetSingleton<PrefabComponentData>();
+                    Entity carEntity = ecb.Instantiate(prefabs.Car);
+                    ecb.SetComponent(carEntity, new Translation { Value = localToWorld.Position + 0.5f * math.normalize(localToWorld.Up) });
+                    ecb.SetComponent(carEntity, new Rotation { Value = quaternion.RotateY(math.radians(degree)) });
+                    ecb.SetComponent(carEntity, newCarComponentData);
+
+                    spawnerComponentData.LastTimeTriedToSpawn = elapsedTime;
+                    spawnerComponentData.Turn = (spawnerComponentData.Turn + 1) % SpawnerComponentData.TurnWindowLength;
+                }
             }
             else if(splineComponentData.isSpawner && splineComponentData.isOccupied == true)
             {
-                splineComponentData.lastTimeTriedToSpawn = elapsedTime;
+                spawnerComponentData.LastTimeTriedToSpawn = elapsedTime;
             }
         }).WithStructuralChanges().Run();
 

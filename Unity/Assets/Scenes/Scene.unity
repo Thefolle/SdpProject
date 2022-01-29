@@ -484,6 +484,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82311d2b11a2611499825d9d4bb0848b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Car: {fileID: 9067497099830669789, guid: d882a3771d5e4574c8348190ce3dca18, type: 3}
+  Bus: {fileID: 5716255488173762546, guid: 897150b750ce7724981d5f78970d7e2f, type: 3}
   District: {fileID: 1721937435237250535, guid: 4357a5c3216efc248a3ccbf32c984d9b, type: 3}
   District2: {fileID: 1029350972003140956, guid: 4bfba9ea5304f784e9550e9e899c3814, type: 3}
   District3: {fileID: 1721937435237250535, guid: 2575d3c3fcc4ad34c8a78943e22d5917, type: 3}
