@@ -93,7 +93,14 @@ public class SplineVehicleMovementSystem : SystemBase
                             if (mySplineEndComponentData.isParkingEntrance) carComponentData.isOnParkingArea = true;
                             else if (mySplineEndComponentData.isParkingExit) carComponentData.isOnParkingArea = false;
 
-                            if (!carComponentData.isOnStreet || carComponentData.isOnParkingArea) rotation.Value = localToWorldSplineEnd.Rotation;
+                            if (carComponentData.isOnParkingArea || !carComponentData.isOnStreet)
+                            {
+                                ecb.SetComponent(carEntity, new Rotation { Value = localToWorldSplineEnd.Rotation });
+                            }
+                            else if (carComponentData.isOnStreet && mySplineEndComponentData.id == 0)
+                            {
+                                ecb.SetComponent(carEntity, new Rotation { Value = quaternion.RotateY(math.radians(mySplineEndComponentData.degreeRotationStreet)) });
+                            }
 
                             carComponentData.SplineId = carComponentData.SplineId + 1;
                             carComponentData.splineReachedAtTime = elapsedTime;
@@ -194,8 +201,17 @@ public class SplineVehicleMovementSystem : SystemBase
                     frontSplineComponentData.isOccupied = true;
                     entityManager.SetComponentData(frontSpline, frontSplineComponentData);
 
+                    var splineEndComponentData = entityManager.GetComponentData<SplineComponentData>(splineEnd);
+                    if (carComponentData.isOnParkingArea || !carComponentData.isOnStreet)
+                    {
+                        ecb.SetComponent(carEntity, new Rotation { Value = getLocalToWorldComponentData[splineEnd].Rotation });
+                    }
+                    else if (carComponentData.isOnStreet && splineEndComponentData.id == 0)
+                    {
+                        ecb.SetComponent(carEntity, new Rotation { Value = quaternion.RotateY(math.radians(splineEndComponentData.degreeRotationStreet)) });
+                    }
 
-                    if (!carComponentData.isOnStreet) rotation.Value = getLocalToWorldComponentData[splineEnd].Rotation;
+                    //if (!carComponentData.isOnStreet) rotation.Value = getLocalToWorldComponentData[splineEnd].Rotation;
 
                     var occupiedSplines = getSplineBufferComponentData[carEntity]; // bus occupied splines
                     var firstOccupiedSplineComponentData = getSplineComponentDataFromEntity[occupiedSplines[0].spline];

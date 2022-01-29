@@ -172,12 +172,22 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2106453029021087725, guid: 0fd1fb63fd62584418b2612c30a84306, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 42.8537
+      objectReference: {fileID: 0}
+    - target: {fileID: 2106453029021087725, guid: 0fd1fb63fd62584418b2612c30a84306, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2106453029021087725, guid: 0fd1fb63fd62584418b2612c30a84306, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2106453029021087726, guid: 0fd1fb63fd62584418b2612c30a84306, type: 3}
+      propertyPath: m_Text
+      value: 'Current vehicle number: - [-%]
+
+        [- Cars, - Buses]'
       objectReference: {fileID: 0}
     - target: {fileID: 2106453029244098825, guid: 0fd1fb63fd62584418b2612c30a84306, type: 3}
       propertyPath: m_AnchorMax.y
