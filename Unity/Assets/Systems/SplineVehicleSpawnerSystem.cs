@@ -8,6 +8,7 @@ public static class Globals
     public static bool startStats = false;
     public static int maxVehicleNumber = 0;
     public static int currentVehicleNumber = 0;
+    public static int currentBusNumber = 0;
     public static int numberDespawnedVehicles = 0;
     public static int numberOfSmallDistricts = 0;
     public static int numberOfMediumDistricts = 0;
@@ -118,6 +119,8 @@ public class SplineVehicleSpawnerSystem : SystemBase
                         IsBus = true
                     };
                     ecb.SetComponent(bus, newCarComponentData);
+
+                    Globals.currentBusNumber++;
 
                     precedingSplineComponentData.isOccupied = true;
                     ecb.SetComponent(precedingSpline, precedingSplineComponentData);

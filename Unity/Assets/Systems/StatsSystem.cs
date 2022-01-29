@@ -16,7 +16,11 @@ public class StatsSystem : MonoBehaviour
         if (Globals.startStats)
         {
             int maxVehicleNumber = Globals.maxVehicleNumber;
+
             int currentVehicleNumber = Globals.currentVehicleNumber;
+            int currentBusesNumber = Globals.currentBusNumber;
+            int currentCarsNumber = currentVehicleNumber - currentBusesNumber;
+
             int numberDespawnedVehicles = Globals.numberDespawnedVehicles;
             int numberOfVehicleSpawnedInLastSecond = Globals.numberOfVehicleSpawnedInLastSecond;
             int numberOfVehicleDespawnedInLastSecond = Globals.numberOfVehicleDespawnedInLastSecond;
@@ -42,7 +46,7 @@ public class StatsSystem : MonoBehaviour
             }
 
             if (currentVehicleNumberText != null)
-                currentVehicleNumberText.text =  maxVehicleNumber != -1 ? $"Current vehicle number: {currentVehicleNumber} [{fillPercentage}%]" : $"Current vehicle number: {currentVehicleNumber}";
+                currentVehicleNumberText.text =  maxVehicleNumber != -1 ? $"Current vehicle number: {currentVehicleNumber} [{fillPercentage}%]\n[{currentCarsNumber} Cars, {currentBusesNumber} Buses]" : $"Current vehicle number: {currentVehicleNumber}\n[{currentCarsNumber} Cars, {currentBusesNumber} Buses]";
             if (numberOfDespawnedVehiclesText != null)
                 numberOfDespawnedVehiclesText.text = $"Number of despawned vehicles: {numberDespawnedVehicles}";
             if (lastSecondStats != null)

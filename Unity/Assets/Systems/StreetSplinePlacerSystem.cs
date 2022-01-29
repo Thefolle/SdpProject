@@ -453,9 +453,6 @@ public class StreetSplinePlacerSystem : SystemBase
                         if (endingCross != Entity.Null)
                         {
                             var spline = splineBufferComponentData[splineBufferComponentData.Length - 1]; // last spline: isLast
-
-                            var splineComponentData = entityManager.GetComponentData<SplineComponentData>(spline.spline);
-                            LogErrorFormat("{0}, {1}", splineComponentData.isParkingExit, spline.spline.Index);
                             
                             var theCross = endingCross;
                             bool bottom = bottomOfEnding;
