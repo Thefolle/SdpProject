@@ -94,7 +94,7 @@ Those areas are very strong car spawning points but weak despawing points, since
 
 The simulator supports a circular bus transport system. Some streets act as bus stops, where buses spawn and despawn. The spawn frequency of buses is low if compared to that of cars.
 The path between two successive bus stops is computed at runtime, during initialization phase; the user can instead specify which street should work as bus stop by adding to it a `BusStopComponentData`. The simulator can link bus stops even if they belong to different districts.
-Note: if a street in a district prefab is eligible to become a bus stop, all instances of the same district prefab will have that bus stop in that street.
+*Note: if a street in a district prefab is eligible to become a bus stop, all instances of the same district prefab will have that bus stop in that street.*
 
 ### Dynamic Camera
 
@@ -252,7 +252,7 @@ The suggested path comprises the following improvements:
 - Curved streets: this is an aesthetical improvement, since it implies effort just to model the streets in Blender and a more general algorithm to place splines along them; the simulation results are not expected to change;
 - Uphills and downhills: the same considerations of curved streets subsist also here;
 - Different types of cars: this task surely would add complexity to the simulation, but it would add value to the project;
-- A public transport circuit: the same considerations of adding different types of car subsist also here.
+- Extension of the public transport with multiple bus lines: currently the simulator supports one bus line for the whole city; multiple lines would make the city more realistic and enrich its behaviour.
 
 ### How to generate a new district?
 
