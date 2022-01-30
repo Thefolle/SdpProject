@@ -104,7 +104,8 @@ public class SplineVehicleSpawnerSystem : SystemBase
                 var nextSpline = splines[splineComponentData.id + 1].spline;
                 var nextSplineComponentData = entityManager.GetComponentData<SplineComponentData>(nextSpline);
 
-                if (!splineComponentData.isOccupied && !precedingSplineComponentData.isOccupied && !nextSplineComponentData.isOccupied && splineComponentData.isForward /*&& (elapsedTime - spawnerComponentData.LastTimeTriedToSpawn) > 3*/ && spawnerComponentData.Turn == SpawnerComponentData.TurnWindowLength - 1 /*&& ((int)elapsedTime % 15 == 0)*/ && entityManager.HasComponent<BusStopComponentData>(getParentComponentDataFromEntity[getParentComponentDataFromEntity[track].Value].Value))
+
+                if (entityManager.GetComponentData<TrackComponentData>(splineComponentData.Track).relativeId == 1 && !splineComponentData.isOccupied && !precedingSplineComponentData.isOccupied && !nextSplineComponentData.isOccupied && splineComponentData.isForward && spawnerComponentData.Turn == SpawnerComponentData.TurnWindowLength - 1 && entityManager.HasComponent<BusStopComponentData>(getParentComponentDataFromEntity[getParentComponentDataFromEntity[track].Value].Value))
                 {
                     var busPrefab = GetSingleton<PrefabComponentData>().Bus;
                     Entity bus = ecb.Instantiate(busPrefab);
