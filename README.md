@@ -90,7 +90,7 @@ They are intended as underground parking areas where cars go parking, technicall
 Those areas are very strong car spawning points but weak despawing points, since the car can randomly decide whether to enter or not when they are approaching the cross leading to the parking area.
 
 ### Dynamic Camera
-In order to assure the user the best experience with the simulator, it has been implemented a Dynamic Camera that allows to move freely inside the city and to look around, in a Fist Person View.
+In order to assure the user the best experience with the simulator, it has been implemented a Dynamic Camera that allows to move freely inside the city and to look around, in a First Person View.
 The camera system is the only monobehaviour set of scripts because it is not possible to convert it into an entity, since it is not supported by Unity ECS yet.
 With this system, the user can literally fly inside the map, and the commands are:
 - `WASD` to move on the XZ plane; 
