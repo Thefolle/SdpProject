@@ -33,10 +33,6 @@ public struct SplineComponentData : IComponentData
     /// <para>The car prefab, useful to spawn new cars when <see cref="isSpawner"/> is set.</para>
     /// </summary>
     public Entity carEntity;
-    /// <summary>
-    /// <para>The last car that have been spawned by the underlying node. Useful to configure the spawn strategy. Meaningful if <see cref="isSpawner"/> is set.</para>
-    /// </summary>
-    public Entity lastSpawnedCar;
 
     /// <summary>
     /// <para>Flag that tells whether the node can spawn cars.</para>

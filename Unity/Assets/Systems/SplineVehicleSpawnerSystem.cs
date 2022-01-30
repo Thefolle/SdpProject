@@ -164,6 +164,11 @@ public class SplineVehicleSpawnerSystem : SystemBase
                     ecb.SetComponent(carEntity, new Rotation { Value = quaternion.RotateY(math.radians(degree)) });
                     ecb.SetComponent(carEntity, newCarComponentData);
 
+                    splineComponentData.isOccupied = true;
+
+                    var occupiedSplines = ecb.AddBuffer<SplineBufferComponentData>(carEntity);
+                    occupiedSplines.Add(new SplineBufferComponentData { spline = spline });
+
                     spawnerComponentData.LastTimeTriedToSpawn = elapsedTime;
                     spawnerComponentData.Turn = (spawnerComponentData.Turn + 1) % SpawnerComponentData.TurnWindowLength;
                 }

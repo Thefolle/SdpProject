@@ -156,7 +156,7 @@ public class Graph
 
             for (int j = 0; j < possibleNextCrossIds.Count; j++, randomJ = (randomJ + 1) % possibleNextCrossIds.Count)
             {
-                if (!pathInt.Contains(possibleNextCrossIds[randomJ]))
+                if (!pathInt[pathInt.Count - 2].Equals(possibleNextCrossIds[randomJ]))
                 {
                     nextCrossId = possibleNextCrossIds[randomJ];
                     break;

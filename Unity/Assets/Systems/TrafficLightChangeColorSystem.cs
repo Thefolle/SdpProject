@@ -12,7 +12,7 @@ public class TrafficLightChangeColorSystem : SystemBase
     protected override void OnUpdate()
     {
         double elapsedTime = Time.ElapsedTime;
-        if (elapsedTime < 0.5 || World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled || World.GetExistingSystem<GraphGeneratorSystem>().Enabled)
+        if (elapsedTime < 0.5 || World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled || World.GetExistingSystem<GraphGeneratorSystem>().Enabled || World.GetExistingSystem<SemaphoreStateAssignerSystem>().Enabled)
         {
             simStart = elapsedTime;
             return;
@@ -37,6 +37,7 @@ public class TrafficLightChangeColorSystem : SystemBase
                 if (getTrafficLightCrossComponentDataFromEntity.HasComponent(trafficLightCross.Value))
                 {
                     var trafficLightCrossComponentData = getTrafficLightCrossComponentDataFromEntity[trafficLightCross.Value];
+                    var wasGreen = trafficLightComponentData.isGreen;
                     if (getChildComponentDataFromEntity.HasComponent(trafficLight))
                     {
                         foreach (var trafficLightPanel in getChildComponentDataFromEntity[trafficLight])
@@ -75,23 +76,17 @@ public class TrafficLightChangeColorSystem : SystemBase
                             }
                         }
                     }
-                    else
-                    {
-                        //LogErrorFormat("{0} has no child component", trafficLight.Index);
-                    }
 
                     // SPLINE
-                    if (trafficLightComponentData.Spline1 != Entity.Null)
+                    
+                    if (trafficLightComponentData.Spline1 != Entity.Null && trafficLightComponentData.Spline2 != Entity.Null && wasGreen != trafficLightComponentData.isGreen)
                     {
-                        var spline1 = getSplineComponentDataFromEntity[trafficLightComponentData.Spline1];
-                        entityManager.SetComponentData(trafficLightComponentData.Spline1, new SplineComponentData { id = spline1.id, isLast = spline1.isLast, Track = spline1.Track, isSpawner = spline1.isSpawner, carEntity = spline1.carEntity, lastSpawnedCar = spline1.lastSpawnedCar, isForward = spline1.isForward, isOccupied = !trafficLightComponentData.isGreen });
+
+                        PostUpdateCommands.SetComponent(trafficLightComponentData.Spline1, new SemaphoreStateComponentData { IsGreen = trafficLightComponentData.isGreen });
+                        PostUpdateCommands.SetComponent(trafficLightComponentData.Spline2, new SemaphoreStateComponentData { IsGreen = trafficLightComponentData.isGreen });
+
                     }
 
-                    if (trafficLightComponentData.Spline2 != Entity.Null)
-                    {
-                        var spline2 = getSplineComponentDataFromEntity[trafficLightComponentData.Spline2];
-                        entityManager.SetComponentData(trafficLightComponentData.Spline2, new SplineComponentData { id = spline2.id, isLast = spline2.isLast, Track = spline2.Track, isSpawner = spline2.isSpawner, carEntity = spline2.carEntity, lastSpawnedCar = spline2.lastSpawnedCar, isForward = spline2.isForward, isOccupied = !trafficLightComponentData.isGreen });
-                    }
                 }
             }).Run();
 

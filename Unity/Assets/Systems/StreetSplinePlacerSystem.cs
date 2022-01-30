@@ -17,6 +17,7 @@ public class StreetSplinePlacerSystem : SystemBase
         var getChildBuffer = GetBufferFromEntity<Child>();
         var getSplineComponentData = GetComponentDataFromEntity<SplineComponentData>();
 
+
         Entities.ForEach((ref TrackComponentData trackComponentData, in Entity trackEntity, in LocalToWorld localToWorld, in Translation translation) =>
         {
             // if the track belongs to a street
@@ -24,6 +25,8 @@ public class StreetSplinePlacerSystem : SystemBase
             {
                 // Calculating the number of splines to be placed, one each 10f, (example if lenght = 60, 2*60/10 + 1 = 13 is the number of splines)
                 var lane = entityManager.GetComponentData<Parent>(trackEntity);
+
+                
 
                 if (entityManager.HasComponent<Parent>(lane.Value))
                 {
