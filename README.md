@@ -223,7 +223,7 @@ At the end of the five runs, among the different machines, the maximum number of
 
 ## Life cycle of the simulation
 
-At the start of a simulation, these three systems will be called only once, in this order:
+At the start of a simulation, these systems are called only once and then disabled, in this order:
 
 1. DistrictPlacerSystem;
 2. GraphGeneratorSystem;
@@ -231,7 +231,7 @@ At the start of a simulation, these three systems will be called only once, in t
 4. StreetSplinePlacerSystem;
 5. SemaphoreStateAssignerSystem.
 
-The remaining systems run without any specific order.
+The remaining systems, in charge of performing the simulation, run without any specific order.
 
 ## Last considerations
 
