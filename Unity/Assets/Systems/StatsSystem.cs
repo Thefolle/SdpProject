@@ -22,8 +22,8 @@ public class StatsSystem : MonoBehaviour
             int currentCarsNumber = currentVehicleNumber - currentBusesNumber;
 
             int numberDespawnedVehicles = Globals.numberDespawnedVehicles;
-            int numberOfVehicleSpawnedInLastSecond = Globals.numberOfVehicleSpawnedInLastSecond;
-            int numberOfVehicleDespawnedInLastSecond = Globals.numberOfVehicleDespawnedInLastSecond;
+            int numberOfVehicleSpawnedInLastSecond = Globals.numberOfVehicleSpawnedInLastSecondToPrint;
+            int numberOfVehicleDespawnedInLastSecond = Globals.numberOfVehicleDespawnedInLastSecondToPrint;
             int trend = numberOfVehicleSpawnedInLastSecond - numberOfVehicleDespawnedInLastSecond;
 
             float fillPercentage = maxVehicleNumber != 0 ? (float)currentVehicleNumber / (float)maxVehicleNumber * 100 : 0f;
@@ -50,7 +50,7 @@ public class StatsSystem : MonoBehaviour
             if (numberOfDespawnedVehiclesText != null)
                 numberOfDespawnedVehiclesText.text = $"Number of despawned vehicles: {numberDespawnedVehicles}";
             if (lastSecondStats != null)
-                lastSecondStats.text = $"Last Second Stats:\nSpawned = {numberOfVehicleSpawnedInLastSecond} | Despawned = {numberOfVehicleDespawnedInLastSecond} [Trend = {trend}]";
+                lastSecondStats.text = $"Last Second Stats [Vehicles per second]:\nSpawned = {numberOfVehicleSpawnedInLastSecond} | Despawned = {numberOfVehicleDespawnedInLastSecond} [Growth = {trend}]";
         }
     }    
 }
