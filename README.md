@@ -87,7 +87,7 @@ Cars receive a random path at spawn time, that guides them from the source stree
 
 #### Parking areas
 They are intended as underground parking areas where cars go parking, technically despawn, or get out, technically spawn.
-Those areas are very strong car spawning points but weak despawing points, since the car can randomly decide wether to enter or not when they are approaching the cross leading to the parking area.
+Those areas are very strong car spawning points but weak despawing points, since the car can randomly decide whether to enter or not when they are approaching the cross leading to the parking area.
 
 ### Dynamic Camera
 In order to assure the user the best experience with the simulator, it has been implemented a Dynamic Camera that allows to move freely inside the city and to look around, in a Fist Person View.
