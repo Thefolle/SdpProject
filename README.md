@@ -88,7 +88,7 @@ Cars receive a random path at spawn time, that guides them from the source stree
 #### Parking areas
 
 They are intended as underground parking areas where cars go parking, technically despawn, or get out, technically spawn.
-Those areas are very strong car spawning points but weak despawing points, since the car can randomly decide wether to enter or not when they are approaching the cross leading to the parking area.
+Those areas are very strong car spawning points but weak despawing points, since the car can randomly decide whether to enter or not when they are approaching the cross leading to the parking area.
 
 #### Public transport
 
@@ -96,9 +96,9 @@ The simulator supports a circular bus transport system. Some streets act as bus 
 The path between two successive bus stops is computed at runtime, during initialization phase; the user can instead specify which street should work as bus stop by adding to it a `BusStopComponentData`. The simulator can link bus stops even if they belong to different districts.
 Note: if a street in a district prefab is eligible to become a bus stop, all instances of the same district prefab will have that bus stop in that street.
 
-#### Dynamic Camera
+### Dynamic Camera
 
-In order to assure the user the best experience with the simulator, it has been implemented a Dynamic Camera that allows to move freely inside the city and to look around, in a Fist Person View.
+In order to assure the user the best experience with the simulator, it has been implemented a Dynamic Camera that allows to move freely inside the city and to look around, in a First Person View.
 The camera system is the only monobehaviour set of scripts because it is not possible to convert it into an entity, since it is not supported by Unity ECS yet.
 With this system, the user can literally fly inside the map, and the commands are:
 
