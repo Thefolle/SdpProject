@@ -60,8 +60,8 @@ The developers, once again, realized that realism was not a requirement of the p
 
 The developers have conceived a general city as a matrix made up of square districts. Each district has predefined characteristics in terms of density. The scene under simulation can be customized as described beneath.
 
-1. The user writes the city matrix as a json file called `city.json`. The user validates the json file against the [schema](./Unity/Assets/Resources/citySchema.json) in order to probe any syntax error;
-2. The user saves the file in `<UnityRootFolder>/Assets/Resources/city.json`, as it is automatically loaded by the simulator so as to build the intended city.
+1. The user writes the city matrix as a json file called `City.json`. The user validates the json file against the [schema](./Unity/Assets/Resources/citySchema.json) in order to probe any syntax error;
+2. The user saves the file in `<UnityRootFolder>/Assets/Resources/City.json`, as it is automatically loaded by the simulator so as to build the intended city.
 
 ### How does the simulator work?
 
@@ -84,6 +84,23 @@ These nodes are placed dynamically at run time on the streets, at the very begin
 At runtime, each car proceeds node by node along a trajectory, i.e. spline, that is the linear interpolation of two successive nodes. Cars therefore follow a series of splines that are located across streets and crosses.
 
 Cars receive a random path at spawn time, that guides them from the source street/cross until the destination street/cross; the path is currently filled with streets and crosses choosen randomly.
+
+### Dynamic Camera
+In order to assure the user the best experience with the simulator, it has been implemented a Dynamic Camera that allows to move freely inside the city and to look around, in a Fist Person View.
+The camera system is the only monobehaviour set of scripts because it is not possible to convert it into an entity, since it is not supported by Unity ECS yet.
+With this system, the user can literally fly inside the map, using the `WASD` commands to move on the XZ plane, `SPACE` and `LSHIFT` keys to move respectively up and down on the Y axis (min. Y = 40, max. Y = 800) and moving the mouse allows to rotate the camera.
+The `H` key toggles on and off the mouse rotation. 
+For a better experience, if the camera is placed in a Y position lower than 70, the movements are slower so that the user can follow the vehicles more precisely, and if it is located in a Y position higher than 500, they are faster so that one can quickly change area. 
+
+### Simulation Stats
+During the simulation the user can view a stat panel attached to the camera that allows to keep track of some parameters such as:
+ - number of high/medium/low density districts
+ - max number of active vehicles set for the simulation, if specified in `City.json` file
+ - current vehicle number (total, car number and bus number) 
+ - number of despawned vehicles so far 
+ - number of spawned/despawned vehicles-per-second.
+
+This panel can be toggled on and off by pressing the `T` key 
 
 ### The output of the simulator
 
@@ -172,7 +189,7 @@ At the end of the five runs, among the different machines, the maximum number of
 
 ## Brief description of each system
 
-- DistrictPlacerSystem: instantiates and links the district specified in the input city.json. Then becomes inactive for the rest of the simulation;
+- DistrictPlacerSystem: instantiates and links the district specified in the input `City.json`. Then becomes inactive for the rest of the simulation;
 - GraphGeneratorSystem: builds the underlying graph data structure given the spawned city. Then becomes inactive for the rest of the simulation;
 - StreetSplinePlacerSystem: instantiates and positions all the nodes on streets that will later be interpolated to create the splines useful for vehicle movement. Then becomes inactive for the rest of the simulation;
 - SplineTrackAssignerSystem: assigns the subsequent track to each car when it is at the end of a cross/street; it also initializes the data structures of just-spawned cars;
@@ -247,7 +264,7 @@ Finally open DistrictPlacerSystem and add the new district in the two switch cas
 
 ### How to spawn a different city?
 
-The user can easily configure a city by modifing the city.json file located in `<UnityRootFolder>/Assets/Resources/city.json`. The file is structured as a matrix of districts. Each district is specified through its name. An example follows below:
+The user can easily configure a city by modifing the `City.json` file located in `<UnityRootFolder>/Assets/Resources/city.json`. The file is structured as a matrix of districts. Each district is specified through its name. An example follows below:
 
 ```json
 {
@@ -259,3 +276,17 @@ The user can easily configure a city by modifing the city.json file located in `
 ```
 
 ![City example](./Documentation/img/cityExample.JPG)
+
+The user may specify in `City.json` the maximum number of active vehicles in the simulation by adding the `"maxVehicleNumber"`.
+It follows an example, if the user wants to cap the vehicle number to 4000 he/she can:
+
+ ```json
+{
+    "districts": [
+        ["sm-1", "md-1"],
+        ["sm-1", "lg-1"]
+    ], 
+    "maxVehicleNumber": 4000
+}
+```
+This is an optional field, if not specified there will be no constraints in that sense.
