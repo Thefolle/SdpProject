@@ -86,29 +86,40 @@ At runtime, each car proceeds node by node along a trajectory, i.e. spline, that
 Cars receive a random path at spawn time, that guides them from the source street/cross/parking area until the destination street/cross/parking area; the path is currently filled with streets and crosses choosen randomly.
 
 #### Parking areas
+
 They are intended as underground parking areas where cars go parking, technically despawn, or get out, technically spawn.
 Those areas are very strong car spawning points but weak despawing points, since the car can randomly decide wether to enter or not when they are approaching the cross leading to the parking area.
 
-### Dynamic Camera
+#### Public transport
+
+The simulator supports a circular bus transport system. Some streets act as bus stops, where buses spawn and despawn. The spawn frequency of buses is low if compared to that of cars.
+The path between two successive bus stops is computed at runtime, during initialization phase; the user can instead specify which street should work as bus stop by adding to it a `BusStopComponentData`. The simulator can link bus stops even if they belong to different districts.
+Note: if a street in a district prefab is eligible to become a bus stop, all instances of the same district prefab will have that bus stop in that street.
+
+#### Dynamic Camera
+
 In order to assure the user the best experience with the simulator, it has been implemented a Dynamic Camera that allows to move freely inside the city and to look around, in a Fist Person View.
 The camera system is the only monobehaviour set of scripts because it is not possible to convert it into an entity, since it is not supported by Unity ECS yet.
 With this system, the user can literally fly inside the map, and the commands are:
-- `WASD` to move on the XZ plane; 
+
+- `WASD` to move on the XZ plane;
 - `SPACE` and `LSHIFT` keys to move respectively up and down on the Y axis (min. Y = 40, max. Y = 800);
 - moving the mouse allows to rotate the camera;
 - `H` key to toggle on and off the mouse rotation.
 
-For a better experience, if the camera is placed in a Y position lower than 70, the movements are slower so that the user can follow the vehicles more precisely, and if it is located in a Y position higher than 500, they are faster so that one can quickly change area. 
+For a better experience, if the camera is placed in a Y position lower than 70, the movements are slower so that the user can follow the vehicles more precisely, and if it is located in a Y position higher than 500, they are faster so that one can quickly change area.
 
-### Simulation Stats
+#### Simulation Stats
+
 During the simulation the user can view a stat panel attached to the camera that allows to keep track of some parameters such as:
- - number of high/medium/low density districts;
- - max number of active vehicles set for the simulation, if specified in `City.json` file
- - current vehicle number (total, car number and bus number); 
- - number of despawned vehicles so far; 
- - number of spawned/despawned vehicles-per-second.
 
-This panel can be toggled on and off by pressing the `T` key 
+- number of high/medium/low density districts;
+- max number of active vehicles set for the simulation, if specified in `City.json` file
+- current vehicle number (total, car number and bus number);
+- number of despawned vehicles so far;
+- number of spawned/despawned vehicles-per-second.
+
+This panel can be toggled on and off by pressing the `T` key.
 
 ### The output of the simulator
 
@@ -206,7 +217,9 @@ At the end of the five runs, among the different machines, the maximum number of
 - DespawningSystem: destroys all the entities that the simulator asked to;
 - Domain: a container for POCOs (Plain-Old C# Object); it currently holds the model of the city, as described by the pertinent json [schema](./Unity/Assets/Resources/citySchema.json);
 - TrafficLightSystem: given each cross, logically decides which semaphore has the turn;
-- TrafficLightChangeColorSystem: decides the color of a given traffic light based on the turn.
+- TrafficLightChangeColorSystem: decides the color of a given traffic light based on the turn;
+- BusPathFinderSystem: computes the minimum path between two bus stops, for each bus stop in the city; the path toward the next bus stop is assigned once to the current bus stop, since a bus should always follow the same path;
+- SemaphoreStateAssignerSystem: a minor system that makes streets aware of their current semaphore state (green or red).
 
 ## Life cycle of the simulation
 
@@ -214,7 +227,9 @@ At the start of a simulation, these three systems will be called only once, in t
 
 1. DistrictPlacerSystem;
 2. GraphGeneratorSystem;
-3. StreetSplinePlacerSystem;
+3. BusPathFinderSystem;
+4. StreetSplinePlacerSystem;
+5. SemaphoreStateAssignerSystem.
 
 The remaining systems run without any specific order.
 
@@ -298,4 +313,5 @@ It follows an example, if the user wants to cap the vehicle number to 4000 he/sh
     "maxVehicleNumber": 4000
 }
 ```
+
 This is an optional field, if not specified there will be no constraints in that sense.
