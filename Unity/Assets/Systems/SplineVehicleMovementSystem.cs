@@ -58,6 +58,16 @@ public class SplineVehicleMovementSystem : SystemBase
                     return;
                 }
 
+                /* Adjust rotation */
+                if (carComponentData.isOnParkingArea || !carComponentData.isOnStreet)
+                {
+                    rotation.Value = getLocalToWorldComponentData[splineEnd].Rotation;
+                }
+                else if (carComponentData.isOnStreet && splineEndComponentData.id == 0)
+                {
+                    rotation.Value = quaternion.RotateY(math.radians(splineEndComponentData.degreeRotationStreet));
+                }
+
                 var splineBuffer = getSplineBufferComponentData[carComponentData.Track]; // beware that the track is updated as soon as the front spline is free, not when the center of the vehicle reaches the new track
                 int frontSplineId; // the id of the spline in front of the vehicle
 
@@ -71,7 +81,6 @@ public class SplineVehicleMovementSystem : SystemBase
                         var semaphoreStateComponentData = getSemaphoreStateComponentData[splineBuffer[frontSplineId].spline];
                         if (!semaphoreStateComponentData.IsGreen) return;
                     }
-
                     /* if the next spline can be occupied, then update the car state */
                     carComponentData.needToUpdatedPath = false;
                     carComponentData.SplineId = -(NumberOfOccupiedSplines / 2); // prepare for next frames, don't use in this frame
@@ -112,7 +121,7 @@ public class SplineVehicleMovementSystem : SystemBase
                 frontSplineComponentData.isOccupied = true;
                 entityManager.SetComponentData(frontSpline, frontSplineComponentData);
 
-                if (!carComponentData.isOnStreet || carComponentData.isOnParkingArea) rotation.Value = getLocalToWorldComponentData[splineEnd].Rotation;
+                //if (!carComponentData.isOnStreet) rotation.Value = getLocalToWorldComponentData[splineEnd].Rotation;
 
                 var occupiedSplines = getSplineBufferComponentData[carEntity]; // bus occupied splines
 

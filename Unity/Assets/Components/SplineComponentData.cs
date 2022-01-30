@@ -51,4 +51,5 @@ public struct SplineComponentData : IComponentData
 
     public bool isParkingEntrance;
     public bool isParkingExit;
+    public int degreeRotationStreet;
 }

@@ -81,10 +81,8 @@ public class TrafficLightChangeColorSystem : SystemBase
                     
                     if (trafficLightComponentData.Spline1 != Entity.Null && trafficLightComponentData.Spline2 != Entity.Null && wasGreen != trafficLightComponentData.isGreen)
                     {
-
                         PostUpdateCommands.SetComponent(trafficLightComponentData.Spline1, new SemaphoreStateComponentData { IsGreen = trafficLightComponentData.isGreen });
                         PostUpdateCommands.SetComponent(trafficLightComponentData.Spline2, new SemaphoreStateComponentData { IsGreen = trafficLightComponentData.isGreen });
-
                     }
 
                 }

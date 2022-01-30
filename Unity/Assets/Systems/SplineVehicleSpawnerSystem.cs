@@ -17,6 +17,8 @@ public static class Globals
     public static double heldTime = 0;
     public static int numberOfVehicleSpawnedInLastSecond = 0;
     public static int numberOfVehicleDespawnedInLastSecond = 0;
+    public static int numberOfVehicleSpawnedInLastSecondToPrint = 0;
+    public static int numberOfVehicleDespawnedInLastSecondToPrint = 0;
 }
 
 public class SplineVehicleSpawnerSystem : SystemBase
@@ -45,6 +47,10 @@ public class SplineVehicleSpawnerSystem : SystemBase
         if(Globals.heldTime >= 1)
         {
             Globals.heldTime = 0;
+
+            Globals.numberOfVehicleDespawnedInLastSecondToPrint = Globals.numberOfVehicleDespawnedInLastSecond;
+            Globals.numberOfVehicleSpawnedInLastSecondToPrint = Globals.numberOfVehicleSpawnedInLastSecond;
+
             Globals.numberOfVehicleSpawnedInLastSecond = 0;
             Globals.numberOfVehicleDespawnedInLastSecond = 0;
         }

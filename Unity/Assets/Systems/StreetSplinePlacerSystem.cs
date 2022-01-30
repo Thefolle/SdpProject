@@ -165,7 +165,8 @@ public class StreetSplinePlacerSystem : SystemBase
                                 Track = trackEntity,
                                 isLast = isForward ? true : false,
                                 isForward = isForward,
-                                carEntity = trackComponentData.carEntity
+                                carEntity = trackComponentData.carEntity,
+                                degreeRotationStreet = isForward ? degree : degree + 180
                             };
                             ecb.AddComponent(spline, newSplineComponentData);
                         }
@@ -177,7 +178,8 @@ public class StreetSplinePlacerSystem : SystemBase
                                 Track = trackEntity,
                                 isLast = isForward ? false : true,
                                 isForward = isForward,
-                                carEntity = trackComponentData.carEntity
+                                carEntity = trackComponentData.carEntity,
+                                degreeRotationStreet = isForward ? degree : degree + 180
                             };
                             ecb.AddComponent(spline, newSplineComponentData);
                         }
@@ -189,7 +191,8 @@ public class StreetSplinePlacerSystem : SystemBase
                                 Track = trackEntity,
                                 isSpawner = streetComponentData.IsBorder ? false : true,
                                 isForward = isForward,
-                                carEntity = trackComponentData.carEntity
+                                carEntity = trackComponentData.carEntity,
+                                degreeRotationStreet = isForward ? degree : degree + 180
                             };
                             ecb.AddComponent(spline, newSplineComponentData);
                             ecb.AddComponent(spline, new SpawnerComponentData { });
@@ -201,7 +204,8 @@ public class StreetSplinePlacerSystem : SystemBase
                                 id = isForward ? nSplinePlaced : (nSplinesToBePlaced - nSplinePlaced - 1),
                                 Track = trackEntity,
                                 isForward = isForward,
-                                carEntity = trackComponentData.carEntity
+                                carEntity = trackComponentData.carEntity,
+                                degreeRotationStreet = isForward ? degree : degree + 180
                             };
                             ecb.AddComponent(spline, newSplineComponentData);
                         }
