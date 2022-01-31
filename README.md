@@ -223,8 +223,8 @@ At the end of the five runs, among the different machines, the maximum number of
 - BusPathFinderSystem: computes the minimum path between two bus stops, for each bus stop in the city; the path toward the next bus stop is assigned once to the current bus stop, since a bus should always follow the same path;
 - SemaphoreStateAssignerSystem: a minor system that makes streets aware of their current semaphore state (green or red);
 - StatsSystem: manages the simulation stats, showing them on the canvas UI;
-- CameraRotationAndZoom: Manages Observer (camera) rotation and zoom;
-- ObserverMovement: Manages Observer (camera) movement.
+- CameraRotationAndZoom: Manages Observer (first person view camera) mouse rotation and up and down movement;
+- ObserverMovement: Manages Observer (first person view camera) movement on the XZ plane using a Character Controller.
 
 
 ## Life cycle of the simulation
