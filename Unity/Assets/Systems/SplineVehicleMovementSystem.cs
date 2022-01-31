@@ -128,8 +128,6 @@ public class SplineVehicleMovementSystem : SystemBase
                 frontSplineComponentData.isOccupied = true;
                 entityManager.SetComponentData(frontSpline, frontSplineComponentData);
 
-                //if (!carComponentData.isOnStreet) rotation.Value = getLocalToWorldComponentData[splineEnd].Rotation;
-
                 var firstOccupiedSplineComponentData = getSplineComponentDataFromEntity[occupiedSplines[0].spline];
                 firstOccupiedSplineComponentData.isOccupied = false; // free the rearmost occupied spline
                 entityManager.SetComponentData(occupiedSplines[0].spline, firstOccupiedSplineComponentData);

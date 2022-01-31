@@ -13,7 +13,7 @@ The developers have chosen not to use any external dependency, besides the core 
 
 ## How to run the benchmark
 
-In UnityHub, install the Unity version 2020.3.13; then from the `Projects` menu, open the `Unity` folder.
+In UnityHub, install the Unity version 2020.3.13;, then from the `Projects` menu, open the `Unity` folder.
 Once the project is fully loaded, change scene moving to the one called `Scene` and then just press play.
 
 ## The underlying technology: Unity DOTS
