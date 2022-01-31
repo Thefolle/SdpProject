@@ -59,7 +59,8 @@ public struct CarComponentData : IComponentData
 
     public bool isOnParkingArea;
 
-    public bool isOccupying;
-
+    /// <summary>
+    /// <para>Flag that tells whether the current vehicle is a bus or a car.</para>
+    /// </summary>
     public bool IsBus;
 }

@@ -11,32 +11,34 @@ public class SplineVehicleMovementSystem : SystemBase
     {
         double elapsedTime = Time.ElapsedTime;
 
-        if (World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled || World.GetExistingSystem<GraphGeneratorSystem>().Enabled) return;
+        if (World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled) return;
 
         var getSplineComponentDataFromEntity = GetComponentDataFromEntity<SplineComponentData>();
-        var getChildComponentData = GetBufferFromEntity<Child>();
-        var getLocalToWorldComponentDataFromEntity = GetComponentDataFromEntity<LocalToWorld>();
-        var getParentComponentData = GetComponentDataFromEntity<Parent>();
         var getSplineBufferComponentData = GetBufferFromEntity<SplineBufferComponentData>();
         var getTrackComponentData = GetComponentDataFromEntity<TrackComponentData>();
         var getLocalToWorldComponentData = GetComponentDataFromEntity<LocalToWorld>();
         var getSemaphoreStateComponentData = GetComponentDataFromEntity<SemaphoreStateComponentData>();
 
         EntityManager entityManager = World.EntityManager;
-        var ecb = new EntityCommandBuffer(Allocator.TempJob);
 
-        Entities.ForEach((ref Translation translation, ref CarComponentData carComponentData, ref Rotation rotation, in Entity carEntity) =>
+        Entities.ForEach((ref Translation translation, ref CarComponentData carComponentData, ref Rotation rotation, ref DynamicBuffer<SplineBufferComponentData> occupiedSplines, ref PollComponentData pollComponentData, in Entity carEntity) =>
         {
+            /* Check if it is time to poll or not*/
+            if (pollComponentData.Poll > 0)
+            {
+                pollComponentData.Poll = (pollComponentData.Poll + 1) % 32;
+                return;
+            }
+
             int NumberOfOccupiedSplines = getSplineBufferComponentData[carEntity].Length; // 1 for cars, 3 for buses as of now
 
             if (carComponentData.HasReachedDestination)
             {
-                var occupiedSplines = getSplineBufferComponentData[carEntity]; // bus occupied splines
                 foreach (var spline in occupiedSplines)
                 {
                     var splineComponentData = getSplineComponentDataFromEntity[spline.spline];
                     splineComponentData.isOccupied = false;
-                    ecb.SetComponent(spline.spline, splineComponentData);
+                    entityManager.SetComponentData(spline.spline, splineComponentData);
                 }
                 entityManager.SetComponentData(carEntity, new AskToDespawnComponentData { Asked = true });
                 return;
@@ -110,7 +112,11 @@ public class SplineVehicleMovementSystem : SystemBase
 
                 var frontSplineComponentData = getSplineComponentDataFromEntity[frontSpline];
 
-                if (frontSplineComponentData.isOccupied) return; // retry on next frame
+                if (frontSplineComponentData.isOccupied)
+                {
+                    pollComponentData.Poll++;
+                    return; // retry on next frame
+                }
 
                 if (getSemaphoreStateComponentData.HasComponent(frontSpline))
                 {
@@ -122,8 +128,6 @@ public class SplineVehicleMovementSystem : SystemBase
                 entityManager.SetComponentData(frontSpline, frontSplineComponentData);
 
                 //if (!carComponentData.isOnStreet) rotation.Value = getLocalToWorldComponentData[splineEnd].Rotation;
-
-                var occupiedSplines = getSplineBufferComponentData[carEntity]; // bus occupied splines
 
                 var firstOccupiedSplineComponentData = getSplineComponentDataFromEntity[occupiedSplines[0].spline];
                 firstOccupiedSplineComponentData.isOccupied = false; // free the rearmost occupied spline
@@ -155,8 +159,6 @@ public class SplineVehicleMovementSystem : SystemBase
 
         }).Run();
 
-        ecb.Playback(entityManager);
-        ecb.Dispose();
     }
 
     static Entity getNextNode(EntityManager entityManager, BufferFromEntity<SplineBufferComponentData> getSplineBufferComponentData, ComponentDataFromEntity<TrackComponentData> getTrackComponentData, ComponentDataFromEntity<SplineComponentData> getSplineComponentDataFromEntity, CarComponentData carComponentData, Entity carEntity, int frontSplineId)

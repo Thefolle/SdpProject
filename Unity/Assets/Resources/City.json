@@ -1,6 +1,8 @@
 {
     "districts": [
-        ["sm-1", "sm-1"]
+        ["sm-1", "sm-1"],
+		["md-1", "lg-1"],
+		["md-1", "lg-1"]
     ],
-    "maxVehicleNumber": 4000
+    "maxVehicleNumber": 8000
 }
