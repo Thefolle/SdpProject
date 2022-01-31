@@ -20,6 +20,7 @@ public class SplineVehicleMovementSystem : SystemBase
         var getSemaphoreStateComponentData = GetComponentDataFromEntity<SemaphoreStateComponentData>();
 
         EntityManager entityManager = World.EntityManager;
+        var ecb = new EntityCommandBuffer(Allocator.TempJob);
 
         Entities.ForEach((ref Translation translation, ref CarComponentData carComponentData, ref Rotation rotation, ref DynamicBuffer<SplineBufferComponentData> occupiedSplines, ref PollComponentData pollComponentData, in Entity carEntity) =>
         {
@@ -77,7 +78,7 @@ public class SplineVehicleMovementSystem : SystemBase
                 {
                     frontSplineId = 0;
                     var firstSplineComponentData = getSplineComponentDataFromEntity[splineBuffer[frontSplineId].spline];
-                    if (firstSplineComponentData.isOccupied) return; // retry on next frame in this same if block; here must be sure that the next spline will be occupied
+                    if (firstSplineComponentData.isOccupied) return; // retry afterwards in this same if block; here must be sure that the next spline will be occupied
                     if (getSemaphoreStateComponentData.HasComponent(splineBuffer[frontSplineId].spline))
                     {
                         var semaphoreStateComponentData = getSemaphoreStateComponentData[splineBuffer[frontSplineId].spline];
@@ -158,6 +159,9 @@ public class SplineVehicleMovementSystem : SystemBase
             }
 
         }).Run();
+
+        ecb.Playback(entityManager);
+        ecb.Dispose();
 
     }
 
