@@ -224,7 +224,7 @@ At the end of the five runs, among the different machines, the maximum number of
 - SemaphoreStateAssignerSystem: a minor system that makes streets aware of their current semaphore state (green or red);
 - StatsSystem: manages the simulation stats, showing them on the canvas UI;
 - CameraRotationAndZoom: Manages Observer (first person view camera) mouse rotation and up and down movement;
-- ObserverMovement: Manages Observer (first person view camera) movement on the XZ plane using a Character Controller.
+- ObserverMovement: Manages Observer (first person view camera) movement on the XZ plane using a Character Controller Component.
 
 
 ## Life cycle of the simulation
