@@ -664,6 +664,7 @@ GameObject:
   - component: {fileID: 1387156774876002414}
   - component: {fileID: 1239987606367339719}
   - component: {fileID: 3475166304995755495}
+  - component: {fileID: 6865898466384289438}
   m_Layer: 0
   m_Name: x_lcross_4x2
   m_TagString: Untagged
@@ -725,6 +726,18 @@ MonoBehaviour:
   BottomStreet: {fileID: 0}
   LeftStreet: {fileID: 0}
   CornerStreet: {fileID: 0}
+--- !u!114 &6865898466384289438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732754528412033748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d0a4c3612d2c154cb9ef170514e6065, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2253753979873652193
 GameObject:
   m_ObjectHideFlags: 0

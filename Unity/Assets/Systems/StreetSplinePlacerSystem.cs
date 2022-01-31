@@ -385,37 +385,6 @@ public class StreetSplinePlacerSystem : SystemBase
 
                 BubbleSort(splineBufferComponentData, entityManager);
 
-                /*var list = new List<SplineBufferComponentData>(splineBufferComponentData.ToNativeArray(Allocator.TempJob));
-                list.Sort(new Comparison<SplineBufferComponentData>((SplineBufferComponentData splineBufferComponentData1, SplineBufferComponentData splineBufferComponentData2) => {
-                    return entityManager.GetComponentData<SplineComponentData>(splineBufferComponentData1.spline).id -
-                        entityManager.GetComponentData<SplineComponentData>(splineBufferComponentData2.spline).id;
-                }));*/
-
-                //splineBufferComponentData.AsNativeArray().Sort<SplineBufferComponentData>((SplineBufferComponentData splineBufferComponentData1, SplineBufferComponentData splineBufferComponentData2) => { return 0; });
-
-                //splineBufferComponentData.AsNativeArray().Sort(lambdaSort);
-
-                /*splineBufferComponentData.AsNativeArray().Sort<SplineBufferComponentData>(((var a, var b) => {
-                    if (entityManager.GetComponentData<SplineComponentData>(a.spline).id > entityManager.GetComponentData<SplineComponentData>(b.spline).id)
-                        return 1;
-                    else
-                        return 0;
-                    }));*/
-
-                // invert the buffer elements so that their id is increasing
-                /*if (splineBufferComponentData.Length >= 2 &&
-                entityManager.GetComponentData<SplineComponentData>(splineBufferComponentData[0].spline).id > entityManager.GetComponentData<SplineComponentData>(splineBufferComponentData[1].spline).id)
-                {
-                    for (int i = 0; i < splineBufferComponentData.Length / 2; i++)
-                    {
-                        var tmp = splineBufferComponentData[i];
-                        splineBufferComponentData[i] = splineBufferComponentData[splineBufferComponentData.Length - i - 1];
-                        splineBufferComponentData[splineBufferComponentData.Length - i - 1] = tmp;
-                    }
-                }*/
-
-                //System.Array.Sort(splineBufferComponentData -> { });
-
                 // Manage traffic light for parkingArea
                 if (trackComponentData.IsOnStreet)
                 {

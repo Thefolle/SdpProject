@@ -19,6 +19,7 @@ public class SplineTrackAssignerSystem : SystemBase
         var getChildComponentData = GetBufferFromEntity<Child>();
         var getTrackComponentData = GetComponentDataFromEntity<TrackComponentData>();
         var getLaneComponentData = GetComponentDataFromEntity<LaneComponentData>();
+        var getEntityIndexBuffer = GetBufferFromEntity<EntityIndexBuffer>();
         EntityManager entityManager = World.EntityManager;
 
         Entities.ForEach((ref CarComponentData carComponentData, ref AskToDespawnComponentData askToDespawnComponentData, in Entity carEntity, in LocalToWorld localToWorld) =>
@@ -169,26 +170,12 @@ public class SplineTrackAssignerSystem : SystemBase
                 }
 
                 var streetTrackComponentData = getTrackComponentData[carComponentData.Track];
-                var buffer = getChildComponentData[currentCross];
-                var trackToAssign = Entity.Null;
-                var minimumRelativeTrackDistance = int.MaxValue;
-                int currentRelativeTrackDistance;
-                foreach (var trackChild in buffer)
-                {
-                    if (getTrackComponentData.HasComponent(trackChild.Value))
-                    {
-                        var crossTrackComponentData = getTrackComponentData[trackChild.Value];
-                        currentRelativeTrackDistance = math.abs(streetTrackComponentData.relativeId - crossTrackComponentData.relativeId);
-                        if (crossTrackComponentData.SourceDirection == sourceDirection && crossTrackComponentData.DestinationDirection == destinationDirection && currentRelativeTrackDistance < minimumRelativeTrackDistance)
-                        {
-                            trackToAssign = trackChild.Value;
-                            minimumRelativeTrackDistance = currentRelativeTrackDistance;
 
-                            if (minimumRelativeTrackDistance == 0) break;
-                        }
-                    }
+                var index = World.GetExistingSystem<CrossTrackIndexerSystem>().Indexes[sourceDirection][destinationDirection][streetTrackComponentData.relativeId];
+                var entityIndexBuffer = getEntityIndexBuffer[currentCross];
+                var trackToAssign = entityIndexBuffer[index].Track;
 
-                }
+
                 if (trackToAssign == Entity.Null)
                 {
                     //LogErrorFormat("The cross with id {0} doesn't contain a track with source direction {1} and destination direction {2}.", currentCross.Index, sourceDirection, destinationDirection);
