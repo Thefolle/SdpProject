@@ -86,7 +86,7 @@ public class SplineVehicleMovementSystem : SystemBase
                     }
                     /* if the next spline can be occupied, then update the car state */
                     carComponentData.needToUpdatedPath = false;
-                    carComponentData.SplineId = -(NumberOfOccupiedSplines / 2); // prepare for next frames, don't use in this frame
+                    carComponentData.SplineId = -(NumberOfOccupiedSplines / 2 + 1); // prepare for next frames, don't use in this frame
                 }
                 else
                 {
