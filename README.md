@@ -92,8 +92,10 @@ Those areas are very strong car spawning points but weak despawing points, since
 
 #### Public transport
 
-The simulator supports a circular bus transport system. Some streets act as bus stops, where buses spawn and despawn. The spawn frequency of buses is low if compared to that of cars.
+The simulator supports a circular bus transport system. Some streets act as bus stops, where buses spawn and despawn. The spawn frequency of buses is low if compared to that of cars. A bus spawns at a bus stop, follows the path toward the next bus stop where it is despawned.
+
 The path between two successive bus stops is computed at runtime, during initialization phase; the user can instead specify which street should work as bus stop by adding to it a `BusStopComponentData`. The simulator can link bus stops even if they belong to different districts.
+
 *Note: if a street in a district prefab is eligible to become a bus stop, all instances of the same district prefab will have that bus stop in that street.*
 
 ### Dynamic Camera
