@@ -27,7 +27,7 @@ public class SplineVehicleMovementSystem : SystemBase
             /* Check if it is time to poll or not*/
             if (pollComponentData.Poll > 0)
             {
-                pollComponentData.Poll = (pollComponentData.Poll + 1) % 32;
+                pollComponentData.Poll = (pollComponentData.Poll + 1) % 64;
                 return;
             }
 
