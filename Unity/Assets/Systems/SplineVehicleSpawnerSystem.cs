@@ -19,6 +19,8 @@ public static class Globals
     public static int numberOfVehicleDespawnedInLastSecond = 0;
     public static int numberOfVehicleSpawnedInLastSecondToPrint = 0;
     public static int numberOfVehicleDespawnedInLastSecondToPrint = 0;
+
+    public static int numberOfBusStops;
 }
 
 public class SplineVehicleSpawnerSystem : SystemBase
@@ -105,7 +107,7 @@ public class SplineVehicleSpawnerSystem : SystemBase
                 var nextSplineComponentData = entityManager.GetComponentData<SplineComponentData>(nextSpline);
 
 
-                if (entityManager.GetComponentData<TrackComponentData>(splineComponentData.Track).relativeId == 1 && !splineComponentData.isOccupied && !precedingSplineComponentData.isOccupied && !nextSplineComponentData.isOccupied && splineComponentData.isForward && spawnerComponentData.Turn == SpawnerComponentData.TurnWindowLength - 1 && entityManager.HasComponent<BusStopComponentData>(getParentComponentDataFromEntity[getParentComponentDataFromEntity[track].Value].Value))
+                if (entityManager.GetComponentData<TrackComponentData>(splineComponentData.Track).relativeId == 1 && Globals.numberOfBusStops > 1 && !splineComponentData.isOccupied && !precedingSplineComponentData.isOccupied && !nextSplineComponentData.isOccupied && splineComponentData.isForward && spawnerComponentData.Turn == SpawnerComponentData.TurnWindowLength - 1 && entityManager.HasComponent<BusStopComponentData>(getParentComponentDataFromEntity[getParentComponentDataFromEntity[track].Value].Value))
                 {
                     var busPrefab = GetSingleton<PrefabComponentData>().Bus;
                     Entity bus = ecb.Instantiate(busPrefab);

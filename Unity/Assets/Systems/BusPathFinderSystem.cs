@@ -55,10 +55,16 @@ public class BusPathFinderSystem : SystemBase
 
                 lastStreet = street;
             }
+
+            Globals.numberOfBusStops++;
+
         }).WithStructuralChanges().Run();
 
         ecb.Playback(entityManager);
         ecb.Dispose();
+
+        if (Globals.numberOfBusStops < 2)
+            Log("There is only one bus stop in this simulation. A bus needs at least two stops in order to spawn. No bus will be generated.");
 
         this.Enabled = false;
     }
