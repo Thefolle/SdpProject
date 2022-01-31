@@ -221,7 +221,11 @@ At the end of the five runs, among the different machines, the maximum number of
 - TrafficLightSystem: given each cross, logically decides which semaphore has the turn;
 - TrafficLightChangeColorSystem: decides the color of a given traffic light based on the turn;
 - BusPathFinderSystem: computes the minimum path between two bus stops, for each bus stop in the city; the path toward the next bus stop is assigned once to the current bus stop, since a bus should always follow the same path;
-- SemaphoreStateAssignerSystem: a minor system that makes streets aware of their current semaphore state (green or red).
+- SemaphoreStateAssignerSystem: a minor system that makes streets aware of their current semaphore state (green or red);
+- StatsSystem: manages the simulation stats, showing them on the canvas UI;
+- CameraRotationAndZoom: Manages Observer (first person view camera) mouse rotation and up and down movement;
+- ObserverMovement: Manages Observer (first person view camera) movement on the XZ plane using a Character Controller Component.
+
 
 ## Life cycle of the simulation
 
