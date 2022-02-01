@@ -117,7 +117,7 @@ public class Graph
     {
         if (Edges.ContainsKey(startingNode) && Edges[startingNode].ContainsKey(endingNode))
         {
-            /* The edge already exists, so do nothing */
+            /* The edge already exists, so do nothing: no multigraph is allowed */
             return;
         }
         if (!Edges.ContainsKey(startingNode))
