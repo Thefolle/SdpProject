@@ -229,12 +229,19 @@ At the end of the five runs, among the different machines, the maximum number of
 
 ## Life cycle of the simulation
 
-At the start of a simulation, these systems are called only once and then disabled, in the order summarized by this dependency graph:
+At the start of a simulation, the systems are called only once and then disabled, in the order summarized by this dependency graph:
+
 ![Systems lifecycle](<./Documentation/img/SystemsLifecycle.bmp>)
 
 The system EndInitializationBarrier waits that all initialization systems at the top have delivered. The update systems (remaining ones), in turn, waits that the EndInitializationBarrierSystem disables itself.
 
 The remaining systems, in charge of performing the simulation, run without any specific order.
+
+## Known bugs
+
+Since the Unity ECS framework in use is still in preview, the developers experimented some shortfalls. The most relevant one, that also the user may encounter, happens when the linear interpolation links two successive nodes whose coordinates have different sign. The symptom of this bug that affects the `math.lerp` function is that cars stop moving along streets near to those kinds of nodes.
+
+In order to circumvent the problem, the simulator creates the city in only one quadrant (+X, -Z).
 
 ## Last considerations
 
