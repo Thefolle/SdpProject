@@ -71,9 +71,6 @@ public class SplineVehicleSpawnerSystem : SystemBase
             ((splineComponentData.isSpawner && (elapsedTime - spawnerComponentData.LastTimeTriedToSpawn) > 6) ||
             (splineComponentData.isParkingSpawner && (elapsedTime - spawnerComponentData.LastTimeTriedToSpawn) > 1)))
             {
-                Globals.currentVehicleNumber++;
-                Globals.numberOfVehicleSpawnedInLastSecond++;
-
                 var ltwForward = math.normalize(localToWorld.Forward);
                 int degree = 0;
                 if (math.abs(ltwForward.x - 1f) < 0.00001 || math.abs(ltwForward.x - (-1f)) < 0.00001)
@@ -107,8 +104,19 @@ public class SplineVehicleSpawnerSystem : SystemBase
                 var nextSplineComponentData = entityManager.GetComponentData<SplineComponentData>(nextSpline);
 
 
-                if (entityManager.GetComponentData<TrackComponentData>(splineComponentData.Track).relativeId == 1 && Globals.numberOfBusStops > 1 && !splineComponentData.isOccupied && !precedingSplineComponentData.isOccupied && !nextSplineComponentData.isOccupied && splineComponentData.isForward && spawnerComponentData.Turn == SpawnerComponentData.TurnWindowLength - 1 && entityManager.HasComponent<BusStopComponentData>(getParentComponentDataFromEntity[getParentComponentDataFromEntity[track].Value].Value))
+                if (entityManager.GetComponentData<TrackComponentData>(splineComponentData.Track).relativeId == 1 && !splineComponentData.isOccupied && !precedingSplineComponentData.isOccupied && !nextSplineComponentData.isOccupied && splineComponentData.isForward && spawnerComponentData.Turn == SpawnerComponentData.TurnWindowLength - 1 && entityManager.HasComponent<BusStopComponentData>(getParentComponentDataFromEntity[getParentComponentDataFromEntity[track].Value].Value))
                 {
+                    if(Globals.numberOfBusStops < 2)
+                    {
+                        spawnerComponentData.LastTimeTriedToSpawn = elapsedTime;
+                        spawnerComponentData.Turn = (spawnerComponentData.Turn + 1) % SpawnerComponentData.TurnWindowLength;
+
+                        return;
+                    }
+
+                    Globals.currentVehicleNumber++;
+                    Globals.numberOfVehicleSpawnedInLastSecond++;
+
                     var busPrefab = GetSingleton<PrefabComponentData>().Bus;
                     Entity bus = ecb.Instantiate(busPrefab);
                     ecb.SetComponent(bus, new Translation { Value = localToWorld.Position + 1f * math.normalize(localToWorld.Up) });
@@ -147,6 +155,9 @@ public class SplineVehicleSpawnerSystem : SystemBase
                 }
                 else if (!splineComponentData.isOccupied /*&& (elapsedTime - spawnerComponentData.LastTimeTriedToSpawn) > 3*/ && spawnerComponentData.Turn < SpawnerComponentData.TurnWindowLength)
                 {
+                    Globals.currentVehicleNumber++;
+                    Globals.numberOfVehicleSpawnedInLastSecond++;
+
                     var splineId = splineComponentData.id;
                     var TrackEntity = splineComponentData.Track;
 
