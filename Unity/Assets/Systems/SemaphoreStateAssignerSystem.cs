@@ -7,7 +7,7 @@ public class SemaphoreStateAssignerSystem : SystemBase
 {
     protected override void OnUpdate()
     {
-        if (World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled) return;
+        if (World.GetExistingSystem<CrossTrackIndexerSystem>().Enabled) return;
 
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
 
