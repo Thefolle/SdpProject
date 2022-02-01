@@ -64,7 +64,7 @@ public class BusPathFinderSystem : SystemBase
         ecb.Dispose();
 
         if (Globals.numberOfBusStops < 2)
-            Log("There is only one bus stop in this simulation. A bus needs at least two stops in order to spawn. No bus will be generated.");
+            LogFormat("The number of bus stops in this simulation is {0}. A bus needs at least two stops in order to spawn. No bus will be generated.", Globals.numberOfBusStops);
 
         this.Enabled = false;
     }

@@ -16,6 +16,7 @@ public class EndInitializationBarrierSystem : SystemBase
             return;
         }
 
+        UnityEngine.Debug.LogFormat("{0}: the city has been correctly initialized. Simulation started.", this.GetType().Name);
         this.Enabled = false;
     }
 }

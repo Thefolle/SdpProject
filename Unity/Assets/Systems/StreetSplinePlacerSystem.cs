@@ -532,7 +532,6 @@ public class StreetSplinePlacerSystem : SystemBase
             }
         }).WithStructuralChanges().Run();
         this.Enabled = false;
-        Debug.LogFormat("StreetSplinePlacerSystem: the city has been correctly initialized. Simulation is starting...");
     }
 
     private void BubbleSort(DynamicBuffer<SplineBufferComponentData> splineBufferComponentData, EntityManager entityManager)
