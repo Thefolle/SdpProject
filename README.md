@@ -204,7 +204,7 @@ Measures:
 
 The results between the three different machines are almost equivalent, if compared to the underlying hardware equipment.
 
-At the end of the five runs, among the different machines, the maximum number of cars achieved is 20140 out of 194906 entities, at the same time.
+At the end of the five runs, among the different machines, the maximum number of vehicles achieved is 33276 out of 406147 entities, at the same time.
 
 ## Brief description of each system
 
@@ -296,9 +296,21 @@ Finally open DistrictPlacerSystem and add the new district in the two switch cas
 
 ### How to spawn a different city?
 
-The user can easily configure a city by modifing the `City.json` file located in `<UnityRootFolder>/Assets/Resources/city.json`. The file is structured as a matrix of districts. Each district is specified through its name. An example follows below:
+The user can easily configure a city by modifing the `City.json` file located in `<UnityRootFolder>/Assets/Resources/city.json`. The file is structured as a matrix of districts. Each district is specified through its name. Empty holes in the matrix are not allowed, as chosen by the developers. Two examples follows below:
 
 ```json
+// Invalid example: empty spots are not allowed in the matrix
+{
+    "districts": [
+        ["sm-1", "md-1", "md-1"],
+        ["sm-1", "", ""],
+        ["sm-1", "sm-1", "lg-1"],
+    ]
+}
+```
+
+```json
+// Valid example
 {
     "districts": [
         ["sm-1", "md-1"],
