@@ -27,7 +27,7 @@ public class DistrictPlacerSystem : SystemBase
 
             var translation = new Translation
             {
-                Value = new float3(110, 0, 110)
+                Value = new float3(1000, 0, -1000)
             };
 
             for (var i = 0; i < districts.Count; i++)
