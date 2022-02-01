@@ -40,7 +40,7 @@ public class SplineVehicleSpawnerSystem : SystemBase
     protected override void OnUpdate()
     {
         double elapsedTime = Time.ElapsedTime;
-        if (World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled || World.GetExistingSystem<GraphGeneratorSystem>().Enabled) return;
+        if (World.GetExistingSystem<EndInitializationBarrierSystem>().Enabled) return;
 
         if (!Globals.startStats)
             Globals.startStats = true;

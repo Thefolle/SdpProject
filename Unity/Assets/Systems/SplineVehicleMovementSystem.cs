@@ -11,7 +11,7 @@ public class SplineVehicleMovementSystem : SystemBase
     {
         double elapsedTime = Time.ElapsedTime;
 
-        if (World.GetExistingSystem<StreetSplinePlacerSystem>().Enabled) return;
+        if (World.GetExistingSystem<EndInitializationBarrierSystem>().Enabled) return;
 
         var getSplineComponentDataFromEntity = GetComponentDataFromEntity<SplineComponentData>();
         var getSplineBufferComponentData = GetBufferFromEntity<SplineBufferComponentData>();

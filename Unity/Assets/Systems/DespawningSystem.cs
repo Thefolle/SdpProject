@@ -13,7 +13,7 @@ public class DespawningSystem : SystemBase
 {
     protected override void OnUpdate()
     {
-        if (World.GetExistingSystem<GraphGeneratorSystem>().Enabled) return;
+        if (World.GetExistingSystem<EndInitializationBarrierSystem>().Enabled) return;
 
         var entityManager = World.EntityManager;
 
