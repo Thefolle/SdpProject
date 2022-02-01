@@ -224,18 +224,15 @@ At the end of the five runs, among the different machines, the maximum number of
 - SemaphoreStateAssignerSystem: a minor system that makes streets aware of their current semaphore state (green or red);
 - StatsSystem: manages the simulation stats, showing them on the canvas UI;
 - CameraRotationAndZoom: Manages Observer (first person view camera) mouse rotation and up and down movement;
-- ObserverMovement: Manages Observer (first person view camera) movement on the XZ plane using a Character Controller Component.
-
+- ObserverMovement: Manages Observer (first person view camera) movement on the XZ plane using a Character Controller Component;
+- EndInitializationBarrierSystem: a barrier system to explicitly separate the initialization phase from the update phase of the simulation.
 
 ## Life cycle of the simulation
 
-At the start of a simulation, these systems are called only once and then disabled, in this order:
+At the start of a simulation, these systems are called only once and then disabled, in the order summarized by this dependency graph:
+![Systems lifecycle](<./Documentation/img/SystemsLifecycle.bmp>)
 
-1. DistrictPlacerSystem;
-2. GraphGeneratorSystem;
-3. BusPathFinderSystem;
-4. StreetSplinePlacerSystem;
-5. SemaphoreStateAssignerSystem.
+The system EndInitializationBarrier waits that all initialization systems at the top have delivered. The update systems (remaining ones), in turn, waits that the EndInitializationBarrierSystem disables itself.
 
 The remaining systems, in charge of performing the simulation, run without any specific order.
 
