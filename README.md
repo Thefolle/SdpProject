@@ -330,7 +330,7 @@ The user can easily configure a city by modifing the `City.json` file located in
     ]
 }
 ```
-![City example]()
+![City example](./Documentation/img/cityExample2.JPG)
 
 The user may specify in `City.json` the maximum number of active vehicles in the simulation by adding the `"maxVehicleNumber"`.
 It follows an example, if the user wants to cap the vehicle number to 4000 he/she can:
