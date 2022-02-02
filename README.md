@@ -319,6 +319,16 @@ The user can easily configure a city by modifing the `City.json` file located in
 }
 ```
 
+```json
+// Another valid example
+{
+    "districts": [
+        ["sm-1", "md-1", "sm-1"],
+        ["sm-1", "lg-1", "md-1"],
+        ["lg-1"]
+    ]
+}
+```
 ![City example](./Documentation/img/cityExample.JPG)
 
 The user may specify in `City.json` the maximum number of active vehicles in the simulation by adding the `"maxVehicleNumber"`.
