@@ -296,7 +296,7 @@ Finally open DistrictPlacerSystem and add the new district in the two switch cas
 
 ### How to spawn a different city?
 
-The user can easily configure a city by modifing the `City.json` file located in `<UnityRootFolder>/Assets/Resources/city.json`. The file is structured as a matrix of districts. Each district is specified through its name. Empty holes in the matrix are not allowed, as chosen by the developers. Two examples follows below:
+The user can easily configure a city by modifing the `City.json` file located in `<UnityRootFolder>/Assets/Resources/city.json`. The file is structured as a matrix of districts. Each district is specified through its name. Empty holes in the matrix are not allowed, as chosen by the developers. Three examples follow below:
 
 ```json
 // Invalid example: empty spots are not allowed in the matrix
@@ -318,6 +318,7 @@ The user can easily configure a city by modifing the `City.json` file located in
     ]
 }
 ```
+![City example](./Documentation/img/cityExample.JPG)
 
 ```json
 // Another valid example
@@ -329,7 +330,7 @@ The user can easily configure a city by modifing the `City.json` file located in
     ]
 }
 ```
-![City example](./Documentation/img/cityExample.JPG)
+![City example]()
 
 The user may specify in `City.json` the maximum number of active vehicles in the simulation by adding the `"maxVehicleNumber"`.
 It follows an example, if the user wants to cap the vehicle number to 4000 he/she can:
